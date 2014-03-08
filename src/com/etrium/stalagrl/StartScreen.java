@@ -27,7 +27,7 @@ public class StartScreen
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal("data/uiskin.json"));
         
-        window = new Window("7-day roguelike challenge - \"Back up\"", skin);
+        window = new Window("7-day roguelike challenge - \"StalagRL\"", skin);
         window.setPosition(350, 500);
         window.setSize(300, 100f);
         window.row().fill().expandX().expandY();
