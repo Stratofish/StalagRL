@@ -43,9 +43,9 @@ public class PowCamps implements EventListener
 	private TextButton quitNoButton = null;
 	private boolean quitDialogVisible = false;
 
-	public PowCamps(OrthographicCamera camera)
+	public PowCamps(OrthographicCamera p_camera)
 	{
-		this.camera = camera;
+		camera = p_camera;
 		
 		evtMgr = new EventManager();
 		this.StartListening();
@@ -61,7 +61,7 @@ public class PowCamps implements EventListener
 		
 		levelLabel = new Label("* * * Dungeon level 35 * * *", logSkin);
         levelLabel.setPosition(40.0f, 730.0f);
-        
+
         String[] s = {""};
         List list = new List(s, logSkin);
         list.setHeight(12.0f);
@@ -99,7 +99,7 @@ public class PowCamps implements EventListener
         {
             keyMap.CheckKeys();
         }
-        
+
         //boolean playerAction = player.DoControl();
         
         // Only update map stuff if player had a turn
@@ -109,12 +109,14 @@ public class PowCamps implements EventListener
         //  playerAction = false;
         //}
         
-        map.CenterMapWindowOnPlayer();
         camera.position.set(-660, -660, 0);
         //camera.translate((map.mapWindow.x), (map.mapWindow.y));
         camera.update();
         camera.apply(Gdx.gl10);
 
+        map.CenterMapWindowOnPlayer();
+        map.Render();
+        
         Rectangle scissors = new Rectangle();
         //Rectangle clipBounds = new Rectangle((map.mapWindow.x)-(1024-640-85) - (1024/2),
         //                                     (map.mapWindow.y)-(768-640+420)-(768/2),640,640);
@@ -184,8 +186,6 @@ public class PowCamps implements EventListener
 		if (!listening)
 			return false;
 
-		System.out.println(p_event.type);
-		
 		switch (p_event.type)
 		{
 			case evtControlDown:
