@@ -16,7 +16,7 @@ public class StalagRL implements ApplicationListener, EventListener
 	private GameState state = GameState.STARTSCREEN;
 	//private GameState state = GameState.GAME;
 	
-	//private Dungeon dungeon = null;
+	private PowCamps powCamps = null;
 	private StartScreen startScreen = null;
 	private WinScreen winScreen = null;
 	private LoseScreen loseScreen = null;
@@ -42,10 +42,10 @@ public class StalagRL implements ApplicationListener, EventListener
 	@Override
 	public void dispose()
 	{
-	    //if (dungeon != null)
-	    //{
-	    //    dungeon.dispose();
-	    //}
+	    if (powCamps != null)
+	    {
+	        powCamps.dispose();
+	    }
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class StalagRL implements ApplicationListener, EventListener
             }
 		    case GAME:
 		    {
-		        //dungeon.render();
+		        powCamps.render();
 		        break;
 		    }
 		}
@@ -106,8 +106,7 @@ public class StalagRL implements ApplicationListener, EventListener
             case evtGameStart:
             {
                 startScreen = null;
-                //Map.mapStates = null;
-                //dungeon = new Dungeon(camera);
+                powCamps = new PowCamps(camera);
                 state = GameState.GAME;
                 return true;
             }
@@ -115,7 +114,7 @@ public class StalagRL implements ApplicationListener, EventListener
             {
                 winScreen = new WinScreen();
                 startScreen = null;
-                //dungeon = null;
+                powCamps = null;
                 state = GameState.WIN;
                 return true;
             }
@@ -123,7 +122,7 @@ public class StalagRL implements ApplicationListener, EventListener
             {
                 loseScreen = new LoseScreen();
                 startScreen = null;
-                //dungeon = null;
+                powCamps = null;
                 state = GameState.LOSE;
                 return true;
             }
