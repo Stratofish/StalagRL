@@ -35,6 +35,7 @@ public class StartScreen
         startGame = new TextButton("New game", skin);
         quitGame = new TextButton("Quit", skin);
         
+        
         startGame.addListener(new ChangeListener()
         {
             public void changed (ChangeEvent event, Actor actor)
