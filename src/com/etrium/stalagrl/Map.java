@@ -21,7 +21,11 @@ import com.etrium.stalagrl.Assets;
 
 public class Map
 {
-	public final static int FLOOR_DIRT = 1; 
+	public final static int FLOOR_DIRT = 1;
+	public final static int FLOOR_PLANKS = 2;
+	public final static int FLOOR_GRAVEL = 3;
+	public final static int FLOOR_GRASS = 4;
+	public final static int FLOOR_CONCRETE = 5;
 	
 	public Object mapWindow;
 	public String curLevel;
@@ -37,6 +41,8 @@ public class Map
 	private Environment environment;
 	private AssetManager assets;
 	private Texture dirtTexture;
+	private Texture woodFloorTexture;
+	protected Texture textures[];
 
 	public Map(int p_width, int p_height)
 	{
@@ -86,6 +92,13 @@ public class Map
 		dirtTexture = new Texture(Gdx.files.internal(Assets.textureDirt));
 		dirtTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		
+		woodFloorTexture = new Texture(Gdx.files.internal(Assets.texturePlanks));
+		woodFloorTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		
+		textures = new Texture[3];
+		textures[FLOOR_DIRT] = dirtTexture;
+		textures[FLOOR_PLANKS] = woodFloorTexture;
+		
 		floorTiles = new ArrayList<ModelInstance>();
 	}
 	
@@ -130,8 +143,7 @@ public class Map
 					instance.transform.translate(-i, -j, 0);
 					
 					Material mat = instance.materials.get(0);
-					if (floorMap[i][j] == FLOOR_DIRT)
-						mat.set(TextureAttribute.createDiffuse(dirtTexture));
+					mat.set(TextureAttribute.createDiffuse(textures[floorMap[i][j]]));
 					
 					floorTiles.add(instance);
 				}
