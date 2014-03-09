@@ -89,7 +89,7 @@ public class Map
 		assets.load(Assets.modelDirt, Model.class);
 		assets.finishLoading();
 		
-		dirtTexture = new Texture(Gdx.files.internal(Assets.textureDirt));
+		dirtTexture = new Texture(Gdx.files.internal(Assets.textureGrass));
 		dirtTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		
 		woodFloorTexture = new Texture(Gdx.files.internal(Assets.texturePlanks));
