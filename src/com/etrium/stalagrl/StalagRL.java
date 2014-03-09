@@ -3,7 +3,6 @@ package com.etrium.stalagrl;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.etrium.stalagrl.system.EtriumEvent;
 import com.etrium.stalagrl.system.EventListener;
 import com.etrium.stalagrl.system.EventManager;
@@ -11,8 +10,6 @@ import com.etrium.stalagrl.system.EventType;
 
 public class StalagRL implements ApplicationListener, EventListener
 {
-	private OrthographicCamera camera;
-	
 	private GameState state = GameState.STARTSCREEN;
 	//private GameState state = GameState.GAME;
 	
@@ -27,8 +24,6 @@ public class StalagRL implements ApplicationListener, EventListener
 	public void create() {		
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
-		
-		camera = new OrthographicCamera(w, h);
 		
 		startScreen = new StartScreen();
 		
@@ -106,7 +101,7 @@ public class StalagRL implements ApplicationListener, EventListener
             case evtGameStart:
             {
                 startScreen = null;
-                powCamps = new PowCamps(camera);
+                powCamps = new PowCamps();
                 state = GameState.GAME;
                 return true;
             }

@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Material;
@@ -16,7 +16,6 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.graphics.g3d.utils.GLES10ShaderProvider;
 
 public class Map
 {
@@ -24,26 +23,21 @@ public class Map
 	public Object mapWindow;
 	public String curLevel;
 	
-	private OrthographicCamera camera = null;
+	protected int width = 1;
+	protected int height = 1;
+	
+	private Camera camera = null;
 	private List<ModelInstance> floorTiles;
-	private ModelBatch modelBatch;
 	private Environment environment;
 	private AssetManager assets;
 	private Texture dirtTexture;
 
-	public Map()
+	public Map(int p_width, int p_height)
 	{
-		camera = new OrthographicCamera(10, 10);
-		camera.position.set(-4.0f, -4.0f, 6.0f);
-		camera.lookAt(0.0f, 0.0f, 0.0f);
-		camera.up.x = 0.0f;
-		camera.up.y = 0.0f;
-		camera.up.z = 1.0f;
-		camera.near = 0.1f;
-		camera.far = 100.0f;
-		camera.update();
-		
-		modelBatch = new ModelBatch(new GLES10ShaderProvider());
+		width = p_width;
+		height = p_height;
+		assert width > 0;
+		assert height > 0;
 		
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1.0f, 1.0f, 1.0f, 1.0f));
@@ -59,14 +53,21 @@ public class Map
 		floorTiles = new ArrayList<ModelInstance>();
 	}
 	
-	public void Render()
+	public void SetCamera(Camera p_camera)
 	{
+		camera = p_camera;
+	}
+	
+	public void Render(ModelBatch modelBatch)
+	{
+		assert camera != null;
+		
 		if ((floorTiles.size() == 0) &&
 			(assets.update()))
 		{
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < width; i++)
 			{
-				for (int j = 0; j < 10; j++)
+				for (int j = 0; j < height; j++)
 				{
 					ModelInstance instance = new ModelInstance(assets.get("data/models/plain-floor.g3db", Model.class));
 					
@@ -87,16 +88,8 @@ public class Map
 
 		if (floorTiles.size() > 0)
 		{
-			modelBatch.begin(camera);
 			for (int i = 0; i < floorTiles.size(); i++)
 				modelBatch.render(floorTiles.get(i), environment);
-			
-			modelBatch.end();
 		}
-	}
-	
-	public void CenterMapWindowOnPlayer() {
-		// TODO Auto-generated method stub
-		
 	}
 }

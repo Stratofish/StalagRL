@@ -3,8 +3,10 @@ package com.etrium.stalagrl;
 import java.io.Console;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.utils.GLES10ShaderProvider;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -14,8 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
+import com.etrium.stalagrl.character.Player;
 import com.etrium.stalagrl.system.ControlType;
 import com.etrium.stalagrl.system.EventType;
 import com.etrium.stalagrl.system.EtriumEvent;
@@ -28,8 +29,8 @@ public class PowCamps implements EventListener
 	private EventManager evtMgr;
 	private KeyMap keyMap;
 	private Map map;
-	private OrthographicCamera camera;
-	private Object batch;
+	private Camera camera;
+	private ModelBatch modelBatch;
 	private Label levelLabel;
 	private ScrollPane logScrollPane = null;
 	private Window logWindow = null;
@@ -42,18 +43,15 @@ public class PowCamps implements EventListener
 	private TextButton quitYesButton = null;
 	private TextButton quitNoButton = null;
 	private boolean quitDialogVisible = false;
+	protected Player player = null;
 
-	public PowCamps(OrthographicCamera p_camera)
+	public PowCamps()
 	{
-		camera = p_camera;
-		
 		evtMgr = new EventManager();
 		this.StartListening();
 		
 		keyMap = new KeyMap();
 		
-		map = new Map();
-
 		logStage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         Gdx.input.setInputProcessor(logStage);
         
@@ -83,6 +81,26 @@ public class PowCamps implements EventListener
         evtMgr.RegisterListener(this, EventType.evtControlUp);
         evtMgr.RegisterListener(this, EventType.evtPlayerUIChanged);
         evtMgr.RegisterListener(this, EventType.evtQuitConfirm);
+        
+        modelBatch = new ModelBatch(new GLES10ShaderProvider());
+        
+        //camera = new OrthographicCamera(10, 10);
+        camera = new PerspectiveCamera(65, 1024, 768);
+		camera.position.set(-4.0f, -4.0f, 6.0f);
+		camera.lookAt(0.0f, 0.0f, 0.0f);
+		camera.up.x = 0.0f;
+		camera.up.y = 0.0f;
+		camera.up.z = 1.0f;
+		camera.near = 0.1f;
+		camera.far = 100.0f;
+		camera.update();
+		
+		map = new Map(100, 100);
+		map.SetCamera(camera);
+		
+		player = new Player(0, 0);
+		player.SetCamera(camera);
+		player.SetMap(map);
 	}
 
 	public void dispose()
@@ -109,25 +127,21 @@ public class PowCamps implements EventListener
         //  playerAction = false;
         //}
         
-        camera.position.set(-660, -660, 0);
-        //camera.translate((map.mapWindow.x), (map.mapWindow.y));
-        camera.update();
-        camera.apply(Gdx.gl10);
 
-        map.CenterMapWindowOnPlayer();
-        map.Render();
+        player.DoControl();
+        player.CenterMapWindowOnPlayer();
         
-        Rectangle scissors = new Rectangle();
+        //Rectangle scissors = new Rectangle();
         //Rectangle clipBounds = new Rectangle((map.mapWindow.x)-(1024-640-85) - (1024/2),
         //                                     (map.mapWindow.y)-(768-640+420)-(768/2),640,640);
         //ScissorStack.calculateScissors(camera, batch.getTransformMatrix(), clipBounds, scissors);
         //ScissorStack.pushScissors(scissors);
         
         //batch.setProjectionMatrix(camera.combined);
-        //batch.begin();
-        //    map.render(batch);
-        //    player.render(batch);
-        //batch.end();
+        modelBatch.begin(camera);
+            map.Render(modelBatch);
+            player.Render(modelBatch);
+        modelBatch.end();
         
         //ScissorStack.popScissors();
 

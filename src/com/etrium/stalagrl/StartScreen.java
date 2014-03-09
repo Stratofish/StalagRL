@@ -29,7 +29,7 @@ public class StartScreen
         
         window = new Window("7-day roguelike challenge - \"StalagRL\"", skin);
         window.setPosition(350, 500);
-        window.setSize(300, 100f);
+        window.setSize(400, 150f);
         window.row().fill().expandX().expandY();
         
         startGame = new TextButton("New game", skin);
