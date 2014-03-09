@@ -6,7 +6,7 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Material;
@@ -24,7 +24,7 @@ public class Map
 	public Object mapWindow;
 	public String curLevel;
 	
-	private PerspectiveCamera camera = null;
+	private OrthographicCamera camera = null;
 	private List<ModelInstance> floorTiles;
 	private ModelBatch modelBatch;
 	private Environment environment;
@@ -33,9 +33,12 @@ public class Map
 
 	public Map()
 	{
-		camera = new PerspectiveCamera(67, 1024, 768);
-		camera.position.set(0.0f, -4.0f, 4.0f);
+		camera = new OrthographicCamera(10, 10);
+		camera.position.set(-4.0f, -4.0f, 6.0f);
 		camera.lookAt(0.0f, 0.0f, 0.0f);
+		camera.up.x = 0.0f;
+		camera.up.y = 0.0f;
+		camera.up.z = 1.0f;
 		camera.near = 0.1f;
 		camera.far = 100.0f;
 		camera.update();
@@ -51,6 +54,7 @@ public class Map
 		assets.finishLoading();
 		
 		dirtTexture = new Texture(Gdx.files.internal("data/textures/dirt.png"));
+		dirtTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		
 		floorTiles = new ArrayList<ModelInstance>();
 	}
