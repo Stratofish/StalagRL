@@ -8,7 +8,7 @@ public class Assets
   final static String modelPath = Assets.dataPath + "/models";
   
   // Texture Constants
-  final static String textureDirt  = Assets.texturePath + "/Dirt.png";
+  final static String textureDirt  = Assets.texturePath + "/dirt.png";
   final static String texturePlanks = Assets.texturePath + "/woodfloor.png";
   final static String textureGrass = Assets.texturePath + "/Grass.png";
   final static String textureStones = Assets.texturePath + "/Stones.png";

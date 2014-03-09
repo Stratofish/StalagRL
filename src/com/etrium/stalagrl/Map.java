@@ -23,7 +23,7 @@ public class Map
 {
 	public final static int FLOOR_DIRT = 1;
 	public final static int FLOOR_PLANKS = 2;
-	public final static int FLOOR_GRAVEL = 3;
+	public final static int FLOOR_STONES = 3;
 	public final static int FLOOR_GRASS = 4;
 	public final static int FLOOR_CONCRETE = 5;
 	
@@ -42,6 +42,9 @@ public class Map
 	private AssetManager assets;
 	private Texture dirtTexture;
 	private Texture woodFloorTexture;
+	private Texture stonesTexture;
+	private Texture concreteTexture;
+	private Texture grassTexture;
 	protected Texture textures[];
 
 	public Map(int p_width, int p_height)
@@ -53,21 +56,48 @@ public class Map
 		
 		// Setup fake regions
 		regionRecords = new ArrayList<MapRegionRecord>();
-		MapRegion mr = new MapRegion();
-		mr.width = 3;
-		mr.height = 3;
-		mr.type = 2;
+		MapRegion mr1 = new MapRegion();
+		mr1.width = 2;
+		mr1.height = 3;
+		mr1.type = FLOOR_PLANKS;
+		
+		MapRegion mr2 = new MapRegion();
+		mr2.width = 2;
+		mr2.height = 3;
+		mr2.type = FLOOR_STONES;
+		
+		MapRegion mr3 = new MapRegion();
+		mr3.width = 2;
+		mr3.height = 3;
+		mr3.type = FLOOR_CONCRETE;
+		
+		MapRegion mr4 = new MapRegion();
+		mr4.width = 2;
+		mr4.height = 3;
+		mr4.type = FLOOR_GRASS;
 		
 		MapRegionRecord mrr = new MapRegionRecord();
-		mrr.region = mr;
+		mrr.region = mr1;
 		mrr.x = 1;
 		mrr.y = 2;
 		regionRecords.add(mrr);
 		
 		mrr = new MapRegionRecord();
-		mrr.region = mr;
-		mrr.x = 5;
+		mrr.region = mr2;
+		mrr.x = 4;
 		mrr.y = 2;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = mr3;
+		mrr.x = 1;
+		mrr.y = 6;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = mr4;
+		mrr.x = 4;
+		mrr.y = 6;
 		regionRecords.add(mrr);
 		
 		// create floor map
@@ -89,15 +119,27 @@ public class Map
 		assets.load(Assets.modelDirt, Model.class);
 		assets.finishLoading();
 		
-		dirtTexture = new Texture(Gdx.files.internal(Assets.textureStones));
+		dirtTexture = new Texture(Gdx.files.internal(Assets.textureDirt));
 		dirtTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		
 		woodFloorTexture = new Texture(Gdx.files.internal(Assets.texturePlanks));
 		woodFloorTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		
-		textures = new Texture[3];
+		stonesTexture = new Texture(Gdx.files.internal(Assets.textureStones));
+		stonesTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		
+		concreteTexture = new Texture(Gdx.files.internal(Assets.textureConcrete));
+		concreteTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		
+		grassTexture = new Texture(Gdx.files.internal(Assets.textureGrass));
+		grassTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		
+		textures = new Texture[6];
 		textures[FLOOR_DIRT] = dirtTexture;
 		textures[FLOOR_PLANKS] = woodFloorTexture;
+		textures[FLOOR_STONES] = stonesTexture;
+		textures[FLOOR_CONCRETE] = concreteTexture;
+		textures[FLOOR_GRASS] = grassTexture;
 		
 		floorTiles = new ArrayList<ModelInstance>();
 	}
@@ -140,7 +182,7 @@ public class Map
 				{
 					ModelInstance instance = new ModelInstance(assets.get(Assets.modelDirt, Model.class));
 					
-					instance.transform.translate(-i, -j, 0);
+					instance.transform.translate(i, j, 0);
 					
 					Material mat = instance.materials.get(0);
 					mat.set(TextureAttribute.createDiffuse(textures[floorMap[i][j]]));
