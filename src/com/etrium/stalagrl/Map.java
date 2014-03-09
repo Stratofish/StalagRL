@@ -17,6 +17,8 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 
+import com.etrium.stalagrl.Assets;
+
 public class Map
 {
 	public final static int FLOOR_DIRT = 1; 
@@ -78,10 +80,10 @@ public class Map
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1.0f, -0.8f, -0.2f));
 		
 		assets = new AssetManager();
-		assets.load("data/models/plain-floor.g3db", Model.class);
+		assets.load(Assets.modelDirt, Model.class);
 		assets.finishLoading();
 		
-		dirtTexture = new Texture(Gdx.files.internal("data/textures/dirt.png"));
+		dirtTexture = new Texture(Gdx.files.internal(Assets.textureDirt));
 		dirtTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		
 		floorTiles = new ArrayList<ModelInstance>();
@@ -123,7 +125,7 @@ public class Map
 			{
 				for (int j = 0; j < height; j++)
 				{
-					ModelInstance instance = new ModelInstance(assets.get("data/models/plain-floor.g3db", Model.class));
+					ModelInstance instance = new ModelInstance(assets.get(Assets.modelDirt, Model.class));
 					
 					instance.transform.translate(-i, -j, 0);
 					
