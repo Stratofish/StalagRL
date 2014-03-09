@@ -19,7 +19,8 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 
 public class Map
 {
-
+	public final static int FLOOR_DIRT = 1; 
+	
 	public Object mapWindow;
 	public String curLevel;
 	
@@ -28,6 +29,9 @@ public class Map
 	
 	private Camera camera = null;
 	private List<ModelInstance> floorTiles;
+	protected int floorMap[][];
+	protected List<MapRegion> regions;
+	protected List<MapRegionRecord> regionRecords;
 	private Environment environment;
 	private AssetManager assets;
 	private Texture dirtTexture;
@@ -38,6 +42,36 @@ public class Map
 		height = p_height;
 		assert width > 0;
 		assert height > 0;
+		
+		// Setup fake regions
+		regionRecords = new ArrayList<MapRegionRecord>();
+		MapRegion mr = new MapRegion();
+		mr.width = 3;
+		mr.height = 3;
+		mr.type = 2;
+		
+		MapRegionRecord mrr = new MapRegionRecord();
+		mrr.region = mr;
+		mrr.x = 1;
+		mrr.y = 2;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = mr;
+		mrr.x = 5;
+		mrr.y = 2;
+		regionRecords.add(mrr);
+		
+		// create floor map
+		floorMap = new int[width][height];
+		
+		for (int w = 0; w < width; w++)
+		{
+			for (int h = 0; h < height; h++)
+			{
+				floorMap[w][h] = FindTileType(w, h);
+			}
+		}
 		
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1.0f, 1.0f, 1.0f, 1.0f));
@@ -51,6 +85,26 @@ public class Map
 		dirtTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		
 		floorTiles = new ArrayList<ModelInstance>();
+	}
+	
+	protected int FindTileType(int x, int y)
+	{
+		int c = regionRecords.size();
+		
+		for (int i = 0; i < c; i++)
+		{
+			MapRegionRecord mrr = regionRecords.get(i);
+			
+			if ((x >= mrr.x) &&
+				(y >= mrr.y) &&
+				(x < mrr.x + mrr.region.width) &&
+				(y < mrr.y + mrr.region.height))
+			{
+				return mrr.region.type; 
+			}
+		}
+		
+		return FLOOR_DIRT;
 	}
 	
 	public void SetCamera(Camera p_camera)
@@ -71,12 +125,11 @@ public class Map
 				{
 					ModelInstance instance = new ModelInstance(assets.get("data/models/plain-floor.g3db", Model.class));
 					
-					instance.getNode("Plane").translation.x = 5.0f-i;
-					instance.getNode("Plane").translation.y = 5.0f-j;
-					instance.getNode("Plane").calculateTransforms(false);
+					instance.transform.translate(-i, -j, 0);
 					
 					Material mat = instance.materials.get(0);
-					mat.set(TextureAttribute.createDiffuse(dirtTexture));
+					if (floorMap[i][j] == FLOOR_DIRT)
+						mat.set(TextureAttribute.createDiffuse(dirtTexture));
 					
 					floorTiles.add(instance);
 				}
