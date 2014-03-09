@@ -73,7 +73,7 @@ public class PowCamps implements EventListener
         logWindow.row().fill().expandX().expandY();
         logWindow.add(logScrollPane);
         logStage.addActor(logWindow);
-        
+
         evtMgr.RegisterListener(this, EventType.evtLogActivity);
         evtMgr.RegisterListener(this, EventType.evtCharDead);
         evtMgr.RegisterListener(this, EventType.evtUpLevel);
@@ -96,7 +96,7 @@ public class PowCamps implements EventListener
 		camera.far = 100.0f;
 		camera.update();
 		
-		map = new Map(100, 100);
+		map = new Map(10, 10);
 		map.SetCamera(camera);
 		
 		player = new Player(0, 0);
@@ -194,6 +194,13 @@ public class PowCamps implements EventListener
         
         quitDialogVisible = true;
     }
+
+	public void resize(int p_width, int p_height)
+	{
+		Gdx.gl.glViewport(0, 0, p_width, p_height);
+		logStage.setViewport(p_width, p_height, true);
+		camera.update();
+	}
 	
 	@Override
 	public boolean ReceiveEvent(EtriumEvent p_event)
@@ -238,5 +245,4 @@ public class PowCamps implements EventListener
 	{
 		listening = false;
 	}
-
 }

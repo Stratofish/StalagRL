@@ -19,11 +19,14 @@ public class StalagRL implements ApplicationListener, EventListener
 	private LoseScreen loseScreen = null;
 	private EventManager evtMgr = new EventManager();
 	
+	protected int width = 1024;
+	protected int height = 768;
+	
 	
 	@Override
 	public void create() {		
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
+		width = Gdx.graphics.getWidth();
+		height = Gdx.graphics.getHeight();
 		
 		startScreen = new StartScreen();
 		
@@ -67,14 +70,43 @@ public class StalagRL implements ApplicationListener, EventListener
             }
 		    case GAME:
 		    {
-		        powCamps.render();
+		    	if (powCamps != null)
+		    		powCamps.render();
 		        break;
 		    }
 		}
 	}
 
 	@Override
-	public void resize(int width, int height) {
+	public void resize(int p_width, int p_height)
+	{
+		width = p_width;
+		height = p_height;
+		
+		switch (state)
+		{
+		    case STARTSCREEN:
+            {
+                //startScreen.resize(width, height);
+                break;
+            }
+		    case WIN:
+            {
+                //winScreen.resize(width, height);
+                break;
+            }
+		    case LOSE:
+            {
+                //loseScreen.resize(width, height);
+                break;
+            }
+		    case GAME:
+		    {
+		    	if (powCamps != null)
+		    		powCamps.resize(width, height);
+		        break;
+		    }
+		}
 	}
 
 	@Override
