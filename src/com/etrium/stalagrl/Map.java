@@ -6,8 +6,6 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.Environment;
@@ -15,13 +13,10 @@ import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
-import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.etrium.stalagrl.Assets;
 import com.etrium.stalagrl.RegionLight;
 
@@ -69,7 +64,7 @@ public class Map
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1.0f));
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1.0f, -0.8f, -0.2f));
 		
-		// Setup rscaleegions
+		// Setup regions
 		regionRecords = new ArrayList<MapRegionRecord>();
 		MapRegion mr1 = new RegionHut();
 		
@@ -223,7 +218,7 @@ public class Map
 					
 					for (int x = 0; x < record.region.width; x++)
 					{
-						for (int y = 0; y < record.region.width; y++)
+						for (int y = 0; y < record.region.height; y++)
 						{
 							floorMap[x+record.x][y+record.y].type = record.region.type;
 							floorMap[x+record.x][y+record.y].floorLevel = record.region.floorLevel;
