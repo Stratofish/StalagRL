@@ -32,6 +32,7 @@ public class Player implements EventListener
 {
 	protected int x;
 	protected int y;
+	protected float z;
 	
 	protected boolean upHeld = false;
 	protected boolean downHeld = false;
@@ -52,6 +53,7 @@ public class Player implements EventListener
 	{
 		x = p_x;
 		y = p_y;
+		z = 0.0f;
 		
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1.0f, 1.0f, 1.0f, 1.0f));
@@ -71,6 +73,7 @@ public class Player implements EventListener
 	public void SetMap(Map p_map)
 	{
 		map = p_map;
+		z = map.floorMap[x][y].floorLevel;
 	}
 	
 	public void SetCamera(Camera p_camera)
@@ -120,7 +123,10 @@ public class Player implements EventListener
 		if ((handled) &&
 			(assets.update()))
 		{
-			instance.transform.translate(movX, movY, 0);
+			float movZ = z;
+			z = map.floorMap[x][y].floorLevel;
+			movZ = z - movZ;
+			instance.transform.translate(movX, movY, movZ);
 		}
 	}
 	
@@ -133,7 +139,7 @@ public class Player implements EventListener
 		{
 			instance = new ModelInstance(assets.get("data/models/player2.g3db", Model.class));
 			
-			instance.transform.translate(x, y, 0);
+			instance.transform.translate(x, y, z);
 		}
 		
 		if (instance != null)

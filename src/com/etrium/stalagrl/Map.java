@@ -37,7 +37,7 @@ public class Map
 	
 	private Camera camera = null;
 	private List<ModelInstance> floorTiles;
-	protected MapCell floorMap[][];
+	public MapCell floorMap[][];
 	protected List<ModelInstance> staticMeshes;
 	protected List<MapRegionRecord> regionRecords;
 	private Environment environment;
@@ -70,8 +70,9 @@ public class Map
 		MapRegion mr1 = new MapRegion();
 		mr1.width = 10;
 		mr1.height = 5;
-		mr1.type = FLOOR_DIRT;
+		mr1.type = FLOOR_STONES;
 		mr1.modelType = Assets.modelHut;
+		mr1.floorLevel = 0.3f;
 		mr1.lightCount = 3;
 		mr1.lights = new RegionLight[3];
 		RegionLight light = new RegionLight();
@@ -102,7 +103,6 @@ public class Map
 		light.b = 1.0f;
 		light.intensity = 8.0f;
 		mr1.lights[2] = light;
-		
 		
 		MapRegionRecord mrr = new MapRegionRecord();
 		mrr.region = mr1;
@@ -229,6 +229,15 @@ public class Map
 					
 					record.environment = new Environment();
 					record.environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1.0f));
+					
+					for (int x = 0; x < record.region.width; x++)
+					{
+						for (int y = 0; y < record.region.width; y++)
+						{
+							floorMap[x+record.x][y+record.y].type = record.region.type;
+							floorMap[x+record.x][y+record.y].floorLevel = record.region.floorLevel;
+						}
+					}
 					
 					for (int j = 0; j < record.region.lightCount; j++)
 					{

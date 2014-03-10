@@ -12,4 +12,5 @@ public class MapRegion
 	public String modelType;
 	public RegionLight lights[];
 	public int lightCount = 0;
+	public float floorLevel = 0.0f;
 }
