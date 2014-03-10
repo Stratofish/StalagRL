@@ -65,45 +65,12 @@ public class Map
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1.0f));
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1.0f, -0.8f, -0.2f));
 		
-		// Setup fake regions
+		// Setup regions
 		regionRecords = new ArrayList<MapRegionRecord>();
-		MapRegion mr1 = new MapRegion();
-		mr1.width = 10;
-		mr1.height = 5;
-		mr1.type = FLOOR_STONES;
-		mr1.modelType = Assets.modelHut;
-		mr1.floorLevel = 0.3f;
-		mr1.lightCount = 3;
-		mr1.lights = new RegionLight[3];
-		RegionLight light = new RegionLight();
-		light.x = 1.5f;
-		light.y = 0.2f;
-		light.z = 2.0f;
-		light.r = 1.0f;
-		light.g = 1.0f;
-		light.b = 1.0f;
-		light.intensity = 2.0f;
-		light.external = true;
-		mr1.lights[0] = light;
-		light = new RegionLight();
-		light.x = 2.5f;
-		light.y = 2.5f;
-		light.z = 2.2f;
-		light.r = 1.0f;
-		light.g = 1.0f;
-		light.b = 1.0f;
-		light.intensity = 8.0f;
-		mr1.lights[1] = light;
-		light = new RegionLight();
-		light.x = 7.5f;
-		light.y = 2.5f;
-		light.z = 2.2f;
-		light.r = 1.0f;
-		light.g = 1.0f;
-		light.b = 1.0f;
-		light.intensity = 8.0f;
-		mr1.lights[2] = light;
+		MapRegion mr1 = new RegionHut();
 		
+		
+		// Setup region instances
 		MapRegionRecord mrr = new MapRegionRecord();
 		mrr.region = mr1;
 		mrr.x = 1;
@@ -128,7 +95,7 @@ public class Map
 		mrr.y = 9;
 		regionRecords.add(mrr);
 		
-		// create floor map
+		// Create floor map
 		floorMap = new MapCell[width][height];
 		
 		for (int w = 0; w < width; w++)
