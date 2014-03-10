@@ -69,8 +69,7 @@ public class Map
 		regionRecords = new ArrayList<MapRegionRecord>();
 		MapRegion mr1 = new RegionHut();
 		MapRegion mr2 = new RegionTower();
-		
-		
+
 		// Setup region instances
 		MapRegionRecord mrr = new MapRegionRecord();
 		mrr.region = mr1;
@@ -115,6 +114,20 @@ public class Map
 			}
 		}
 		
+		/* Cycle through regions and copy collision map over to floor map */
+		for (int r = 0; r < regionRecords.size(); r++)
+		{
+		  MapRegionRecord reg = regionRecords.get(r);
+		  
+	    for (int w = 0; w < reg.region.width; w++)
+	    {
+	      for (int h = 0; h < reg.region.height; h++)
+	      {
+	        floorMap[reg.x + w][reg.y + h].collision |= reg.region.collisionMap[w][h]; 
+	      }
+	    }
+		}
+		
     /* Set collision zone for edges of map */
 		for (int w = 0; w < width; w++)
     {
@@ -126,12 +139,8 @@ public class Map
     {
       floorMap[0][h].collision |= MapCell.WEST;
       floorMap[width - 1][h].collision |= MapCell.EAST;
-    }
-		
-		/* Test Collision zone */    
-    floorMap[2][20].type = FLOOR_GRASS; 
-    floorMap[2][20].collision = MapCell.NORTH | MapCell.EAST | MapCell.SOUTH | MapCell.WEST;		
-		
+    }				
+
 		dirtTexture = new Texture(Gdx.files.internal(Assets.textureDirt));
 		dirtTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		

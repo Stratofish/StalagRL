@@ -11,4 +11,5 @@ public class MapRegion
 	public RegionLight lights[] = null;
 	public int lightCount = 0;
 	public float floorLevel = 0.0f;
+	public int collisionMap[][] = null;
 }

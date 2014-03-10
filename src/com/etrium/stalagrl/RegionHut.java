@@ -9,7 +9,53 @@ public class RegionHut extends MapRegion
 		type = Map.FLOOR_STONES;
 		modelType = Assets.modelHut;
 		floorLevel = 0.3f;
+
+		/* Allocate array for collision map */
+		collisionMap = new int[width][height];
 		
+		for (int w = 0; w < width; w++)
+    {
+      for (int h = 0; h < height; h++)
+      {                
+        collisionMap[w][h] = 0;               
+        
+        if (!((w == 1) && (h == 0))) // Door        
+        {
+          // Hut walls
+          if (h == 0) 
+            collisionMap[w][h] |= MapCell.SOUTH;  
+          
+          if (h == height - 1)
+            collisionMap[w][h] |= MapCell.NORTH;
+          
+          if (w == 0)
+            collisionMap[w][h] |= MapCell.WEST;
+          
+          if (w == width - 1)
+            collisionMap[w][h] |= MapCell.EAST;
+        }
+      }           
+    }
+		
+		/* Add collision values for beds */
+		collisionMap[4][0] |= MapCell.WEST | MapCell.EAST | MapCell.SOUTH;
+		collisionMap[4][1] |= MapCell.WEST | MapCell.EAST | MapCell.NORTH;
+		
+		collisionMap[6][0] |= MapCell.WEST | MapCell.EAST | MapCell.SOUTH;
+    collisionMap[6][1] |= MapCell.WEST | MapCell.EAST | MapCell.NORTH;
+		
+    collisionMap[8][0] |= MapCell.WEST | MapCell.EAST | MapCell.SOUTH;
+    collisionMap[8][1] |= MapCell.WEST | MapCell.EAST | MapCell.NORTH;
+    
+    collisionMap[4][3] |= MapCell.WEST | MapCell.EAST | MapCell.SOUTH;
+    collisionMap[4][4] |= MapCell.WEST | MapCell.EAST | MapCell.NORTH;
+    
+    collisionMap[6][3] |= MapCell.WEST | MapCell.EAST | MapCell.SOUTH;
+    collisionMap[6][4] |= MapCell.WEST | MapCell.EAST | MapCell.NORTH;
+    
+    collisionMap[8][3] |= MapCell.WEST | MapCell.EAST | MapCell.SOUTH;
+    collisionMap[8][4] |= MapCell.WEST | MapCell.EAST | MapCell.NORTH;    
+    
 		lightCount = 3;
 		lights = new RegionLight[3];
 		

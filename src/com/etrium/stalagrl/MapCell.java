@@ -9,5 +9,5 @@ public class MapCell
   
 	public int type;
 	public float floorLevel;
-	public int collision;
+	public int collision = 0;
 }
