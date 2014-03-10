@@ -114,7 +114,7 @@ public class Map
 		
 		/* Test code here */
     Dijkstra dj = new Dijkstra(floorMap);
-    List sh = dj.shortestPath(1, 1, 5, 5);
+    List sh = dj.shortestPath(0, 0, 7, 7);
 		
     for (int i = 0; i < sh.size(); i++)
     {

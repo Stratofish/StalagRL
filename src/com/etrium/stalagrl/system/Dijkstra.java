@@ -76,7 +76,7 @@ public class Dijkstra
         
         if (x > 0) 
           node.neighbours[3] = (y * 10) + (x - 1);
-        
+         
         dist[(y * 10) + x] = 0xfffffff;
         q[(y * 10) + x] = node;
         previous[(y * 10) + x] = -1; 
@@ -93,11 +93,11 @@ public class Dijkstra
       
       for (int i = 0; i < 10*10; i++)
       {
-        if (dist[i] < udist)
+        if ((dist[i] < udist) && (!q[i].done))
           u = i;
       }
       
-      if (u == -1){
+      if (u == -1){      
         break;
       }
       
@@ -105,7 +105,7 @@ public class Dijkstra
       nodesLeft--;
       
       if (dist[u] == 0xfffffff)
-      {
+      {       
         break;
       }
       
@@ -115,7 +115,7 @@ public class Dijkstra
         
         if (neighbour != -1)
         {          
-          int alt = dist[u] + 1;
+          int alt = dist[u] + 1;    
           if (alt < dist[neighbour])
           {
             dist[neighbour] = alt;
@@ -123,13 +123,30 @@ public class Dijkstra
           }
         }               
       }
+    }      
+    
+    for (int a = 0; a < 10 * 10; a++)
+    {    
+      System.out.print(dist[a] + ", ");
+      if (a % 10 == 9)
+      {
+        System.out.println();
+      }
     }
     
+    
     List s = new ArrayList<Vector2>();
+    
     int u = (y2 * 10) + x2;
+    
+    Vector2 vec = new Vector2();
+    vec.x = q[u].x;
+    vec.y = q[u].y;
+    s.add(0, vec);
+        
     while (previous[u] != -1)
     {
-      Vector2 vec = new Vector2();
+      vec = new Vector2();
       vec.x = q[previous[u]].x;
       vec.y = q[previous[u]].y;
       s.add(0, vec);
