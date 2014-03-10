@@ -127,6 +127,8 @@ public class Player implements EventListener
 			z = map.floorMap[x][y].floorLevel;
 			movZ = z - movZ;
 			instance.transform.translate(movX, movY, movZ);
+			
+			map.CheckPlayerPosition(x, y);
 		}
 	}
 	

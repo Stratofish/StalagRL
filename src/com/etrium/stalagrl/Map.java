@@ -6,6 +6,7 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,10 +15,13 @@ import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
+import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.etrium.stalagrl.Assets;
 import com.etrium.stalagrl.RegionLight;
 
@@ -65,7 +69,7 @@ public class Map
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1.0f));
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1.0f, -0.8f, -0.2f));
 		
-		// Setup regions
+		// Setup rscaleegions
 		regionRecords = new ArrayList<MapRegionRecord>();
 		MapRegion mr1 = new RegionHut();
 		
@@ -191,8 +195,11 @@ public class Map
 					record.modelInstance = new ModelInstance(assets.get(record.region.modelType, Model.class));
 					record.modelInstance.transform.translate(record.x, record.y, 0.0f);
 					
-					Material mat = record.modelInstance.materials.get(0);
-					mat.set(TextureAttribute.createDiffuse(woodFloorTexture));
+					int count = record.modelInstance.materials.size;
+					for (int j = 0; j < count; j++)
+					{
+						record.modelInstance.materials.get(j).set(TextureAttribute.createDiffuse(woodFloorTexture));
+					}
 					
 					record.environment = new Environment();
 					record.environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1.0f));
@@ -234,6 +241,19 @@ public class Map
 				MapRegionRecord record = regionRecords.get(i);
 				modelBatch.render(record.modelInstance, record.environment);
 			}
+		}
+	}
+	
+	public void CheckPlayerPosition(int p_x, int p_y)
+	{
+		int count = regionRecords.size();
+		for (int i = 0; i < count; i++)
+		{
+			MapRegionRecord record = regionRecords.get(i);
+			if (record.InRegion(p_x, p_y))
+				record.HideRoof();
+			else
+				record.ShowRoof();
 		}
 	}
 }
