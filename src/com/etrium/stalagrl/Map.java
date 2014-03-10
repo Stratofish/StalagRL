@@ -112,6 +112,23 @@ public class Map
 			}
 		}
 		
+    /* Set collision zone for edges of map */
+		for (int w = 0; w < width; w++)
+    {
+		  floorMap[w][0].collision |= MapCell.SOUTH; 
+		  floorMap[w][height - 1].collision |= MapCell.NORTH;
+    }
+		
+    for (int h = 0; h < height; h++)
+    {
+      floorMap[0][h].collision |= MapCell.WEST;
+      floorMap[width - 1][h].collision |= MapCell.EAST;
+    }
+		
+		/* Test Collision zone */    
+    floorMap[2][20].type = FLOOR_GRASS; 
+    floorMap[2][20].collision = MapCell.NORTH | MapCell.EAST | MapCell.SOUTH | MapCell.WEST;		
+		
 		dirtTexture = new Texture(Gdx.files.internal(Assets.textureDirt));
 		dirtTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		
@@ -219,7 +236,7 @@ public class Map
 						record.environment.add(new PointLight().set(light.r, light.g, light.b, record.x+light.x, record.y+light.y, light.z, light.intensity));
 						if (light.external)
 							environment.add(new PointLight().set(light.r, light.g, light.b, record.x+light.x, record.y+light.y, light.z, light.intensity));
-					}
+					}									 	
 				}
 			}
 		}

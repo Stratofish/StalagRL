@@ -23,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.etrium.stalagrl.system.ControlType;
 import com.etrium.stalagrl.KeyMap;
 import com.etrium.stalagrl.Map;
+import com.etrium.stalagrl.MapCell;
 import com.etrium.stalagrl.system.EtriumEvent;
 import com.etrium.stalagrl.system.EventListener;
 import com.etrium.stalagrl.system.EventManager;
@@ -81,42 +82,124 @@ public class Player implements EventListener
 		camera = p_camera;
 	}
 	
+	public boolean upClear()
+	{
+	  boolean result = true; 
+	  
+	  // Check for current cell wall collision
+	  if ((map.floorMap[x][y].collision & MapCell.NORTH) != 0) 	  
+	    result = false;
+	  else
+	  {
+  	  // Check neighbouring cell wall collision.
+      if ((map.floorMap[x][y + 1].collision & MapCell.SOUTH) != 0)    
+        result = false;
+	  }
+	  
+	  return result;
+	}
+
+	public boolean downClear()
+  {
+    boolean result = true; 
+    
+    // Check for current cell wall collision
+    if ((map.floorMap[x][y].collision & MapCell.SOUTH) != 0)    
+      result = false;
+    else
+    {
+      // Check neighbouring cell wall collision.
+      if ((map.floorMap[x][y - 1].collision & MapCell.NORTH) != 0)    
+        result = false;
+    }
+    
+    return result;
+  }
+	
+	public boolean leftClear()
+  {
+    boolean result = true;
+	  
+    // Check for current cell wall collision
+    if ((map.floorMap[x][y].collision & MapCell.WEST) != 0)    
+      result = false;
+    else
+    {
+      // Check neighbouring cell wall collision.
+      if ((map.floorMap[x - 1][y].collision & MapCell.EAST) != 0)    
+        result = false;
+    }
+    
+    return result;
+  }
+	
+	public boolean rightClear()
+  {
+    boolean result = true;
+	  
+	  // Check for current cell wall collision
+    if ((map.floorMap[x][y].collision & MapCell.EAST) != 0)    
+      result = false;
+    else
+    {
+      // Check neighbouring cell wall collision.
+      if ((map.floorMap[x + 1][y].collision & MapCell.WEST) != 0)    
+        result = false;
+      
+    }
+	
+    return result;
+  }
+	
 	public void DoControl()
 	{
 		boolean handled = false;
 		
+		/* Implement collisions here */
 		int movX = 0;
 		int movY = 0;
 		
 		if (upHeld)
-		{
-			upHeld = false;
-			y++;
-			movY++;
+		{ 
+		  if (upClear())
+		  {
+  			upHeld = false;
+			  y++;
+			  movY++;
+		  }
 			handled = true;
 		}
 		
 		if (downHeld)
 		{
-			downHeld = false;
-			y--;
-			movY--;
+		  if (downClear())
+		  {
+  			downHeld = false;
+			  y--;			  
+			  movY--;
+		  }
 			handled = true;
 		}
 		
 		if (leftHeld)
 		{
-			leftHeld = false;
-			x--;
-			movX--;
+		  if (leftClear())
+		  {
+  			leftHeld = false;
+			  x--;
+			  movX--;
+		  }
 			handled = true;
 		}
 		
 		if (rightHeld)
-		{
-			rightHeld = false;
-			x++;
-			movX++;
+		{ 
+		  if (rightClear())
+		  {		
+			  rightHeld = false;
+			  x++;
+			  movX++;
+		  }
 			handled = true;
 		}
 		
