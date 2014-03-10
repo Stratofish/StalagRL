@@ -33,8 +33,8 @@ public class MapRegionRecord
 	{
 		if ((p_x >= x) &&
 			(p_y >= y) &&
-			(p_x <= x + region.width) &&
-			(p_y <= y + region.height))
+			(p_x < x + region.width) &&
+			(p_y < y + region.height))
 			return true;
 		
 		return false;

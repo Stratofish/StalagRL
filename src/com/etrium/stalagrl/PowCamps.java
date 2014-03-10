@@ -94,7 +94,7 @@ public class PowCamps implements EventListener
 		camera.up.x = 0.0f;
 		camera.up.y = 0.0f;
 		camera.up.z = 1.0f;
-		camera.near = 0.01f;
+		camera.near = -50.0f;
 		camera.far = 1000.0f;
 		camera.update();
 		

@@ -58,15 +58,17 @@ public class Map
 		assets = new AssetManager();
 		assets.load(Assets.modelFloor, Model.class);
 		assets.load(Assets.modelHut, Model.class);
+		assets.load(Assets.modelTower, Model.class);
 		assets.finishLoading();
 		
 		environment = new Environment();
-		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1.0f));
+		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1.0f));
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1.0f, -0.8f, -0.2f));
 		
 		// Setup regions
 		regionRecords = new ArrayList<MapRegionRecord>();
 		MapRegion mr1 = new RegionHut();
+		MapRegion mr2 = new RegionTower();
 		
 		
 		// Setup region instances
@@ -92,6 +94,12 @@ public class Map
 		mrr.region = mr1;
 		mrr.x = 13;
 		mrr.y = 9;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = mr2;
+		mrr.x = 25;
+		mrr.y = 2;
 		regionRecords.add(mrr);
 		
 		// Create floor map
@@ -214,7 +222,7 @@ public class Map
 					}
 					
 					record.environment = new Environment();
-					record.environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1.0f));
+					record.environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1.0f));
 					
 					for (int x = 0; x < record.region.width; x++)
 					{
