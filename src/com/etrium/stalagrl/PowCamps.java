@@ -85,7 +85,7 @@ public class PowCamps implements EventListener
         
         modelBatch = new ModelBatch(new GLES10ShaderProvider());
         
-        camera = new OrthographicCamera(10, 10);
+        camera = new OrthographicCamera(30, 30);
         //camera = new PerspectiveCamera(65, 1024, 768);
 		camera.position.set(-4.0f, -4.0f, 6.0f);
 		camera.lookAt(0.0f, 0.0f, 0.0f);
