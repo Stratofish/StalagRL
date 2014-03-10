@@ -16,8 +16,9 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-
+import com.badlogic.gdx.math.Vector2;
 import com.etrium.stalagrl.Assets;
+import com.etrium.stalagrl.system.Dijkstra;
 
 public class Map
 {
@@ -107,9 +108,21 @@ public class Map
 		{
 			for (int h = 0; h < height; h++)
 			{
-				floorMap[w][h] = FindTileType(w, h);
+				floorMap[w][h] = FLOOR_DIRT; 
 			}
-		}
+		} 
+		
+		/* Test code here */
+    Dijkstra dj = new Dijkstra(floorMap);
+    List sh = dj.shortestPath(1, 1, 5, 5);
+		
+    for (int i = 0; i < sh.size(); i++)
+    {
+      Vector2 vec = (Vector2) sh.get(i);
+      floorMap[(int) vec.x][(int) vec.y] = FLOOR_STONES;
+    }
+    
+		// floorMap[5][7] = FLOOR_GRASS;
 		
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1.0f));
