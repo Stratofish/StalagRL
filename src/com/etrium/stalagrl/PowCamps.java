@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.utils.DefaultShaderProvider;
 import com.badlogic.gdx.graphics.g3d.utils.GLES10ShaderProvider;
+import com.badlogic.gdx.graphics.g3d.utils.ShaderProvider;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -83,20 +85,20 @@ public class PowCamps implements EventListener
         evtMgr.RegisterListener(this, EventType.evtPlayerUIChanged);
         evtMgr.RegisterListener(this, EventType.evtQuitConfirm);
         
-        modelBatch = new ModelBatch(new GLES10ShaderProvider());
+        modelBatch = new ModelBatch(new DefaultShaderProvider());
         
-        camera = new OrthographicCamera(10, 10);
+        camera = new OrthographicCamera(20, 20);
         //camera = new PerspectiveCamera(65, 1024, 768);
 		camera.position.set(-4.0f, -4.0f, 6.0f);
 		camera.lookAt(0.0f, 0.0f, 0.0f);
 		camera.up.x = 0.0f;
 		camera.up.y = 0.0f;
 		camera.up.z = 1.0f;
-		camera.near = 0.1f;
-		camera.far = 100.0f;
+		camera.near = 0.01f;
+		camera.far = 1000.0f;
 		camera.update();
 		
-		map = new Map(10, 10);
+		map = new Map(100, 100);
 		map.SetCamera(camera);
 		
 		player = new Player(0, 0);
