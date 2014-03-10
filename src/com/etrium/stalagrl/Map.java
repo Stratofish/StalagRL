@@ -37,7 +37,7 @@ public class Map
 	
 	private Camera camera = null;
 	private List<ModelInstance> floorTiles;
-	protected int floorMap[][];
+	protected MapCell floorMap[][];
 	protected List<ModelInstance> staticMeshes;
 	protected List<MapRegionRecord> regionRecords;
 	private Environment environment;
@@ -129,13 +129,15 @@ public class Map
 		regionRecords.add(mrr);
 		
 		// create floor map
-		floorMap = new int[width][height];
+		floorMap = new MapCell[width][height];
 		
 		for (int w = 0; w < width; w++)
 		{
 			for (int h = 0; h < height; h++)
 			{
-				floorMap[w][h] = FindTileType(w, h);
+				MapCell mc = new MapCell();
+				mc.type = FindTileType(w, h);
+				floorMap[w][h] = mc;
 			}
 		}
 		
@@ -206,7 +208,7 @@ public class Map
 						instance.transform.translate(i, j, 0);
 						
 						Material mat = instance.materials.get(0);
-						mat.set(TextureAttribute.createDiffuse(textures[floorMap[i][j]]));
+						mat.set(TextureAttribute.createDiffuse(textures[floorMap[i][j].type]));
 						
 						floorTiles.add(instance);
 					}
