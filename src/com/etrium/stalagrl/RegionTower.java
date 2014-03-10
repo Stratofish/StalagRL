@@ -2,8 +2,10 @@ package com.etrium.stalagrl;
 
 public class RegionTower extends MapRegion
 {
-	public RegionTower()
+	public RegionTower(Map p_map)
 	{
+		super.SetMap(p_map);
+		
 		width = 3;
 		height = 3;
 		type = Map.FLOOR_GRASS;

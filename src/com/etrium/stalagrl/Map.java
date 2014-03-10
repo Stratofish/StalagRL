@@ -39,10 +39,10 @@ public class Map
 	public MapCell floorMap[][];
 	protected List<ModelInstance> staticMeshes;
 	protected List<MapRegionRecord> regionRecords;
-	private Environment environment;
-	private AssetManager assets;
+	public Environment environment;
+	public AssetManager assets;
 	private Texture dirtTexture;
-	private Texture woodFloorTexture;
+	public Texture woodFloorTexture;
 	private Texture stonesTexture;
 	private Texture concreteTexture;
 	private Texture grassTexture;
@@ -50,83 +50,73 @@ public class Map
 
 	public Map(int p_width, int p_height)
 	{
-		width = p_width;
-		height = p_height;
-		assert width > 0;
-		assert height > 0;
-		
-		assets = new AssetManager();
-		assets.load(Assets.modelFloor, Model.class);
-		assets.load(Assets.modelHut, Model.class);
-		assets.load(Assets.modelTower, Model.class);
-		assets.finishLoading();
-		
-		environment = new Environment();
-		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1.0f));
-		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1.0f, -0.8f, -0.2f));
-		
-		// Setup regions
-		regionRecords = new ArrayList<MapRegionRecord>();
-		MapRegion mr1 = new RegionHut();
-		MapRegion mr2 = new RegionTower();
+	width = p_width;
+	height = p_height;
+	assert width > 0;
+	assert height > 0;
+	
+	assets = new AssetManager();
+	assets.load(Assets.modelFloor, Model.class);
+	assets.load(Assets.modelHut, Model.class);
+	assets.load(Assets.modelTower, Model.class);
+	assets.finishLoading();
+	
+	environment = new Environment();
+	environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1.0f));
+	environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1.0f, -0.8f, -0.2f));
+	
+	// Setup regions
+	regionRecords = new ArrayList<MapRegionRecord>();
+	MapRegion mr1 = new RegionHut(this);
+	MapRegion mr2 = new RegionTower(this);
 
-		// Setup region instances
-		MapRegionRecord mrr = new MapRegionRecord();
-		mrr.region = mr1;
-		mrr.x = 1;
-		mrr.y = 2;
-		regionRecords.add(mrr);
-		
-		mrr = new MapRegionRecord();
-		mrr.region = mr1;
-		mrr.x = 1;
-		mrr.y = 9;
-		regionRecords.add(mrr);
-		
-		mrr = new MapRegionRecord();
-		mrr.region = mr1;
-		mrr.x = 13;
-		mrr.y = 2;
-		regionRecords.add(mrr);
-		
-		mrr = new MapRegionRecord();
-		mrr.region = mr1;
-		mrr.x = 13;
-		mrr.y = 9;
-		regionRecords.add(mrr);
-		
-		mrr = new MapRegionRecord();
-		mrr.region = mr2;
-		mrr.x = 25;
-		mrr.y = 2;
-		regionRecords.add(mrr);
-		
-		// Create floor map
-		floorMap = new MapCell[width][height];
-		
-		for (int w = 0; w < width; w++)
+	// Setup region instances
+	MapRegionRecord mrr = new MapRegionRecord();
+	mrr.region = mr1;
+	mrr.x = 1;
+	mrr.y = 2;
+	regionRecords.add(mrr);
+	
+	mrr = new MapRegionRecord();
+	mrr.region = mr1;
+	mrr.x = 1;
+	mrr.y = 9;
+	regionRecords.add(mrr);
+	
+	mrr = new MapRegionRecord();
+	mrr.region = mr1;
+	mrr.x = 13;
+	mrr.y = 2;
+	regionRecords.add(mrr);
+	
+	mrr = new MapRegionRecord();
+	mrr.region = mr1;
+	mrr.x = 13;
+	mrr.y = 9;
+	regionRecords.add(mrr);
+	
+	mrr = new MapRegionRecord();
+	mrr.region = mr2;
+	mrr.x = 25;
+	mrr.y = 2;
+	regionRecords.add(mrr);
+	
+	// Create floor map
+	floorMap = new MapCell[width][height];
+	
+	for (int w = 0; w < width; w++)
+	{
+		for (int h = 0; h < height; h++)
 		{
-			for (int h = 0; h < height; h++)
-			{
-				MapCell mc = new MapCell();
-				mc.type = FindTileType(w, h);
-				floorMap[w][h] = mc;
-			}
+			MapCell mc = new MapCell();
+			mc.type = FindTileType(w, h);
+			floorMap[w][h] = mc;
 		}
-		
-		/* Cycle through regions and copy collision map over to floor map */
-		for (int r = 0; r < regionRecords.size(); r++)
-		{
-		  MapRegionRecord reg = regionRecords.get(r);
-		  
-	    for (int w = 0; w < reg.region.width; w++)
-	    {
-	      for (int h = 0; h < reg.region.height; h++)
-	      {
-	        floorMap[reg.x + w][reg.y + h].collision |= reg.region.collisionMap[w][h]; 
-	      }
-	    }
-		}
+	}
+	
+	/* Cycle through regions and copy collision map over to floor map */
+	for (int r = 0; r < regionRecords.size(); r++)
+		regionRecords.get(r).AddCollisionData();
 		
     /* Set collision zone for edges of map */
 		for (int w = 0; w < width; w++)
@@ -199,7 +189,6 @@ public class Map
 		{
 		}
 		
-		
 		if (floorTiles.size() == 0)
 		{
 			for (int i = 0; i < width; i++)
@@ -221,40 +210,9 @@ public class Map
 		if (regionRecords.get(0).modelInstance == null)
 		{
 			int size = regionRecords.size();
+
 			for (int i = 0; i < size; i++)
-			{
-				MapRegionRecord record = regionRecords.get(i);
-				record.modelInstance = new ModelInstance(assets.get(record.region.modelType, Model.class));
-				record.modelInstance.transform.translate(record.x, record.y, 0.0f);
-				
-				int count = record.modelInstance.materials.size;
-				for (int j = 0; j < count; j++)
-				{
-					record.modelInstance.materials.get(j).set(TextureAttribute.createDiffuse(woodFloorTexture));
-				}
-				
-				record.environment = new Environment();
-				record.environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1.0f));
-				
-				for (int x = 0; x < record.region.width; x++)
-				{
-					for (int y = 0; y < record.region.height; y++)
-					{
-						floorMap[x+record.x][y+record.y].type = record.region.type;
-						floorMap[x+record.x][y+record.y].floorLevel = record.region.floorLevel;
-					}
-				}
-				
-				for (int j = 0; j < record.region.lightCount; j++)
-				{
-					RegionLight light = record.region.lights[j];
-					record.environment.add(new PointLight().set(light.r, light.g, light.b, record.x+light.x, record.y+light.y, light.z, light.intensity));
-					if (light.external)
-						environment.add(new PointLight().set(light.r, light.g, light.b, record.x+light.x, record.y+light.y, light.z, light.intensity));
-				}
-				
-				//record.ShowRoof();
-			}
+				regionRecords.get(i).AddRegiontoMap();
 		}
 	}
 	
@@ -271,14 +229,11 @@ public class Map
 				modelBatch.render(floorTiles.get(i), environment);
 		}
 		
-		if (regionRecords.get(0).modelInstance != null)
+		int size = regionRecords.size();
+		for (int i = 0; i < size; i++)
 		{
-			int size = regionRecords.size();
-			for (int i = 0; i < size; i++)
-			{
-				MapRegionRecord record = regionRecords.get(i);
-				modelBatch.render(record.modelInstance, record.environment);
-			}
+			MapRegionRecord record = regionRecords.get(i);
+			modelBatch.render(record.modelInstance, record.environment);
 		}
 	}
 	

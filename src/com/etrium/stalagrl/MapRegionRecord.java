@@ -39,4 +39,14 @@ public class MapRegionRecord
 		
 		return false;
 	}
+	
+	public void AddCollisionData()
+	{
+		region.AddCollisionData(this);
+	}
+	
+	public void AddRegiontoMap()
+	{
+		region.AddRegionToMap(this);
+	}
 }

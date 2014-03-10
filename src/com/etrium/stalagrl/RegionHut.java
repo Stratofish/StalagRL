@@ -2,8 +2,9 @@ package com.etrium.stalagrl;
 
 public class RegionHut extends MapRegion
 {
-	public RegionHut()
+	public RegionHut(Map p_map)
 	{
+		super.SetMap(p_map);
 		width = 10;
 		height = 5;
 		type = Map.FLOOR_STONES;
@@ -14,28 +15,28 @@ public class RegionHut extends MapRegion
 		collisionMap = new int[width][height];
 		
 		for (int w = 0; w < width; w++)
-    {
-      for (int h = 0; h < height; h++)
-      {                
-        collisionMap[w][h] = 0;               
-        
-        if (!((w == 1) && (h == 0))) // Door        
-        {
-          // Hut walls
-          if (h == 0) 
-            collisionMap[w][h] |= MapCell.SOUTH;  
-          
-          if (h == height - 1)
-            collisionMap[w][h] |= MapCell.NORTH;
-          
-          if (w == 0)
-            collisionMap[w][h] |= MapCell.WEST;
-          
-          if (w == width - 1)
-            collisionMap[w][h] |= MapCell.EAST;
-        }
-      }           
-    }
+	    {
+	      for (int h = 0; h < height; h++)
+	      {                
+	        collisionMap[w][h] = 0;               
+	        
+	        if (!((w == 1) && (h == 0))) // Door        
+	        {
+	          // Hut walls
+	          if (h == 0) 
+	            collisionMap[w][h] |= MapCell.SOUTH;  
+	          
+	          if (h == height - 1)
+	            collisionMap[w][h] |= MapCell.NORTH;
+	          
+	          if (w == 0)
+	            collisionMap[w][h] |= MapCell.WEST;
+	          
+	          if (w == width - 1)
+	            collisionMap[w][h] |= MapCell.EAST;
+	        }
+	      }           
+	    }
 		
 		/* Add collision values for beds */
 		collisionMap[4][0] |= MapCell.WEST | MapCell.EAST | MapCell.SOUTH;
