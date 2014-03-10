@@ -155,6 +155,8 @@ public class Map
 		textures[FLOOR_GRASS] = grassTexture;
 		
 		floorTiles = new ArrayList<ModelInstance>();
+		
+		MakeModels();
 	}
 	
 	protected int FindTileType(int x, int y)
@@ -182,67 +184,74 @@ public class Map
 		camera = p_camera;
 	}
 	
-	public void Render(ModelBatch modelBatch)
+	public void MakeModels()
 	{
-		assert camera != null;
-		
-		if (assets.update())
+		while (!assets.update())
 		{
-			if (floorTiles.size() == 0)
+		}
+		
+		
+		if (floorTiles.size() == 0)
+		{
+			for (int i = 0; i < width; i++)
 			{
-				for (int i = 0; i < width; i++)
+				for (int j = 0; j < height; j++)
 				{
-					for (int j = 0; j < height; j++)
-					{
-						ModelInstance instance = new ModelInstance(assets.get(Assets.modelFloor, Model.class));
-						
-						instance.transform.translate(i, j, 0);
-						
-						Material mat = instance.materials.get(0);
-						mat.set(TextureAttribute.createDiffuse(textures[floorMap[i][j].type]));
-						
-						floorTiles.add(instance);
-					}
-				}
-			}
-			
-			if (regionRecords.get(0).modelInstance == null)
-			{
-				int size = regionRecords.size();
-				for (int i = 0; i < size; i++)
-				{
-					MapRegionRecord record = regionRecords.get(i);
-					record.modelInstance = new ModelInstance(assets.get(record.region.modelType, Model.class));
-					record.modelInstance.transform.translate(record.x, record.y, 0.0f);
+					ModelInstance instance = new ModelInstance(assets.get(Assets.modelFloor, Model.class));
 					
-					int count = record.modelInstance.materials.size;
-					for (int j = 0; j < count; j++)
-					{
-						record.modelInstance.materials.get(j).set(TextureAttribute.createDiffuse(woodFloorTexture));
-					}
+					instance.transform.translate(i, j, 0);
 					
-					record.environment = new Environment();
-					record.environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1.0f));
+					Material mat = instance.materials.get(0);
+					mat.set(TextureAttribute.createDiffuse(textures[floorMap[i][j].type]));
 					
-					for (int x = 0; x < record.region.width; x++)
-					{
-						for (int y = 0; y < record.region.height; y++)
-						{
-							floorMap[x+record.x][y+record.y].type = record.region.type;
-							floorMap[x+record.x][y+record.y].floorLevel = record.region.floorLevel;
-						}
-					}
-					
-					for (int j = 0; j < record.region.lightCount; j++)
-					{
-						RegionLight light = record.region.lights[j];
-						record.environment.add(new PointLight().set(light.r, light.g, light.b, record.x+light.x, record.y+light.y, light.z, light.intensity));
-						if (light.external)
-							environment.add(new PointLight().set(light.r, light.g, light.b, record.x+light.x, record.y+light.y, light.z, light.intensity));
-					}									 	
+					floorTiles.add(instance);
 				}
 			}
 		}
+		
+		if (regionRecords.get(0).modelInstance == null)
+		{
+			int size = regionRecords.size();
+			for (int i = 0; i < size; i++)
+			{
+				MapRegionRecord record = regionRecords.get(i);
+				record.modelInstance = new ModelInstance(assets.get(record.region.modelType, Model.class));
+				record.modelInstance.transform.translate(record.x, record.y, 0.0f);
+				
+				int count = record.modelInstance.materials.size;
+				for (int j = 0; j < count; j++)
+				{
+					record.modelInstance.materials.get(j).set(TextureAttribute.createDiffuse(woodFloorTexture));
+				}
+				
+				record.environment = new Environment();
+				record.environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1.0f));
+				
+				for (int x = 0; x < record.region.width; x++)
+				{
+					for (int y = 0; y < record.region.height; y++)
+					{
+						floorMap[x+record.x][y+record.y].type = record.region.type;
+						floorMap[x+record.x][y+record.y].floorLevel = record.region.floorLevel;
+					}
+				}
+				
+				for (int j = 0; j < record.region.lightCount; j++)
+				{
+					RegionLight light = record.region.lights[j];
+					record.environment.add(new PointLight().set(light.r, light.g, light.b, record.x+light.x, record.y+light.y, light.z, light.intensity));
+					if (light.external)
+						environment.add(new PointLight().set(light.r, light.g, light.b, record.x+light.x, record.y+light.y, light.z, light.intensity));
+				}
+				
+				//record.ShowRoof();
+			}
+		}
+	}
+	
+	public void Render(ModelBatch modelBatch)
+	{
+		assert camera != null;
 		
 		Gdx.gl.glViewport(0, 0, 1024, 768);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
