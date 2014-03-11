@@ -18,7 +18,7 @@ public class Item
     
   public String GetIconName()
   {
-     return Assets.itemTest;
+     return Assets.iconPapers;
   }
   
   public String GetName()

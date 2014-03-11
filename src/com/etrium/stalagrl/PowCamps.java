@@ -107,7 +107,7 @@ public class PowCamps implements EventListener
 		inventory = new Inventory( guiStage, guiSkin);		
 		inventory.Update();
 		
-		inventory.AddItem(new Item( "Turnip"));
+		inventory.AddItem(new Item( "Wire Cutters"));
 		inventory.AddItem(new Item( "Onion"));
 		inventory.AddItem(new Item( "Radish"));
 		inventory.AddItem(new Item( "Atichoke"));

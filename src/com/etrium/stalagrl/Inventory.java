@@ -59,7 +59,7 @@ public class Inventory
     stage.addActor(window);
     
     /* Start off pointing at first entry */
-    selected = 1;
+    selected = 2;
   }
 
   public boolean AddItem(Item p_item)
@@ -100,7 +100,7 @@ public class Inventory
       {            
         id.texture = new Texture(Gdx.files.internal(item.GetIconName()));
         id.texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-        id.textureRegion = new TextureRegion(id.texture, 0, 0, 32, 32);            
+        id.textureRegion = new TextureRegion(id.texture, 0, 0, 64, 64);            
         
         id.token = new Sprite(id.textureRegion);
         id.token.setSize(48, 48);
@@ -118,6 +118,7 @@ public class Inventory
         label.setX( 13 + (i * 66));
         label.setY( 1);
         label.setAlignment(0);
+        label.setFontScale(0.75f);
         
         window.add(label);
       }
@@ -133,15 +134,16 @@ public class Inventory
         label.setX( 13 + (i * 66));
         label.setY( 1);
         label.setAlignment(0);
+        label.setFontScale(0.75f);
         
         window.add(label);
       }
       
       if (i + 1 == selected) 
       {                              
-        Texture texture = new Texture(Gdx.files.internal(Assets.itemSelected));
+        Texture texture = new Texture(Gdx.files.internal(Assets.iconHighlight));
         texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-        TextureRegion textureRegion = new TextureRegion(texture, 0, 0, 32, 32);            
+        TextureRegion textureRegion = new TextureRegion(texture, 0, 0, 64, 64);            
         
         Sprite token = new Sprite(textureRegion);
         token.setSize(48, 48);
