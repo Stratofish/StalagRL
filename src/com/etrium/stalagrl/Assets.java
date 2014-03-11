@@ -25,14 +25,14 @@ public class Assets
   final static String modelBarbedWire = Assets.modelPath + "/barbedwire.g3db";
   
   // Icon Constants
-  final static String iconBorder = Assets.modelPath + "/icon-border.png.g3db";
-  final static String iconHighlight = Assets.modelPath + "/icon-highlight.png.g3db";
-  final static String iconCompass = Assets.modelPath + "/icon-compass.png.g3db";
-  final static String iconCrowbar = Assets.modelPath + "/icon-crowbar.png.g3db";
-  final static String iconKey = Assets.modelPath + "/icon-key.png.g3db";
-  final static String iconLockpick = Assets.modelPath + "/icon-lockpick.png.g3db";
-  final static String iconPapers = Assets.modelPath + "/icon-papers.png.g3db";
-  final static String iconSpade = Assets.modelPath + "/icon-spade.png.g3db";
-  final static String iconWatch = Assets.modelPath + "/icon-watch.png.g3db";
-  final static String iconwirecutters = Assets.modelPath + "/icon-wirecutters.png.g3db";
+  final static String iconBorder = Assets.modelPath + "/icon-border.png";
+  final static String iconHighlight = Assets.modelPath + "/icon-highlight.png";
+  final static String iconCompass = Assets.modelPath + "/icon-compass.png";
+  final static String iconCrowbar = Assets.modelPath + "/icon-crowbar.png";
+  final static String iconKey = Assets.modelPath + "/icon-key.png";
+  final static String iconLockpick = Assets.modelPath + "/icon-lockpick.png";
+  final static String iconPapers = Assets.modelPath + "/icon-papers.png";
+  final static String iconSpade = Assets.modelPath + "/icon-spade.png";
+  final static String iconWatch = Assets.modelPath + "/icon-watch.png";
+  final static String iconWirecutters = Assets.modelPath + "/icon-wirecutters.png";
 }

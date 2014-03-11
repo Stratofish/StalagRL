@@ -21,6 +21,8 @@ import com.etrium.stalagrl.system.EventType;
 import com.etrium.stalagrl.system.EtriumEvent;
 import com.etrium.stalagrl.system.EventListener;
 import com.etrium.stalagrl.system.EventManager;
+import com.etrium.stalagrl.Inventory;
+import com.etrium.stalagrl.Item;
 
 public class PowCamps implements EventListener
 {
@@ -33,8 +35,9 @@ public class PowCamps implements EventListener
 	private Label levelLabel;
 	private ScrollPane logScrollPane = null;
 	private Window logWindow = null;
-	private Stage logStage;
-	private Skin logSkin;
+	private Stage guiStage;
+	private Skin guiSkin;
+	private Inventory inventory;
 	private boolean listening;
 	
 	private Window quitDialog = null;
@@ -51,26 +54,26 @@ public class PowCamps implements EventListener
 		
 		keyMap = new KeyMap();
 		
-		logStage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-        Gdx.input.setInputProcessor(logStage);
+		guiStage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+        Gdx.input.setInputProcessor(guiStage);
         
-		logSkin = new Skin(Gdx.files.internal("data/uiskin.json"));
+		guiSkin = new Skin(Gdx.files.internal("data/uiskin.json"));
 		
-		levelLabel = new Label("* * * Dungeon level 35 * * *", logSkin);
+		levelLabel = new Label("* * * Dungeon level 35 * * *", guiSkin);
         levelLabel.setPosition(40.0f, 730.0f);
 
         String[] s = {""};
-        List list = new List(s, logSkin);
+        List list = new List(s, guiSkin);
         list.setHeight(12.0f);
-        logScrollPane = new ScrollPane(list, logSkin);
+        logScrollPane = new ScrollPane(list, guiSkin);
         logScrollPane.setOverscroll(false,  false);
         logScrollPane.setFadeScrollBars(false);
-        logWindow = new Window("Activity", logSkin);
+        logWindow = new Window("Activity", guiSkin);
         logWindow.setPosition(1024-10-(16), -300.0f);
         logWindow.setSize(300.0f, 100.0f);
         logWindow.row().fill().expandX().expandY();
         logWindow.add(logScrollPane);
-        logStage.addActor(logWindow);
+        guiStage.addActor(logWindow);
 
         evtMgr.RegisterListener(this, EventType.evtLogActivity);
         evtMgr.RegisterListener(this, EventType.evtCharDead);
@@ -100,6 +103,16 @@ public class PowCamps implements EventListener
 		player = new Player(20, 25);
 		player.SetCamera(camera);
 		player.SetMap(map);
+		
+		inventory = new Inventory( guiStage, guiSkin);		
+		inventory.Update();
+		
+		inventory.AddItem(new Item( "Turnip"));
+		inventory.AddItem(new Item( "Onion"));
+		inventory.AddItem(new Item( "Radish"));
+		inventory.AddItem(new Item( "Atichoke"));
+		inventory.AddItem(new Item( "Carrot"));
+    inventory.AddItem(new Item( "Cabadge"));
 	}
 
 	public void dispose()
@@ -147,8 +160,8 @@ public class PowCamps implements EventListener
         levelLabel.setText("* * * Dungeon level "+map.curLevel+" * * *");
         
         logScrollPane.setScrollPercentY(100.0f);
-        logStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        logStage.draw();
+        guiStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        guiStage.draw();
         
         //tooltip.Update();
         //tooltip.UpdateGear();		
@@ -156,12 +169,12 @@ public class PowCamps implements EventListener
 
 	public void ShowQuitDialog()
     {
-        quitDialog = new Window("Really quit", logSkin);
+        quitDialog = new Window("Really quit", guiSkin);
         quitDialog.setPosition(350, 400);
         quitDialog.setSize(300, 200);
-        quitLabel = new Label("You will lose all progress if you\nreturn to the start screen.\nAre you sure?", logSkin);
-        quitYesButton = new TextButton("Yes, quit", logSkin);
-        quitNoButton = new TextButton("No, carry on", logSkin);
+        quitLabel = new Label("You will lose all progress if you\nreturn to the start screen.\nAre you sure?", guiSkin);
+        quitYesButton = new TextButton("Yes, quit", guiSkin);
+        quitNoButton = new TextButton("No, carry on", guiSkin);
         
         quitNoButton.addListener(new ChangeListener()
         {
@@ -188,7 +201,7 @@ public class PowCamps implements EventListener
         quitDialog.add(quitYesButton);
         quitDialog.add(quitNoButton);
         
-        logStage.addActor(quitDialog); 
+        guiStage.addActor(quitDialog); 
         
         quitDialogVisible = true;
     }
@@ -196,7 +209,7 @@ public class PowCamps implements EventListener
 	public void resize(int p_width, int p_height)
 	{
 		Gdx.gl.glViewport(0, 0, p_width, p_height);
-		logStage.setViewport(p_width, p_height, true);
+		guiStage.setViewport(p_width, p_height, true);
 		camera.update();
 	}
 	
