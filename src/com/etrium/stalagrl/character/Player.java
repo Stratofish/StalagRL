@@ -1,27 +1,14 @@
 package com.etrium.stalagrl.character;
 
-import java.util.ArrayList;
-
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.etrium.stalagrl.system.ControlType;
-import com.etrium.stalagrl.KeyMap;
 import com.etrium.stalagrl.Map;
 import com.etrium.stalagrl.MapCell;
 import com.etrium.stalagrl.system.EtriumEvent;
@@ -40,13 +27,14 @@ public class Player implements EventListener
 	protected boolean leftHeld = false;
 	protected boolean rightHeld = false;
 	
+	protected float rot = 0.0f;
+	
 	private EventManager evtMgr = new EventManager();
 	private Map map = null;
 	private Camera camera = null;
 	private boolean listening = true;
 	
 	private AssetManager assets;
-	private Texture dirtTexture;
 	private Environment environment;
 	protected ModelInstance instance = null;
 	
@@ -158,48 +146,53 @@ public class Player implements EventListener
 		/* Implement collisions here */
 		int movX = 0;
 		int movY = 0;
+		float newRot = 0.0f;
 		
 		if (upHeld)
-		{ 
-		  if (upClear())
-		  {
-  			upHeld = false;
-			  y++;
-			  movY++;
-		  }
+		{
+			if (upClear())
+			{
+				upHeld = false;
+				y++;
+				movY++;
+			}
+			newRot = 180.0f;
 			handled = true;
 		}
 		
 		if (downHeld)
 		{
-		  if (downClear())
-		  {
-  			downHeld = false;
-			  y--;			  
-			  movY--;
-		  }
+			if (downClear())
+			{
+				downHeld = false;
+				y--;			  
+				movY--;
+			}
+			newRot = 0.0f;
 			handled = true;
 		}
 		
 		if (leftHeld)
 		{
-		  if (leftClear())
-		  {
-  			leftHeld = false;
-			  x--;
-			  movX--;
-		  }
+			if (leftClear())
+			{
+				leftHeld = false;
+				x--;
+				movX--;
+			}
+			newRot = 270.0f;
 			handled = true;
 		}
 		
 		if (rightHeld)
 		{ 
-		  if (rightClear())
-		  {		
-			  rightHeld = false;
-			  x++;
-			  movX++;
-		  }
+			if (rightClear())
+			{		
+				rightHeld = false;
+				x++;
+				movX++;
+			}
+			newRot = 90.0f;
 			handled = true;
 		}
 		
@@ -209,7 +202,14 @@ public class Player implements EventListener
 			float movZ = z;
 			z = map.floorMap[x][y].floorLevel;
 			movZ = z - movZ;
-			instance.transform.translate(movX, movY, movZ);
+			
+			//instance.transform.translate(movX, movY, movZ);
+			instance.transform.idt();
+			instance.transform.translate(x+0.5f, y+0.5f, z);
+			instance.transform.rotate(0.0f,  0.0f,  1.0f, newRot);
+			
+			rot = newRot;
+			//instance.transform.translate(0.0f, 0.0f, 0.0f);
 			
 			map.CheckPlayerPosition(x, y);
 		}
@@ -224,7 +224,7 @@ public class Player implements EventListener
 		{
 			instance = new ModelInstance(assets.get("data/models/player2.g3db", Model.class));
 			
-			instance.transform.translate(x, y, z);
+			instance.transform.translate(x+0.5f, y+0.5f, z);
 		}
 		
 		if (instance != null)
@@ -240,6 +240,7 @@ public class Player implements EventListener
 		camera.update();
 	}
 
+	@SuppressWarnings("incomplete-switch")
 	@Override
 	public boolean ReceiveEvent(EtriumEvent p_event)
 	{

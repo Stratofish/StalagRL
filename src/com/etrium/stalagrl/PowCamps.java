@@ -200,6 +200,7 @@ public class PowCamps implements EventListener
 		camera.update();
 	}
 	
+	@SuppressWarnings("incomplete-switch")
 	@Override
 	public boolean ReceiveEvent(EtriumEvent p_event)
 	{
