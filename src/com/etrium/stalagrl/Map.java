@@ -68,53 +68,124 @@ public class Map
 		
 		// Setup regions
 		regionRecords = new ArrayList<MapRegionRecord>();
-		MapRegion mr1 = new RegionHut(this);
-		MapRegion mr2 = new RegionTower(this);
-		MapRegion mr3 = new RegionFloor(this, FLOOR_GRASS, 3, 3);
-		MapRegion mr4 = new RegionExtrude(this, RegionExtrude.EAST, 5, Assets.modelBarbedWire);
+		MapRegion hutRegion = new RegionHut(this);
+		MapRegion towerRegion = new RegionTower(this);
+		MapRegion rollCallRegion = new RegionFloor(this, FLOOR_STONES, 5, 10);
+		MapRegion wireSouthRegion = new RegionExtrude(this, RegionExtrude.WEST, 50, Assets.modelBarbedWire);
+		MapRegion wireSouthOuterRegion = new RegionExtrude(this, RegionExtrude.WEST, 60, Assets.modelBarbedWire);
+		MapRegion wireNorthRegion = new RegionExtrude(this, RegionExtrude.EAST, 50, Assets.modelBarbedWire);
+		MapRegion wireNorthOuterRegion = new RegionExtrude(this, RegionExtrude.EAST, 60, Assets.modelBarbedWire);
+		MapRegion wireWestRegion = new RegionExtrude(this, RegionExtrude.NORTH, 50, Assets.modelBarbedWire);
+		MapRegion wireWestOuterRegion = new RegionExtrude(this, RegionExtrude.NORTH, 60, Assets.modelBarbedWire);
+		MapRegion wireEastRegion = new RegionExtrude(this, RegionExtrude.SOUTH, 50, Assets.modelBarbedWire);
+		MapRegion wireEastOuterRegion = new RegionExtrude(this, RegionExtrude.SOUTH, 60, Assets.modelBarbedWire);
 	
 		// Setup region instances
 		MapRegionRecord mrr = new MapRegionRecord();
-		mrr.region = mr1;
-		mrr.x = 1;
-		mrr.y = 2;
-		//regionRecords.add(mrr);
-		
-		mrr = new MapRegionRecord();
-		mrr.region = mr1;
-		mrr.x = 1;
-		mrr.y = 9;
-		//regionRecords.add(mrr);
-		
-		mrr = new MapRegionRecord();
-		mrr.region = mr1;
-		mrr.x = 13;
-		mrr.y = 2;
+		mrr.region = wireSouthRegion;
+		mrr.x = 54;
+		mrr.y = 5;
 		regionRecords.add(mrr);
 		
 		mrr = new MapRegionRecord();
-		mrr.region = mr1;
-		mrr.x = 13;
-		mrr.y = 9;
-		//regionRecords.add(mrr);
-		
-		mrr = new MapRegionRecord();
-		mrr.region = mr2;
-		mrr.x = 25;
-		mrr.y = 2;
-		//regionRecords.add(mrr);
-		
-		mrr = new MapRegionRecord();
-		mrr.region = mr3;
-		mrr.x = 25;
-		mrr.y = 6;
-		//regionRecords.add(mrr);
-		
-		mrr = new MapRegionRecord();
-		mrr.region = mr4;
-		mrr.x = 3;
-		mrr.y = 3;
+		mrr.region = wireSouthOuterRegion;
+		mrr.x = 59;
+		mrr.y = 0;
 		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = wireWestRegion;
+		mrr.x = 5;
+		mrr.y = 5;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = wireWestOuterRegion;
+		mrr.x = 0;
+		mrr.y = 0;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = wireEastRegion;
+		mrr.x = 54;
+		mrr.y = 54;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = wireEastOuterRegion;
+		mrr.x = 59;
+		mrr.y = 59;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = wireNorthRegion;
+		mrr.x = 5;
+		mrr.y = 54;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = wireNorthOuterRegion;
+		mrr.x = 0;
+		mrr.y = 59;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = towerRegion;
+		mrr.x = 7;
+		mrr.y = 7;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = towerRegion;
+		mrr.x = 7;
+		mrr.y = 50;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = towerRegion;
+		mrr.x = 50;
+		mrr.y = 7;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = towerRegion;
+		mrr.x = 50;
+		mrr.y = 50;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = hutRegion;
+		mrr.x = 15;
+		mrr.y = 30;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = hutRegion;
+		mrr.x = 27;
+		mrr.y = 30;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = hutRegion;
+		mrr.x = 15;
+		mrr.y = 37;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = hutRegion;
+		mrr.x = 27;
+		mrr.y = 37;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = rollCallRegion;
+		mrr.x = 42;
+		mrr.y = 31;
+		regionRecords.add(mrr);
+		
+
+		
+		
 		
 		// Create floor map
 		floorMap = new MapCell[width][height];

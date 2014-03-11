@@ -97,7 +97,7 @@ public class PowCamps implements EventListener
 		map = new Map(100, 100);
 		map.SetCamera(camera);
 		
-		player = new Player(0, 0);
+		player = new Player(20, 25);
 		player.SetCamera(camera);
 		player.SetMap(map);
 	}

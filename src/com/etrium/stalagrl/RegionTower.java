@@ -8,7 +8,7 @@ public class RegionTower extends MapRegion
 		
 		width = 3;
 		height = 3;
-		type = Map.FLOOR_GRASS;
+		type = Map.FLOOR_CONCRETE;
 		modelType = Assets.modelTower;
 		floorLevel = 0.0f;
 		
@@ -23,38 +23,6 @@ public class RegionTower extends MapRegion
 	      }
 	    }
 		
-		lightCount = 3;
-		lights = new RegionLight[3];
-		
-		RegionLight light = new RegionLight();
-		light.x = 1.5f;
-		light.y = 0.2f;
-		light.z = 2.0f;
-		light.r = 1.0f;
-		light.g = 1.0f;
-		light.b = 1.0f;
-		light.intensity = 2.0f;
-		light.external = true;
-		lights[0] = light;
-		
-		light = new RegionLight();
-		light.x = 2.5f;
-		light.y = 2.5f;
-		light.z = 2.2f;
-		light.r = 1.0f;
-		light.g = 1.0f;
-		light.b = 1.0f;
-		light.intensity = 8.0f;
-		lights[1] = light;
-		
-		light = new RegionLight();
-		light.x = 7.5f;
-		light.y = 2.5f;
-		light.z = 2.2f;
-		light.r = 1.0f;
-		light.g = 1.0f;
-		light.b = 1.0f;
-		light.intensity = 8.0f;
-		lights[2] = light;
+		lightCount = 0;
 	}
 }
