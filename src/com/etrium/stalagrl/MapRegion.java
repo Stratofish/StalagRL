@@ -43,14 +43,7 @@ public class MapRegion
 	
 	public void AddRegionToMap(MapRegionRecord record)
 	{
-		record.modelInstance = new ModelInstance(map.assets.get(record.region.modelType, Model.class));
-		record.modelInstance.transform.translate(record.x, record.y, 0.0f);
-		
-		int count = record.modelInstance.materials.size;
-		for (int j = 0; j < count; j++)
-		{
-			record.modelInstance.materials.get(j).set(TextureAttribute.createDiffuse(map.woodFloorTexture));
-		}
+		MakeModel(record);
 		
 		record.environment = new Environment();
 		record.environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1.0f));
@@ -59,7 +52,9 @@ public class MapRegion
 		{
 			for (int y = 0; y < record.region.height; y++)
 			{
-				map.floorMap[x+record.x][y+record.y].type = record.region.type;
+				if (record.region.type > 0)
+					map.floorMap[x+record.x][y+record.y].type = record.region.type;
+				
 				map.floorMap[x+record.x][y+record.y].floorLevel = record.region.floorLevel;
 			}
 		}
@@ -70,6 +65,29 @@ public class MapRegion
 			record.environment.add(new PointLight().set(light.r, light.g, light.b, record.x+light.x, record.y+light.y, light.z, light.intensity));
 			if (light.external)
 				map.environment.add(new PointLight().set(light.r, light.g, light.b, record.x+light.x, record.y+light.y, light.z, light.intensity));
+		}
+	}
+	
+	public void MakeModel(MapRegionRecord record)
+	{
+		if (modelType != "")
+		{
+			ModelInstance instance = new ModelInstance(map.assets.get(record.region.modelType, Model.class));
+			instance.transform.translate(record.x, record.y, 0.0f);
+			
+			record.modelInstances.add(instance);
+		}
+		
+		int instanceCount = record.modelInstances.size();
+		if (instanceCount > 0)
+		{
+			ModelInstance instance = record.modelInstances.get(0);
+				
+			int count = instance.materials.size;
+			for (int j = 0; j < count; j++)
+			{
+				instance.materials.get(j).set(TextureAttribute.createDiffuse(map.woodFloorTexture));
+			}
 		}
 	}
 }

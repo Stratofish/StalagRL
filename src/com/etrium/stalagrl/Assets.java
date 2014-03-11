@@ -13,10 +13,13 @@ public class Assets
   final static String textureGrass = Assets.texturePath + "/Grass.png";
   final static String textureStones = Assets.texturePath + "/Stones.png";
   final static String textureConcrete = Assets.texturePath + "/Concrete.png";
+  final static String textureBarbedWire = Assets.texturePath + "/barbedwire.png";
   
   // Model Constants
   final static String modelFloor = Assets.modelPath + "/plain-floor.g3db";
   final static String modelPlayer = Assets.modelPath + "/player2.g3db";
   final static String modelHut = Assets.modelPath + "/hut.g3db";
   final static String modelTower = Assets.modelPath + "/tower.g3db";
+  final static String modelWall1 = Assets.modelPath + "/wall1.g3db";
+  final static String modelBarbedWire = Assets.modelPath + "/barbedwire.g3db";
 }

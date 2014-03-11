@@ -16,9 +16,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.etrium.stalagrl.Assets;
-import com.etrium.stalagrl.RegionLight;
 
 public class Map
 {
@@ -46,90 +44,107 @@ public class Map
 	private Texture stonesTexture;
 	private Texture concreteTexture;
 	private Texture grassTexture;
+	public Texture barbedWireTexture;
 	protected Texture textures[];
 
 	public Map(int p_width, int p_height)
 	{
-	width = p_width;
-	height = p_height;
-	assert width > 0;
-	assert height > 0;
-	
-	assets = new AssetManager();
-	assets.load(Assets.modelFloor, Model.class);
-	assets.load(Assets.modelHut, Model.class);
-	assets.load(Assets.modelTower, Model.class);
-	assets.finishLoading();
-	
-	environment = new Environment();
-	environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1.0f));
-	environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1.0f, -0.8f, -0.2f));
-	
-	// Setup regions
-	regionRecords = new ArrayList<MapRegionRecord>();
-	MapRegion mr1 = new RegionHut(this);
-	MapRegion mr2 = new RegionTower(this);
-
-	// Setup region instances
-	MapRegionRecord mrr = new MapRegionRecord();
-	mrr.region = mr1;
-	mrr.x = 1;
-	mrr.y = 2;
-	regionRecords.add(mrr);
-	
-	mrr = new MapRegionRecord();
-	mrr.region = mr1;
-	mrr.x = 1;
-	mrr.y = 9;
-	regionRecords.add(mrr);
-	
-	mrr = new MapRegionRecord();
-	mrr.region = mr1;
-	mrr.x = 13;
-	mrr.y = 2;
-	regionRecords.add(mrr);
-	
-	mrr = new MapRegionRecord();
-	mrr.region = mr1;
-	mrr.x = 13;
-	mrr.y = 9;
-	regionRecords.add(mrr);
-	
-	mrr = new MapRegionRecord();
-	mrr.region = mr2;
-	mrr.x = 25;
-	mrr.y = 2;
-	regionRecords.add(mrr);
-	
-	// Create floor map
-	floorMap = new MapCell[width][height];
-	
-	for (int w = 0; w < width; w++)
-	{
-		for (int h = 0; h < height; h++)
-		{
-			MapCell mc = new MapCell();
-			mc.type = FindTileType(w, h);
-			floorMap[w][h] = mc;
-		}
-	}
-	
-	/* Cycle through regions and copy collision map over to floor map */
-	for (int r = 0; r < regionRecords.size(); r++)
-		regionRecords.get(r).AddCollisionData();
+		width = p_width;
+		height = p_height;
+		assert width > 0;
+		assert height > 0;
 		
-    /* Set collision zone for edges of map */
+		assets = new AssetManager();
+		assets.load(Assets.modelFloor, Model.class);
+		assets.load(Assets.modelHut, Model.class);
+		assets.load(Assets.modelTower, Model.class);
+		assets.load(Assets.modelWall1, Model.class);
+		assets.load(Assets.modelBarbedWire, Model.class);
+		assets.finishLoading();
+		
+		environment = new Environment();
+		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1.0f));
+		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1.0f, -0.8f, -0.2f));
+		
+		// Setup regions
+		regionRecords = new ArrayList<MapRegionRecord>();
+		MapRegion mr1 = new RegionHut(this);
+		MapRegion mr2 = new RegionTower(this);
+		MapRegion mr3 = new RegionFloor(this, FLOOR_GRASS, 3, 3);
+		MapRegion mr4 = new RegionExtrude(this, RegionExtrude.EAST, 5, Assets.modelBarbedWire);
+	
+		// Setup region instances
+		MapRegionRecord mrr = new MapRegionRecord();
+		mrr.region = mr1;
+		mrr.x = 1;
+		mrr.y = 2;
+		//regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = mr1;
+		mrr.x = 1;
+		mrr.y = 9;
+		//regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = mr1;
+		mrr.x = 13;
+		mrr.y = 2;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = mr1;
+		mrr.x = 13;
+		mrr.y = 9;
+		//regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = mr2;
+		mrr.x = 25;
+		mrr.y = 2;
+		//regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = mr3;
+		mrr.x = 25;
+		mrr.y = 6;
+		//regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = mr4;
+		mrr.x = 3;
+		mrr.y = 3;
+		regionRecords.add(mrr);
+		
+		// Create floor map
+		floorMap = new MapCell[width][height];
+		
 		for (int w = 0; w < width; w++)
-    {
-		  floorMap[w][0].collision |= MapCell.SOUTH; 
-		  floorMap[w][height - 1].collision |= MapCell.NORTH;
-    }
+		{
+			for (int h = 0; h < height; h++)
+			{
+				MapCell mc = new MapCell();
+				mc.type = FLOOR_DIRT;
+				floorMap[w][h] = mc;
+			}
+		}
 		
-    for (int h = 0; h < height; h++)
-    {
-      floorMap[0][h].collision |= MapCell.WEST;
-      floorMap[width - 1][h].collision |= MapCell.EAST;
-    }				
+		/* Cycle through regions and copy collision map over to floor map */
+		for (int r = 0; r < regionRecords.size(); r++)
+			regionRecords.get(r).AddCollisionData();
+			
+	    /* Set collision zone for edges of map */
+			for (int w = 0; w < width; w++)
+	    {
+			  floorMap[w][0].collision |= MapCell.SOUTH; 
+			  floorMap[w][height - 1].collision |= MapCell.NORTH;
+	    }
+			
+	    for (int h = 0; h < height; h++)
+	    {
+	      floorMap[0][h].collision |= MapCell.WEST;
+	      floorMap[width - 1][h].collision |= MapCell.EAST;
+	    }				
 
 		dirtTexture = new Texture(Gdx.files.internal(Assets.textureDirt));
 		dirtTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
@@ -146,6 +161,9 @@ public class Map
 		grassTexture = new Texture(Gdx.files.internal(Assets.textureGrass));
 		grassTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		
+		barbedWireTexture = new Texture(Gdx.files.internal(Assets.textureBarbedWire));
+		barbedWireTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		
 		textures = new Texture[6];
 		textures[FLOOR_DIRT] = dirtTexture;
 		textures[FLOOR_PLANKS] = woodFloorTexture;
@@ -158,26 +176,6 @@ public class Map
 		MakeModels();
 	}
 	
-	protected int FindTileType(int x, int y)
-	{
-		int c = regionRecords.size();
-		
-		for (int i = 0; i < c; i++)
-		{
-			MapRegionRecord mrr = regionRecords.get(i);
-			
-			if ((x >= mrr.x) &&
-				(y >= mrr.y) &&
-				(x < mrr.x + mrr.region.width) &&
-				(y < mrr.y + mrr.region.height))
-			{
-				return mrr.region.type; 
-			}
-		}
-		
-		return FLOOR_DIRT;
-	}
-	
 	public void SetCamera(Camera p_camera)
 	{
 		camera = p_camera;
@@ -188,6 +186,11 @@ public class Map
 		while (!assets.update())
 		{
 		}
+
+		int size = regionRecords.size();
+
+		for (int i = 0; i < size; i++)
+			regionRecords.get(i).AddRegiontoMap();
 		
 		if (floorTiles.size() == 0)
 		{
@@ -206,14 +209,6 @@ public class Map
 				}
 			}
 		}
-		
-		if (regionRecords.get(0).modelInstance == null)
-		{
-			int size = regionRecords.size();
-
-			for (int i = 0; i < size; i++)
-				regionRecords.get(i).AddRegiontoMap();
-		}
 	}
 	
 	public void Render(ModelBatch modelBatch)
@@ -231,10 +226,7 @@ public class Map
 		
 		int size = regionRecords.size();
 		for (int i = 0; i < size; i++)
-		{
-			MapRegionRecord record = regionRecords.get(i);
-			modelBatch.render(record.modelInstance, record.environment);
-		}
+			regionRecords.get(i).Render(modelBatch);
 	}
 	
 	public void CheckPlayerPosition(int p_x, int p_y)
