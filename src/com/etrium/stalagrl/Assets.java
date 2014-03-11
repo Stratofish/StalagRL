@@ -18,7 +18,7 @@ public class Assets
   
   // Model Constants
   final static String modelFloor = Assets.modelPath + "/plain-floor.g3db";
-  final static String modelPlayer = Assets.modelPath + "/player2.g3db";
+  public final static String modelPlayer = Assets.modelPath + "/player3.g3db";
   final static String modelHut = Assets.modelPath + "/hut.g3db";
   final static String modelTower = Assets.modelPath + "/tower.g3db";
   final static String modelWall1 = Assets.modelPath + "/wall1.g3db";

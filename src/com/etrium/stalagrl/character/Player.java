@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.etrium.stalagrl.system.ControlType;
+import com.etrium.stalagrl.Assets;
 import com.etrium.stalagrl.Map;
 import com.etrium.stalagrl.MapCell;
 import com.etrium.stalagrl.system.EtriumEvent;
@@ -49,7 +50,7 @@ public class Player implements EventListener
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1.0f, -0.8f, -0.2f));
 		
 		assets = new AssetManager();
-		assets.load("data/models/player2.g3db", Model.class);
+		assets.load(Assets.modelPlayer, Model.class);
 		assets.finishLoading();
 		
 		//dirtTexture = new Texture(Gdx.files.internal("data/textures/dirt.png"));
@@ -222,7 +223,7 @@ public class Player implements EventListener
 		if ((instance == null) &&
 			(assets.update()))
 		{
-			instance = new ModelInstance(assets.get("data/models/player2.g3db", Model.class));
+			instance = new ModelInstance(assets.get(Assets.modelPlayer, Model.class));
 			
 			instance.transform.translate(x+0.5f, y+0.5f, z);
 		}
