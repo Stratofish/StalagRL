@@ -10,5 +10,12 @@ public enum ControlType
     GODMODE,
     NOCLIP,
     REVEALMAP,
-    QUIT
+    QUIT,
+    INVENTORY1,
+    INVENTORY2,
+    INVENTORY3,
+    INVENTORY4,
+    INVENTORY5,
+    INVENTORYBACK,
+    INVENTORYFWD    
 }

@@ -18,11 +18,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.etrium.stalagrl.system.ControlType;
+import com.etrium.stalagrl.system.EtriumEvent;
+import com.etrium.stalagrl.system.EventListener;
+import com.etrium.stalagrl.system.EventManager;
+import com.etrium.stalagrl.system.EventType;
 
-public class Inventory
+public class Inventory implements EventListener
 {
   public class ItemData
-  {
+  {      
     public Texture texture;
     public TextureRegion textureRegion;
     public Sprite token;
@@ -30,6 +35,16 @@ public class Inventory
     public Item item;
     public Window tooltip;
   }
+
+  protected boolean inventory1Held = false;
+  protected boolean inventory2Held = false;
+  protected boolean inventory3Held = false;
+  protected boolean inventory4Held = false;
+  protected boolean inventory5Held = false;    
+  protected boolean inventoryBackHeld = false;
+  protected boolean inventoryFWDHeld = false;  
+  
+  private EventManager evtMgr = new EventManager();
   
   private Stage stage;
   private Skin skin;
@@ -39,6 +54,8 @@ public class Inventory
   public List<ItemData> itemData = new ArrayList<ItemData>();
   
   private int selected;
+  
+  private boolean listening = true;
   
   public Inventory(Stage p_stage, Skin p_skin)
   {
@@ -59,7 +76,10 @@ public class Inventory
     stage.addActor(window);
     
     /* Start off pointing at first entry */
-    selected = 2;
+    selected = 1;
+        
+    evtMgr.RegisterListener(this, EventType.evtControlUp);
+    evtMgr.RegisterListener(this, EventType.evtControlDown);
   }
 
   public boolean AddItem(Item p_item)
@@ -180,5 +200,212 @@ public class Inventory
     //items.remove(item);
     
     Update();
+  }
+  
+  public void DoControl()
+  {
+    boolean handled = false;
+    
+    if (inventory1Held)    
+    {
+      inventory1Held = false;
+      selected = 1;
+      handled = true;
+    }
+    
+    if (inventory2Held)    
+    {
+      inventory2Held = false;
+      selected = 2;
+      handled = true;
+    }
+    
+    if (inventory3Held)    
+    {
+      inventory3Held = false;
+      selected = 3;
+      handled = true;
+    }
+    
+    if (inventory4Held)    
+    {
+      inventory4Held = false;
+      selected = 4;
+      handled = true;
+    }
+    
+    if (inventory5Held)    
+    {
+      inventory5Held = false;
+      selected = 5;
+      handled = true;
+    }
+    
+    if (inventoryBackHeld)    
+    {
+      inventoryBackHeld = false;
+      
+      if ( selected == 1)
+        selected = 5;
+      else
+        selected--;
+        
+      handled = true;
+    }
+    
+    if (inventoryFWDHeld)    
+    {
+      inventoryFWDHeld = false;
+      
+      if ( selected == 5)
+        selected = 1;
+      else
+        selected++;
+        
+      handled = true;
+    }    
+       
+    if (handled)
+      Update();
+  }
+  
+  @SuppressWarnings("incomplete-switch")
+  @Override
+  public boolean ReceiveEvent(EtriumEvent p_event)
+  {
+    if (!listening)
+      return false;
+    
+    switch (p_event.type)
+    {
+      case evtControlUp:
+      {
+        ControlType ct = (ControlType)p_event.data;
+                boolean handled = false;
+                switch(ct)
+                {
+                    case INVENTORY1:
+                    {
+                      inventory1Held = false;
+                      handled = true;
+                      break;
+                    }
+                    case INVENTORY2:
+                    {
+                      inventory2Held = false;
+                      handled = true;
+                      break;
+                    }
+                    case INVENTORY3:
+                    {
+                      inventory3Held = false;
+                      handled = true;
+                      break;
+                    }
+                    case INVENTORY4:
+                    {
+                      inventory4Held = false;
+                      handled = true;
+                      break;
+                    }
+                    case INVENTORY5:
+                    {
+                      inventory5Held = false;
+                      handled = true;
+                      break;
+                    }
+                    case INVENTORYBACK:
+                    {
+                      inventoryBackHeld = false;
+                      handled = true;
+                      break;
+                    }
+                    case INVENTORYFWD:
+                    {
+                      inventoryFWDHeld = false;
+                      handled = true;
+                      break;
+                    }
+                }
+                
+                if (handled)
+                {
+                    return true;
+                }
+                
+                break;
+      }
+      case evtControlDown:
+      {
+        ControlType ct = (ControlType)p_event.data;
+                boolean handled = false;
+                switch(ct)
+                {
+                  case INVENTORY1:
+                  {
+                    inventory1Held = true;
+                    handled = true;
+                    break;
+                  }
+                  case INVENTORY2:
+                  {
+                    inventory2Held = true;
+                    handled = true;
+                    break;
+                  }
+                  case INVENTORY3:
+                  {
+                    inventory3Held = true;
+                    handled = true;
+                    break;
+                  }
+                  case INVENTORY4:
+                  {
+                    inventory4Held = true;
+                    handled = true;
+                    break;
+                  }
+                  case INVENTORY5:
+                  {
+                    inventory5Held = true;
+                    handled = true;
+                    break;
+                  }
+                  case INVENTORYBACK:
+                  {
+                    inventoryBackHeld = true;
+                    handled = true;
+                    break;
+                  }
+                  case INVENTORYFWD:
+                  {
+                    inventoryFWDHeld = true;
+                    handled = true;
+                    break;
+                  }
+                }
+                
+                if (handled)
+                {
+                  return true;
+                }
+                
+        break;
+      }
+    }
+    
+    return false;
+  }
+
+  @Override
+  public void StartListening()
+  {
+    listening = true;
+  }
+
+  @Override
+  public void StopListening()
+  {
+    listening = false;
   }
 }

@@ -19,7 +19,15 @@ public class KeyMap
     
     private boolean godModeHeld = false; 
     private boolean noClipHeld = false; 
-    private boolean revealMapHeld = false; 
+    private boolean revealMapHeld = false;
+    
+    protected boolean inventory1Held = false;
+    protected boolean inventory2Held = false;
+    protected boolean inventory3Held = false;
+    protected boolean inventory4Held = false;
+    protected boolean inventory5Held = false;    
+    protected boolean inventoryBackHeld = false;
+    protected boolean inventoryFWDHeld = false;                 
     
     public KeyMap()
     {
@@ -156,7 +164,182 @@ public class KeyMap
                 spaceHeld = false;
             }
         }
-      
+
+        // Inventory 1
+        if (Gdx.input.isKeyPressed(Keys.NUM_1))
+        {
+            if (!inventory1Held)
+            {
+                EtriumEvent evt = new EtriumEvent();
+                evt.type = EventType.evtControlDown;
+                evt.data = (Object)ControlType.INVENTORY1;
+                evtMgr.SendEvent(evt,  true);
+                
+                inventory1Held = true;
+            }
+        } else
+        {
+            if (inventory1Held)
+            {
+                EtriumEvent evt = new EtriumEvent();
+                evt.type = EventType.evtControlUp;
+                evt.data = (Object)ControlType.INVENTORY1;
+                evtMgr.SendEvent(evt,  true);
+                
+                inventory1Held = false;
+            }
+        }                      
+        
+        // Inventory 2
+        if (Gdx.input.isKeyPressed(Keys.NUM_2))
+        {
+            if (!inventory2Held)
+            {
+                EtriumEvent evt = new EtriumEvent();
+                evt.type = EventType.evtControlDown;
+                evt.data = (Object)ControlType.INVENTORY2;
+                evtMgr.SendEvent(evt,  true);
+                
+                inventory2Held = true;
+            }
+        } else
+        {
+            if (inventory2Held)
+            {
+                EtriumEvent evt = new EtriumEvent();
+                evt.type = EventType.evtControlUp;
+                evt.data = (Object)ControlType.INVENTORY2;
+                evtMgr.SendEvent(evt,  true);
+                
+                inventory2Held = false;
+            }
+        }
+        
+        // Inventory 3
+        if (Gdx.input.isKeyPressed(Keys.NUM_3))
+        {
+            if (!inventory3Held)
+            {
+                EtriumEvent evt = new EtriumEvent();
+                evt.type = EventType.evtControlDown;
+                evt.data = (Object)ControlType.INVENTORY3;
+                evtMgr.SendEvent(evt,  true);
+                
+                inventory3Held = true;
+            }
+        } else
+        {
+            if (inventory3Held)
+            {
+                EtriumEvent evt = new EtriumEvent();
+                evt.type = EventType.evtControlUp;
+                evt.data = (Object)ControlType.INVENTORY3;
+                evtMgr.SendEvent(evt,  true);
+                
+                inventory3Held = false;
+            }
+        }
+        
+        // Inventory 4
+        if (Gdx.input.isKeyPressed(Keys.NUM_4))
+        {
+            if (!inventory4Held)
+            {
+                EtriumEvent evt = new EtriumEvent();
+                evt.type = EventType.evtControlDown;
+                evt.data = (Object)ControlType.INVENTORY4;
+                evtMgr.SendEvent(evt,  true);
+                
+                inventory4Held = true;
+            }
+        } else
+        {
+            if (inventory4Held)
+            {
+                EtriumEvent evt = new EtriumEvent();
+                evt.type = EventType.evtControlUp;
+                evt.data = (Object)ControlType.INVENTORY4;
+                evtMgr.SendEvent(evt,  true);
+                
+                inventory4Held = false;
+            }
+        }
+        
+        // Inventory 5
+        if (Gdx.input.isKeyPressed(Keys.NUM_5))
+        {
+            if (!inventory5Held)
+            {
+                EtriumEvent evt = new EtriumEvent();
+                evt.type = EventType.evtControlDown;
+                evt.data = (Object)ControlType.INVENTORY5;
+                evtMgr.SendEvent(evt,  true);
+                
+                inventory5Held = true;
+            }
+        } else
+        {
+            if (inventory5Held)
+            {
+                EtriumEvent evt = new EtriumEvent();
+                evt.type = EventType.evtControlUp;
+                evt.data = (Object)ControlType.INVENTORY5;
+                evtMgr.SendEvent(evt,  true);
+                
+                inventory5Held = false;
+            }
+        }
+        
+        // Inventory Back
+        if (Gdx.input.isKeyPressed(Keys.LEFT_BRACKET))
+        {
+            if (!inventoryBackHeld)
+            {
+                EtriumEvent evt = new EtriumEvent();
+                evt.type = EventType.evtControlDown;
+                evt.data = (Object)ControlType.INVENTORYBACK;
+                evtMgr.SendEvent(evt,  true);
+                
+                inventoryBackHeld = true;
+            }
+        } else
+        {
+            if (inventoryBackHeld)
+            {
+                EtriumEvent evt = new EtriumEvent();
+                evt.type = EventType.evtControlUp;
+                evt.data = (Object)ControlType.INVENTORYBACK;
+                evtMgr.SendEvent(evt,  true);
+                
+                inventoryBackHeld = false;
+            }
+        }
+        
+        // Inventory Fwd
+        if (Gdx.input.isKeyPressed(Keys.RIGHT_BRACKET))
+        {
+            if (!inventoryFWDHeld)
+            {
+                EtriumEvent evt = new EtriumEvent();
+                evt.type = EventType.evtControlDown;
+                evt.data = (Object)ControlType.INVENTORYFWD;
+                evtMgr.SendEvent(evt,  true);
+                
+                inventoryFWDHeld = true;
+            }
+        } else
+        {
+            if (inventoryFWDHeld)
+            {
+                EtriumEvent evt = new EtriumEvent();
+                evt.type = EventType.evtControlUp;
+                evt.data = (Object)ControlType.INVENTORYFWD;
+                evtMgr.SendEvent(evt,  true);
+                
+                inventoryFWDHeld = false;
+            }
+        }
+                
         // God mode
         if (Gdx.input.isKeyPressed(Keys.F1))
         {

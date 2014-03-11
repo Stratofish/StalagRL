@@ -143,6 +143,8 @@ public class PowCamps implements EventListener
         player.DoControl();
         player.CenterMapWindowOnPlayer();
         
+        inventory.DoControl();
+        
         //Rectangle scissors = new Rectangle();
         //Rectangle clipBounds = new Rectangle((map.mapWindow.x)-(1024-640-85) - (1024/2),
         //                                     (map.mapWindow.y)-(768-640+420)-(768/2),640,640);
