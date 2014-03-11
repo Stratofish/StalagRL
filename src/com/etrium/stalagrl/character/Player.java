@@ -4,40 +4,26 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.etrium.stalagrl.system.ControlType;
 import com.etrium.stalagrl.Assets;
-import com.etrium.stalagrl.Map;
 import com.etrium.stalagrl.MapCell;
 import com.etrium.stalagrl.system.EtriumEvent;
 import com.etrium.stalagrl.system.EventListener;
 import com.etrium.stalagrl.system.EventManager;
 import com.etrium.stalagrl.system.EventType;
 
-public class Player implements EventListener
+public class Player extends Character implements EventListener
 {
-	protected int x;
-	protected int y;
-	protected float z;
-	
 	protected boolean upHeld = false;
 	protected boolean downHeld = false;
 	protected boolean leftHeld = false;
 	protected boolean rightHeld = false;
 	
-	protected float rot = 0.0f;
-	
 	private EventManager evtMgr = new EventManager();
-	private Map map = null;
 	private Camera camera = null;
 	private boolean listening = true;
-	
-	private AssetManager assets;
-	private Environment environment;
-	protected ModelInstance instance = null;
 	
 	public Player(int p_x, int p_y)
 	{
@@ -45,6 +31,8 @@ public class Player implements EventListener
 		y = p_y;
 		z = 0.0f;
 		
+		collidable = false;
+				
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1.0f, 1.0f, 1.0f, 1.0f));
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1.0f, -0.8f, -0.2f));
@@ -53,17 +41,8 @@ public class Player implements EventListener
 		assets.load(Assets.modelPlayer, Model.class);
 		assets.finishLoading();
 		
-		//dirtTexture = new Texture(Gdx.files.internal("data/textures/dirt.png"));
-		//dirtTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		
 		evtMgr.RegisterListener(this, EventType.evtControlUp);
 		evtMgr.RegisterListener(this, EventType.evtControlDown);
-	}
-	
-	public void SetMap(Map p_map)
-	{
-		map = p_map;
-		z = map.floorMap[x][y].floorLevel;
 	}
 	
 	public void SetCamera(Camera p_camera)
@@ -76,13 +55,13 @@ public class Player implements EventListener
 	  boolean result = true; 
 	  
 	  // Check for current cell wall collision
-	  if ((map.floorMap[x][y].collision & MapCell.NORTH) != 0) 	  
-	    result = false;
+	  if ((map.floorMap[(int)x][(int)y].GetCollision() & MapCell.NORTH) != 0) 	  
+		  result = false;
 	  else
 	  {
-  	  // Check neighbouring cell wall collision.
-      if ((map.floorMap[x][y + 1].collision & MapCell.SOUTH) != 0)    
-        result = false;
+		  // Check neighbouring cell wall collision.
+		  if ((map.floorMap[(int)x][(int)y + 1].GetCollision() & MapCell.SOUTH) != 0)    
+			  result = false;
 	  }
 	  
 	  return result;
@@ -93,12 +72,12 @@ public class Player implements EventListener
     boolean result = true; 
     
     // Check for current cell wall collision
-    if ((map.floorMap[x][y].collision & MapCell.SOUTH) != 0)    
+    if ((map.floorMap[(int)x][(int)y].GetCollision() & MapCell.SOUTH) != 0)    
       result = false;
     else
     {
       // Check neighbouring cell wall collision.
-      if ((map.floorMap[x][y - 1].collision & MapCell.NORTH) != 0)    
+      if ((map.floorMap[(int)x][(int)y - 1].GetCollision() & MapCell.NORTH) != 0)    
         result = false;
     }
     
@@ -110,12 +89,12 @@ public class Player implements EventListener
     boolean result = true;
 	  
     // Check for current cell wall collision
-    if ((map.floorMap[x][y].collision & MapCell.WEST) != 0)    
+    if ((map.floorMap[(int)x][(int)y].GetCollision() & MapCell.WEST) != 0)    
       result = false;
     else
     {
       // Check neighbouring cell wall collision.
-      if ((map.floorMap[x - 1][y].collision & MapCell.EAST) != 0)    
+      if ((map.floorMap[(int)x - 1][(int)y].GetCollision() & MapCell.EAST) != 0)    
         result = false;
     }
     
@@ -127,26 +106,25 @@ public class Player implements EventListener
     boolean result = true;
 	  
 	  // Check for current cell wall collision
-    if ((map.floorMap[x][y].collision & MapCell.EAST) != 0)    
+    if ((map.floorMap[(int)x][(int)y].GetCollision() & MapCell.EAST) != 0)    
       result = false;
     else
     {
       // Check neighbouring cell wall collision.
-      if ((map.floorMap[x + 1][y].collision & MapCell.WEST) != 0)    
+      if ((map.floorMap[(int)x + 1][(int)y].GetCollision() & MapCell.WEST) != 0)    
         result = false;
       
     }
-	
+
     return result;
   }
 	
+	@Override
 	public void DoControl()
 	{
 		boolean handled = false;
 		
 		/* Implement collisions here */
-		int movX = 0;
-		int movY = 0;
 		float newRot = 0.0f;
 		
 		if (upHeld)
@@ -155,7 +133,6 @@ public class Player implements EventListener
 			{
 				upHeld = false;
 				y++;
-				movY++;
 			}
 			newRot = 180.0f;
 			handled = true;
@@ -167,7 +144,6 @@ public class Player implements EventListener
 			{
 				downHeld = false;
 				y--;			  
-				movY--;
 			}
 			newRot = 0.0f;
 			handled = true;
@@ -179,7 +155,6 @@ public class Player implements EventListener
 			{
 				leftHeld = false;
 				x--;
-				movX--;
 			}
 			newRot = 270.0f;
 			handled = true;
@@ -191,7 +166,6 @@ public class Player implements EventListener
 			{		
 				rightHeld = false;
 				x++;
-				movX++;
 			}
 			newRot = 90.0f;
 			handled = true;
@@ -201,36 +175,15 @@ public class Player implements EventListener
 			(assets.update()))
 		{
 			float movZ = z;
-			z = map.floorMap[x][y].floorLevel;
+			z = map.floorMap[(int)x][(int)y].floorLevel;
 			movZ = z - movZ;
 			
-			//instance.transform.translate(movX, movY, movZ);
-			instance.transform.idt();
-			instance.transform.translate(x+0.5f, y+0.5f, z);
+			SetPosition(x, y, z);
 			instance.transform.rotate(0.0f,  0.0f,  1.0f, newRot);
 			
 			rot = newRot;
-			//instance.transform.translate(0.0f, 0.0f, 0.0f);
 			
-			map.CheckPlayerPosition(x, y);
-		}
-	}
-	
-	public void Render(ModelBatch batch)
-	{
-		assert map != null;
-		
-		if ((instance == null) &&
-			(assets.update()))
-		{
-			instance = new ModelInstance(assets.get(Assets.modelPlayer, Model.class));
-			
-			instance.transform.translate(x+0.5f, y+0.5f, z);
-		}
-		
-		if (instance != null)
-		{
-			batch.render(instance, environment);
+			map.CheckPlayerPosition((int)x, (int)y);
 		}
 	}
 	

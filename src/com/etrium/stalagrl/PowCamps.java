@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.etrium.stalagrl.character.Player;
+import com.etrium.stalagrl.character.Character;
 import com.etrium.stalagrl.system.ControlType;
 import com.etrium.stalagrl.system.EventType;
 import com.etrium.stalagrl.system.EtriumEvent;
@@ -46,6 +47,7 @@ public class PowCamps implements EventListener
 	private TextButton quitNoButton = null;
 	private boolean quitDialogVisible = false;
 	protected Player player = null;
+	protected Character pow = null;
 
 	public PowCamps()
 	{
@@ -73,7 +75,7 @@ public class PowCamps implements EventListener
         logWindow.setSize(300.0f, 100.0f);
         logWindow.row().fill().expandX().expandY();
         logWindow.add(logScrollPane);
-        guiStage.addActor(logWindow);
+        //guiStage.addActor(logWindow);
 
         evtMgr.RegisterListener(this, EventType.evtLogActivity);
         evtMgr.RegisterListener(this, EventType.evtCharDead);
@@ -104,15 +106,17 @@ public class PowCamps implements EventListener
 		player.SetCamera(camera);
 		player.SetMap(map);
 		
+		pow = new Character(25, 20);
+		pow.SetMap(map);
+		
 		inventory = new Inventory( guiStage, guiSkin);		
 		inventory.Update();
 		
 		inventory.AddItem(new Item( "Wire Cutters"));
-		inventory.AddItem(new Item( "Onion"));
-		inventory.AddItem(new Item( "Radish"));
-		inventory.AddItem(new Item( "Atichoke"));
-		inventory.AddItem(new Item( "Carrot"));
-    inventory.AddItem(new Item( "Cabadge"));
+		inventory.AddItem(new Item( "Key"));
+		inventory.AddItem(new Item( "Shovel"));
+		inventory.AddItem(new Item( "Papers"));
+		inventory.AddItem(new Item( "Chocolate"));
 	}
 
 	public void dispose()
@@ -155,6 +159,7 @@ public class PowCamps implements EventListener
         modelBatch.begin(camera);
             map.Render(modelBatch);
             player.Render(modelBatch);
+            pow.Render(modelBatch);
         modelBatch.end();
         
         //ScissorStack.popScissors();
