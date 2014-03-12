@@ -1,5 +1,7 @@
 package com.etrium.stalagrl;
 
+import com.etrium.stalagrl.inventory.Item;
+
 public class MapCell
 {
 	static public final int NORTH = 1;
@@ -11,6 +13,9 @@ public class MapCell
 	public float floorLevel;
 	public int collision = 0;
 	public int charCollision = 0;
+	
+	public boolean hiddingPlace = false;
+	public Item hiddenItem = null;
 	
 	public int GetCollision()
 	{

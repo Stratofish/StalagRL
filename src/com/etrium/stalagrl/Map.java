@@ -17,6 +17,12 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.etrium.stalagrl.character.Character;
+import com.etrium.stalagrl.region.MapRegion;
+import com.etrium.stalagrl.region.MapRegionRecord;
+import com.etrium.stalagrl.region.RegionFloor;
+import com.etrium.stalagrl.region.RegionHut;
+import com.etrium.stalagrl.region.RegionTower;
+import com.etrium.stalagrl.region.RegionExtrude;
 import com.etrium.stalagrl.system.EtriumEvent;
 import com.etrium.stalagrl.system.EventListener;
 import com.etrium.stalagrl.system.EventManager;
@@ -40,6 +46,7 @@ public class Map implements EventListener
 	private Camera camera = null;
 	private ModelInstance floorTiles[][];
 	public MapCell floorMap[][];
+	public List<MapCell> hiddingPlaces;
 	protected List<ModelInstance> staticMeshes;
 	protected List<MapRegionRecord> regionRecords;
 	public Environment environment;
@@ -191,11 +198,7 @@ public class Map implements EventListener
 		mrr.x = 42;
 		mrr.y = 31;
 		regionRecords.add(mrr);
-		
-
-		
-		
-		
+			
 		// Create floor map
 		floorMap = new MapCell[width][height];
 		
@@ -207,24 +210,29 @@ public class Map implements EventListener
 				mc.type = FLOOR_DIRT;
 				floorMap[w][h] = mc;
 			}
-		} 
+		}
+		
+		hiddingPlaces = new ArrayList<MapCell>(); 
 		
 		/* Cycle through regions and copy collision map over to floor map */
 		for (int r = 0; r < regionRecords.size(); r++)
 			regionRecords.get(r).AddCollisionData();
+		
+		for (int r = 0; r < regionRecords.size(); r++)
+      regionRecords.get(r).AddHiddingPlaces();
 			
-	    /* Set collision zone for edges of map */
-			for (int w = 0; w < width; w++)
-	    {
-			  floorMap[w][0].collision |= MapCell.SOUTH; 
-			  floorMap[w][height - 1].collision |= MapCell.NORTH;
-	    }
-			
-	    for (int h = 0; h < height; h++)
-	    {
-	      floorMap[0][h].collision |= MapCell.WEST;
-	      floorMap[width - 1][h].collision |= MapCell.EAST;
-	    }				
+    /* Set collision zone for edges of map */
+		for (int w = 0; w < width; w++)
+    {
+		  floorMap[w][0].collision |= MapCell.SOUTH; 
+		  floorMap[w][height - 1].collision |= MapCell.NORTH;
+    }
+		
+    for (int h = 0; h < height; h++)
+    {
+      floorMap[0][h].collision |= MapCell.WEST;
+      floorMap[width - 1][h].collision |= MapCell.EAST;
+    }				
 
 		dirtTexture = new Texture(Gdx.files.internal(Assets.textureDirt));
 		dirtTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);

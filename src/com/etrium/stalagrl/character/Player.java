@@ -20,6 +20,7 @@ public class Player extends Character implements EventListener
 	protected boolean downHeld = false;
 	protected boolean leftHeld = false;
 	protected boolean rightHeld = false;
+	protected boolean useHeld = false;
 	
 	private EventManager evtMgr = new EventManager();
 	private Camera camera = null;
@@ -126,7 +127,7 @@ public class Player extends Character implements EventListener
 		boolean handled = false;
 		
 		/* Implement collisions here */
-		float newRot = 0.0f;
+		float newRot = rot; 
 		
 		if (upHeld)
 		{
@@ -171,6 +172,14 @@ public class Player extends Character implements EventListener
 			newRot = 90.0f;
 			handled = true;
 		}
+
+    if (useHeld)
+    {
+      useHeld = false;
+      
+      System.out.println("Use");
+      handled = true;
+    }
 		
 		if ((handled) &&
 			(map.assets.update()))
@@ -243,6 +252,12 @@ public class Player extends Character implements EventListener
                         handled = true;
                         break;
                     }
+                    case USE:
+                    {
+                      useHeld = false;
+                      handled = true;
+                      break;
+                    }
                 }
                 
                 if (handled)
@@ -281,6 +296,12 @@ public class Player extends Character implements EventListener
                         rightHeld = true;
                         handled = true;
                         break;
+                    }
+                    case USE:
+                    {
+                      useHeld = true;
+                      handled = true;
+                      break;
                     }
                 }
                 

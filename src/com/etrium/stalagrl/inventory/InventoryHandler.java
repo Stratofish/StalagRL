@@ -43,8 +43,7 @@ public class InventoryHandler implements EventListener
   protected boolean inventory4Held = false;
   protected boolean inventory5Held = false;    
   protected boolean inventoryBackHeld = false;
-  protected boolean inventoryFWDHeld = false;
-  protected boolean UseHeld = false;
+  protected boolean inventoryFWDHeld = false;  
   
   private EventManager evtMgr = new EventManager();
   private boolean listening = true;
@@ -217,14 +216,6 @@ public class InventoryHandler implements EventListener
         
       handled = true;
     }    
-
-    if (UseHeld)
-    {
-      UseHeld = false;
-      
-      System.out.println("Use");
-      handled = true;
-    }
     
     if (handled)      
       Update();
@@ -287,12 +278,6 @@ public class InventoryHandler implements EventListener
                       handled = true;
                       break;
                     }
-                    case USE:
-                    {
-                      UseHeld = false;
-                      handled = true;
-                      break;
-                    }
                 }
                 
                 if (handled)
@@ -347,12 +332,6 @@ public class InventoryHandler implements EventListener
                   case INVENTORYFWD:
                   {
                     inventoryFWDHeld = true;
-                    handled = true;
-                    break;
-                  }
-                  case USE:
-                  {
-                    UseHeld = true;
                     handled = true;
                     break;
                   }

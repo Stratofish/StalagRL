@@ -1,4 +1,4 @@
-package com.etrium.stalagrl;
+package com.etrium.stalagrl.region;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +52,7 @@ public class MapRegionRecord
 			}
 		}
 	}
-	
+
 	public boolean InRegion(int p_x, int p_y)
 	{
 		if ((p_x >= x) &&
@@ -66,7 +66,12 @@ public class MapRegionRecord
 	
 	public void AddCollisionData()
 	{
-		region.AddCollisionData(this);
+		region. AddCollisionData(this);
+	}
+	
+	public void AddHiddingPlaces()
+	{
+	  region.AddHiddingPlaceData(this);
 	}
 	
 	public void AddRegiontoMap()

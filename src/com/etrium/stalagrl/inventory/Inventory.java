@@ -1,13 +1,12 @@
 package com.etrium.stalagrl.inventory;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Inventory
 {
   private InventoryHandler inventoryHandler = null;
 
-  public List<Item> items = new ArrayList<Item>();
+  public ArrayList<Item> items = new ArrayList<Item>();
 
   private int maxItems;
 

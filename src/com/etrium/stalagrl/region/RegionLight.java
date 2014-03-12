@@ -1,4 +1,4 @@
-package com.etrium.stalagrl;
+package com.etrium.stalagrl.region;
 
 public class RegionLight
 {

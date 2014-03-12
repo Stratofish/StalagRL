@@ -1,4 +1,10 @@
-package com.etrium.stalagrl;
+package com.etrium.stalagrl.region;
+
+import com.badlogic.gdx.math.Vector2;
+
+import com.etrium.stalagrl.Assets;
+import com.etrium.stalagrl.Map;
+import com.etrium.stalagrl.MapCell;
 
 public class RegionHut extends MapRegion
 {
@@ -9,8 +15,8 @@ public class RegionHut extends MapRegion
 		height = 5;
 		type = Map.FLOOR_STONES;
 		modelType = Assets.modelHut;
-		floorLevel = 0.3f;
-
+		floorLevel = 0.3f;			
+		
 		/* Allocate array for collision map */
 		collisionMap = new int[width][height];
 		
@@ -38,24 +44,14 @@ public class RegionHut extends MapRegion
 	      }           
 	    }
 		
-		/* Add collision values for beds */
-		collisionMap[4][0] |= MapCell.WEST | MapCell.EAST | MapCell.SOUTH;
-		collisionMap[4][1] |= MapCell.WEST | MapCell.EAST | MapCell.NORTH;
+	  /* Add collision values for beds */
+		addBed( 4, 0);
+		addBed( 6, 0);
+		addBed( 8, 0);
 		
-		collisionMap[6][0] |= MapCell.WEST | MapCell.EAST | MapCell.SOUTH;
-    collisionMap[6][1] |= MapCell.WEST | MapCell.EAST | MapCell.NORTH;
-		
-    collisionMap[8][0] |= MapCell.WEST | MapCell.EAST | MapCell.SOUTH;
-    collisionMap[8][1] |= MapCell.WEST | MapCell.EAST | MapCell.NORTH;
-    
-    collisionMap[4][3] |= MapCell.WEST | MapCell.EAST | MapCell.SOUTH;
-    collisionMap[4][4] |= MapCell.WEST | MapCell.EAST | MapCell.NORTH;
-    
-    collisionMap[6][3] |= MapCell.WEST | MapCell.EAST | MapCell.SOUTH;
-    collisionMap[6][4] |= MapCell.WEST | MapCell.EAST | MapCell.NORTH;
-    
-    collisionMap[8][3] |= MapCell.WEST | MapCell.EAST | MapCell.SOUTH;
-    collisionMap[8][4] |= MapCell.WEST | MapCell.EAST | MapCell.NORTH;    
+		addBed( 4, 3);
+    addBed( 6, 3);
+    addBed( 8, 3);
     
 		lightCount = 3;
 		lights = new RegionLight[3];
@@ -90,5 +86,14 @@ public class RegionHut extends MapRegion
 		light.b = 1.0f;
 		light.intensity = 8.0f;
 		lights[2] = light;
+	}
+	
+	private void addBed( int p_bedx, int p_bedy)
+	{
+	   collisionMap[p_bedx][p_bedy]     |= MapCell.WEST | MapCell.EAST | MapCell.SOUTH;
+	   collisionMap[p_bedx][p_bedy + 1] |= MapCell.WEST | MapCell.EAST | MapCell.NORTH;
+	   
+	   hiddingPlaces.add( new Vector2( (float)p_bedx, (float)p_bedy)); 
+	   hiddingPlaces.add( new Vector2( (float)p_bedx, (float)p_bedy + 1));
 	}
 }

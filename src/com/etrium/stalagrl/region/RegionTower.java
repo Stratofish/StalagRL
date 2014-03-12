@@ -1,14 +1,18 @@
-package com.etrium.stalagrl;
+package com.etrium.stalagrl.region;
 
-public class RegionFloor extends MapRegion
+import com.etrium.stalagrl.Assets;
+import com.etrium.stalagrl.Map;
+
+public class RegionTower extends MapRegion
 {
-	public RegionFloor(Map p_map, int p_type, int p_width, int p_height)
+	public RegionTower(Map p_map)
 	{
 		super.SetMap(p_map);
 		
-		width = p_width;
-		height = p_height;
-		type = p_type;
+		width = 3;
+		height = 3;
+		type = Map.FLOOR_CONCRETE;
+		modelType = Assets.modelTower;
 		floorLevel = 0.0f;
 		
 		/* Allocate array for collision map */

@@ -1,4 +1,6 @@
-package com.etrium.stalagrl;
+package com.etrium.stalagrl.region;
+
+import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -6,11 +8,14 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
+import com.badlogic.gdx.math.Vector2;
 import com.etrium.stalagrl.Map;
+import com.etrium.stalagrl.MapCell;
+import com.etrium.stalagrl.inventory.Item;
 
 public class MapRegion
-{
-	public int width = 1;
+{  
+  public int width = 1;
 	public int height = 1;
 	public int type = Map.FLOOR_DIRT;
 	public String modelType = "";
@@ -18,6 +23,7 @@ public class MapRegion
 	public int lightCount = 0;
 	public float floorLevel = 0.0f;
 	public int collisionMap[][] = null;
+	public ArrayList<Vector2> hiddingPlaces = new ArrayList<Vector2>();	
 	
 	Map map = null;
 
@@ -40,6 +46,21 @@ public class MapRegion
 			}
 	    }
 	}
+	
+	public void AddHiddingPlaceData(MapRegionRecord record)
+  {
+    for (int i = 0; i < record.region.hiddingPlaces.size(); i++)
+    {
+      Vector2 hiddingPlace = record.region.hiddingPlaces.get(i);
+      MapCell mapCell = map.floorMap[(int) (record.x + hiddingPlace.x)][(int) (record.y + hiddingPlace.y)];
+      
+      if (!mapCell.hiddingPlace)
+      {
+        mapCell.hiddingPlace = true;
+        map.hiddingPlaces.add(mapCell);
+      }
+    }
+  } 	
 	
 	public void AddRegionToMap(MapRegionRecord record)
 	{

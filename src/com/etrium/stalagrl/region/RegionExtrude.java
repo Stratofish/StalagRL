@@ -1,4 +1,4 @@
-package com.etrium.stalagrl;
+package com.etrium.stalagrl.region;
 
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.Environment;
@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.g3d.model.Node;
+import com.etrium.stalagrl.Map;
+import com.etrium.stalagrl.MapCell;
 
 public class RegionExtrude extends MapRegion
 {
