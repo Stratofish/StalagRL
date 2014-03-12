@@ -98,6 +98,7 @@ public class StalagRL implements ApplicationListener, EventListener
 	}
 
     
+	@SuppressWarnings("incomplete-switch")
 	@Override
     public boolean ReceiveEvent(EtriumEvent p_event)
     {

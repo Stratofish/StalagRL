@@ -16,10 +16,8 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.math.Vector2;
 import com.etrium.stalagrl.character.Character;
 import com.etrium.stalagrl.Assets;
-import com.etrium.stalagrl.system.Dijkstra;
 
 public class Map
 {
@@ -331,7 +329,7 @@ public class Map
 			regionRecords.get(i).Render(modelBatch);
 		
 		long newTime = System.currentTimeMillis() % 1000;
-		long timeDiff = newTime - timestamp;
+		//long timeDiff = newTime - timestamp;
 		timestamp = newTime;
 		
 		//System.out.println("Frame time: " + timeDiff + "ms");
