@@ -8,8 +8,7 @@ public class Inventory
   private InventoryRenderer renderer = null;  
   
   public List<Item> items = new ArrayList<Item>();  
-
-  private int selected;
+  
   private int maxItems; 
 
   private void init(int p_maxItems)
@@ -18,9 +17,6 @@ public class Inventory
     
     // Initially the list will be empty
     items.clear();
-    
-    /* Start off pointing at first entry */
-    selected = 1;        
   }
   
   public Inventory(int p_maxItems)    
@@ -44,11 +40,6 @@ public class Inventory
   public int GetMaxItems()
   {
     return maxItems;
-  }
-  
-  public int GetSelected()
-  {
-    return selected;
   }
   
   public boolean AddItem(Item p_item)

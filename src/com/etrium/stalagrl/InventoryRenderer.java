@@ -29,7 +29,7 @@ public class InventoryRenderer implements EventListener
     public Texture texture;
     public TextureRegion textureRegion;
     public Sprite token;
-    public Image image;    
+    public Image image;
   }
 
   protected boolean inventory1Held = false;
@@ -50,6 +50,9 @@ public class InventoryRenderer implements EventListener
   private List<ItemData> itemData = new ArrayList<ItemData>();
   private Inventory inventory;
   
+  /* Start off pointing at first entry */
+  int selected;
+  
   public InventoryRenderer( Stage p_stage, Skin p_skin)
   {
     stage = p_stage;
@@ -69,6 +72,8 @@ public class InventoryRenderer implements EventListener
     evtMgr.RegisterListener(this, EventType.evtControlUp);
     evtMgr.RegisterListener(this, EventType.evtControlDown);
     evtMgr.RegisterListener(this, EventType.evtResize);
+    
+    selected = 1;
   }
   
   public void SetInventory( Inventory p_inventory)
@@ -83,8 +88,7 @@ public class InventoryRenderer implements EventListener
       return;
     
     int maxItems = inventory.GetMaxItems();
-    int itemCount = inventory.GetItemCount();
-    int selected = inventory.GetSelected();
+    int itemCount = inventory.GetItemCount();    
     
     window.clear();
     itemData.clear();
@@ -152,35 +156,35 @@ public class InventoryRenderer implements EventListener
     if (inventory1Held)    
     {
       inventory1Held = false;
-      //selected = 1;
+      selected = 1;
       handled = true;
     }
     
     if (inventory2Held)    
     {
       inventory2Held = false;
-      //selected = 2;
+      selected = 2;
       handled = true;
     }
     
     if (inventory3Held)    
     {
       inventory3Held = false;
-      //selected = 3;
+      selected = 3;
       handled = true;
     }
     
     if (inventory4Held)    
     {
       inventory4Held = false;
-      //selected = 4;
+      selected = 4;
       handled = true;
     }
     
     if (inventory5Held)    
     {
       inventory5Held = false;
-      //selected = 5;
+      selected = 5;
       handled = true;
     }
     
@@ -188,10 +192,10 @@ public class InventoryRenderer implements EventListener
     {
       inventoryBackHeld = false;
       
-      //if ( selected == 1)
-        //selected = 5;
-      //else
-        //selected--;
+      if ( selected == 1)
+        selected = 5;
+      else
+        selected--;
         
       handled = true;
     }
@@ -200,10 +204,10 @@ public class InventoryRenderer implements EventListener
     {
       inventoryFWDHeld = false;
       
-      //if ( selected == 5)
-        //selected = 1;
-      //else
-//        selected++;
+      if ( selected == 5)
+        selected = 1;
+      else
+        selected++;
         
       handled = true;
     }    
