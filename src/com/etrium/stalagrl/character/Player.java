@@ -1,12 +1,9 @@
 package com.etrium.stalagrl.character;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.etrium.stalagrl.Assets;
 import com.etrium.stalagrl.MapCell;
 import com.etrium.stalagrl.system.ControlType;
 import com.etrium.stalagrl.system.EtriumEvent;
@@ -37,10 +34,6 @@ public class Player extends Character implements EventListener
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1.0f, 1.0f, 1.0f, 1.0f));
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1.0f, -0.8f, -0.2f));
-		
-		//assets = new AssetManager();
-		//assets.load(Assets.modelPlayer, Model.class);
-		//assets.finishLoading();
 		
 		evtMgr.RegisterListener(this, EventType.evtControlUp);
 		evtMgr.RegisterListener(this, EventType.evtControlDown);

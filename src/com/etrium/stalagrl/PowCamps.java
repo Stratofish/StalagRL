@@ -61,41 +61,43 @@ public class PowCamps implements EventListener
 		keyMap = new KeyMap();
 		
 		guiStage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-    Gdx.input.setInputProcessor(guiStage);
+		Gdx.input.setInputProcessor(guiStage);
         
 		guiSkin = new Skin(Gdx.files.internal("data/uiskin.json"));
 		
 		levelLabel = new Label("* * * Dungeon level 35 * * *", guiSkin);
-    levelLabel.setPosition(40.0f, 730.0f);
+		levelLabel.setPosition(40.0f, 730.0f);
 
-    String[] s = {""};
-    List list = new List(s, guiSkin);
-    list.setHeight(12.0f);
-    logScrollPane = new ScrollPane(list, guiSkin);
-    logScrollPane.setOverscroll(false,  false);
-    logScrollPane.setFadeScrollBars(false);
-    logWindow = new Window("Activity", guiSkin);
-    logWindow.setPosition(1024-10-(16), -300.0f);
-    logWindow.setSize(300.0f, 100.0f);
-    logWindow.row().fill().expandX().expandY();
-    logWindow.add(logScrollPane);
-    //guiStage.addActor(logWindow);
-
-    evtMgr.RegisterListener(this, EventType.evtLogActivity);
-    evtMgr.RegisterListener(this, EventType.evtCharDead);
-    evtMgr.RegisterListener(this, EventType.evtUpLevel);
-    evtMgr.RegisterListener(this, EventType.evtDownLevel);
-    evtMgr.RegisterListener(this, EventType.evtControlDown);
-    evtMgr.RegisterListener(this, EventType.evtControlUp);
-    evtMgr.RegisterListener(this, EventType.evtPlayerUIChanged);
-    evtMgr.RegisterListener(this, EventType.evtQuitConfirm);
-    evtMgr.RegisterListener(this, EventType.evtResize);
-    
-    modelBatch = new ModelBatch(new DefaultShaderProvider());
-    
-    float ar = ((float)Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth()) * 1.5f;
-    
-    camera = new OrthographicCamera(20, 18*ar);
+	    String[] s = {""};
+	    List list = new List(s, guiSkin);
+	    list.setHeight(12.0f);
+	    logScrollPane = new ScrollPane(list, guiSkin);
+	    logScrollPane.setOverscroll(false,  false);
+	    logScrollPane.setFadeScrollBars(false);
+	    logWindow = new Window("Activity", guiSkin);
+	    logWindow.setPosition(1024-10-(16), -300.0f);
+	    logWindow.setSize(300.0f, 100.0f);
+	    logWindow.row().fill().expandX().expandY();
+	    logWindow.add(logScrollPane);
+	    //guiStage.addActor(logWindow);
+	
+	    evtMgr.RegisterListener(this, EventType.evtLogActivity);
+	    evtMgr.RegisterListener(this, EventType.evtCharDead);
+	    evtMgr.RegisterListener(this, EventType.evtUpLevel);
+	    evtMgr.RegisterListener(this, EventType.evtDownLevel);
+	    evtMgr.RegisterListener(this, EventType.evtControlDown);
+	    evtMgr.RegisterListener(this, EventType.evtControlUp);
+	    evtMgr.RegisterListener(this, EventType.evtPlayerUIChanged);
+	    evtMgr.RegisterListener(this, EventType.evtQuitConfirm);
+	    evtMgr.RegisterListener(this, EventType.evtResize);
+	    evtMgr.RegisterListener(this, EventType.evtActivityLeadStart);
+	    evtMgr.RegisterListener(this, EventType.evtActivityStart);
+	    
+	    modelBatch = new ModelBatch(new DefaultShaderProvider());
+	    
+	    float ar = ((float)Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth()) * 1.5f;
+	    
+	    camera = new OrthographicCamera(20, 18*ar);
 		camera.position.set(-4.0f, -4.0f, 6.0f);
 		camera.lookAt(0.0f, 0.0f, 0.0f);
 		camera.up.x = 0.0f;
@@ -127,7 +129,7 @@ public class PowCamps implements EventListener
 		inventory.AddItem(new Item( ItemType.CROWBAR));
 		inventory.AddItem(new Item( ItemType.KEY));
 		
-		campTime.SetTime(5, 0);
+		campTime.SetTime(6, 30);
 	}
 
 	public void dispose()
@@ -255,6 +257,18 @@ public class PowCamps implements EventListener
 				
 				// Let other receivers get this event
 				return false;
+			}
+			case evtActivityLeadStart:
+			{
+				Activity act = (Activity)p_event.data;
+				System.out.println("Activity " + act.name + " starts soon");
+				break;
+			}
+			case evtActivityStart:
+			{
+				Activity act = (Activity)p_event.data;
+				System.out.println("Activity " + act.name + " has started");
+				break;
 			}
 		}
 		

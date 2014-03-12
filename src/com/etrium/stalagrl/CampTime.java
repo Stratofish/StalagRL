@@ -1,5 +1,7 @@
 package com.etrium.stalagrl;
 
+import java.util.ArrayList;
+
 import com.etrium.stalagrl.system.EtriumEvent;
 import com.etrium.stalagrl.system.EventListener;
 import com.etrium.stalagrl.system.EventManager;
@@ -16,18 +18,33 @@ public class CampTime implements EventListener
 	
 	public int hour = 9;
 	public int minute = 0;
-	protected float unifiedTime = 0.0f;
-	protected float minuteFraction = 1.0f / 60.0f; 
+	protected int unifiedTime = 0;
+	protected int minuteFraction = 1000 / 60; 
 	protected EventManager evtMgr = new EventManager();
+	
+	protected ArrayList<Activity> activities;
+	protected Activity freeTimeActivity;
 	
 	public CampTime()
 	{
 		evtMgr.RegisterListener(this, EventType.evtTimeIncrease);
+		
+		freeTimeActivity = new Activity();
+		freeTimeActivity.name = "Free time";
+		
+		activities = new ArrayList<Activity>();
+		
+		Activity activity = new Activity();
+		activity.startTime = 7480;
+		activity.leadTime = 480;
+		activity.name = "Breakfast";
+		
+		activities.add(activity);
 	}
 	
-	float GetUnifiedTime()
+	int GetUnifiedTime()
 	{
-		unifiedTime = hour + (minuteFraction * (float)minute);
+		unifiedTime = (hour * 1000) + (minuteFraction * minute);
 		
 		return unifiedTime;
 	}
@@ -54,6 +71,8 @@ public class CampTime implements EventListener
 	protected void RunSchedule()
 	{
 		RunDayNightCycle();
+		
+		CheckActivities();
 	}
 	
 	void RunDayNightCycle()
@@ -101,6 +120,48 @@ public class CampTime implements EventListener
 			EtriumEvent evt = new EtriumEvent();
 			evt.type = EventType.evtGlobalLightLevel;
 			evt.data = customLightLevel;
+			evtMgr.SendEvent(evt, true);
+		}
+	}
+	
+	void CheckActivities()
+	{
+		int time = GetUnifiedTime(); 
+		Activity currentActivity = null; 
+		EventType evtType = EventType.evtNull;
+		
+		if (time == 7480)
+		{
+			int r = 12;
+		}
+		
+		int size = activities.size();
+		for (int i = 0; i < size; i++)
+		{
+			Activity activity = activities.get(i);
+			if (time == (activity.startTime - activity.leadTime))
+			{
+				currentActivity = activity;
+				evtType = EventType.evtActivityLeadStart;
+			}
+			else if (time == (activity.startTime))
+			{
+				currentActivity = activity;
+				evtType = EventType.evtActivityStart;
+				System.out.println("dd");
+			}
+			else if (time == (activity.startTime + activity.length))
+			{
+				currentActivity = freeTimeActivity;
+				evtType = EventType.evtActivityStart;
+			}
+		}
+		
+		if (evtType != EventType.evtNull)
+		{
+			EtriumEvent evt = new EtriumEvent();
+			evt.type = evtType;
+			evt.data = currentActivity;
 			evtMgr.SendEvent(evt, true);
 		}
 	}

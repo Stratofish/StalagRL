@@ -2,7 +2,6 @@ package com.etrium.stalagrl.character;
 
 import java.util.List;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -62,10 +61,6 @@ public class Character implements EventListener
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1.0f, 1.0f, 1.0f, 1.0f));
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1.0f, -0.8f, -0.2f));
-		
-		//assets = new AssetManager();
-		//assets.load(Assets.modelPlayer, Model.class);
-		//assets.finishLoading();
 		
 		evtMgr.RegisterListener(this, EventType.evtGlobalLightLevel);
 	}
