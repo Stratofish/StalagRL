@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.etrium.stalagrl.Assets;
+import com.etrium.stalagrl.character.Character;
 
 public class Map
 {
@@ -33,7 +34,7 @@ public class Map
 	protected int height = 1;
 	
 	private Camera camera = null;
-	private List<ModelInstance> floorTiles;
+	private ModelInstance floorTiles[][];
 	public MapCell floorMap[][];
 	protected List<ModelInstance> staticMeshes;
 	protected List<MapRegionRecord> regionRecords;
@@ -46,6 +47,7 @@ public class Map
 	private Texture grassTexture;
 	public Texture barbedWireTexture;
 	protected Texture textures[];
+	protected long timestamp = 0; 
 
 	public Map(int p_width, int p_height)
 	{
@@ -242,9 +244,10 @@ public class Map
 		textures[FLOOR_CONCRETE] = concreteTexture;
 		textures[FLOOR_GRASS] = grassTexture;
 		
-		floorTiles = new ArrayList<ModelInstance>();
+		floorTiles = new ModelInstance[width][height];
 		
 		MakeModels();
+		timestamp = System.currentTimeMillis() % 1000;
 	}
 	
 	public void SetCamera(Camera p_camera)
@@ -263,41 +266,62 @@ public class Map
 		for (int i = 0; i < size; i++)
 			regionRecords.get(i).AddRegiontoMap();
 		
-		if (floorTiles.size() == 0)
+		for (int i = 0; i < width; i++)
 		{
-			for (int i = 0; i < width; i++)
+			for (int j = 0; j < height; j++)
 			{
-				for (int j = 0; j < height; j++)
-				{
-					ModelInstance instance = new ModelInstance(assets.get(Assets.modelFloor, Model.class));
-					
-					instance.transform.translate(i, j, 0);
-					
-					Material mat = instance.materials.get(0);
-					mat.set(TextureAttribute.createDiffuse(textures[floorMap[i][j].type]));
-					
-					floorTiles.add(instance);
-				}
+				ModelInstance instance = new ModelInstance(assets.get(Assets.modelFloor, Model.class));
+				
+				instance.transform.translate(i, j, 0);
+				
+				Material mat = instance.materials.get(0);
+				mat.set(TextureAttribute.createDiffuse(textures[floorMap[i][j].type]));
+				
+				floorTiles[i][j] = instance;
 			}
 		}
 	}
 	
-	public void Render(ModelBatch modelBatch)
+	public void Render(ModelBatch modelBatch, Character player)
 	{
 		assert camera != null;
 		
 		Gdx.gl.glViewport(0, 0, 1024, 768);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-		if (floorTiles.size() > 0)
+		int x = player.GetX();
+		int y = player.GetY();
+		
+		int xMin = x - 18;
+		int xMax = x + 18;
+		int yMin = y - 18;
+		int yMax = y + 18;
+		
+		if (xMin < 0) xMin = 0;
+		if (xMax > width) xMax = width;
+		if (yMin < 0) yMin = 0;
+		if (yMax > height) yMax = height;
+		
+		if (floorTiles[0][0] != null)
 		{
-			for (int i = 0; i < floorTiles.size(); i++)
-				modelBatch.render(floorTiles.get(i), environment);
+			for (int w = xMin; w < xMax; w++)
+			{
+				for (int h = yMin; h < yMax; h++)
+				{
+					modelBatch.render(floorTiles[w][h], environment);
+				}
+			}
 		}
 		
 		int size = regionRecords.size();
 		for (int i = 0; i < size; i++)
 			regionRecords.get(i).Render(modelBatch);
+		
+		long newTime = System.currentTimeMillis() % 1000;
+		long timeDiff = newTime - timestamp;
+		timestamp = newTime;
+		
+		System.out.println("Frame time: " + timeDiff + "ms");
 	}
 	
 	public void CheckPlayerPosition(int p_x, int p_y)

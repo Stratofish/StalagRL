@@ -78,6 +78,16 @@ public class Character
 		}
 	}
 	
+	public int GetX()
+	{
+		return x;
+	}
+	
+	public int GetY()
+	{
+		return y;
+	}
+	
 	public void SetMap(Map p_map)
 	{
 		map = p_map;
