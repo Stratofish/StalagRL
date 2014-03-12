@@ -43,6 +43,7 @@ public class Player extends Character implements EventListener
 		
 		evtMgr.RegisterListener(this, EventType.evtControlUp);
 		evtMgr.RegisterListener(this, EventType.evtControlDown);
+		evtMgr.RegisterListener(this, EventType.evtGlobalLightLevel);
 	}
 	
 	public void SetCamera(Camera p_camera)
@@ -184,6 +185,11 @@ public class Player extends Character implements EventListener
 			rot = newRot;
 			
 			map.CheckPlayerPosition((int)x, (int)y);
+			
+			EtriumEvent evt = new EtriumEvent();
+			evt.type = EventType.evtTimeIncrease;
+			evt.data = null;
+			evtMgr.SendEvent(evt, false);
 		}
 	}
 	
@@ -283,7 +289,7 @@ public class Player extends Character implements EventListener
 			}
 		}
 		
-		return false;
+		return super.ReceiveEvent(p_event);
 	}
 
 	@Override

@@ -10,8 +10,12 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.etrium.stalagrl.Assets;
 import com.etrium.stalagrl.Map;
 import com.etrium.stalagrl.MapCell;
+import com.etrium.stalagrl.system.EtriumEvent;
+import com.etrium.stalagrl.system.EventListener;
+import com.etrium.stalagrl.system.EventManager;
+import com.etrium.stalagrl.system.EventType;
 
-public class Character
+public class Character implements EventListener
 {
 	protected int x;
 	protected int y;
@@ -34,6 +38,7 @@ public class Character
 	protected AssetManager assets;
 	protected Environment environment;
 	protected ModelInstance instance = null;
+	protected EventManager evtMgr = new EventManager();
 	
 	public Character()
 	{
@@ -55,6 +60,8 @@ public class Character
 		assets = new AssetManager();
 		assets.load(Assets.modelPlayer, Model.class);
 		assets.finishLoading();
+		
+		evtMgr.RegisterListener(this, EventType.evtGlobalLightLevel);
 	}
 	
 	public void SetPosition(float p_x, float p_y, float p_z)
@@ -116,5 +123,32 @@ public class Character
 		{
 			batch.render(instance, environment);
 		}
+	}
+
+	@Override
+	public boolean ReceiveEvent(EtriumEvent p_event)
+	{
+		if (p_event.type == EventType.evtGlobalLightLevel)
+		{
+			float level = (float)p_event.data;
+			environment.set(new ColorAttribute(ColorAttribute.AmbientLight, level, level, level, 1.0f));
+			return false;
+		}
+		
+		return false;
+	}
+
+	@Override
+	public void StartListening()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void StopListening()
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

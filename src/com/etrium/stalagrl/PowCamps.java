@@ -49,7 +49,9 @@ public class PowCamps implements EventListener
 	private boolean quitDialogVisible = false;
 	protected Player player = null;
 	protected Character pow = null;
-
+	
+	protected CampTime campTime = new CampTime();
+	
 	public PowCamps()
 	{
 		evtMgr = new EventManager();
@@ -118,6 +120,8 @@ public class PowCamps implements EventListener
 		inventory.AddItem(new Item( ItemType.COMPASS)); 
 		inventory.AddItem(new Item( ItemType.CROWBAR));
 		inventory.AddItem(new Item( ItemType.KEY));
+		
+		campTime.SetTime(5, 0);
 	}
 
 	public void dispose()

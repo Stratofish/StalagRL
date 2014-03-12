@@ -19,5 +19,7 @@ public enum EventType
   evtStartScreen,
   evtGameQuit,
   evtQuitConfirm,
-  evtResize
+  evtResize,
+  evtTimeIncrease,
+  evtGlobalLightLevel
 }

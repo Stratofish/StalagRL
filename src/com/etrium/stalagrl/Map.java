@@ -16,10 +16,14 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.etrium.stalagrl.Assets;
 import com.etrium.stalagrl.character.Character;
+import com.etrium.stalagrl.system.EtriumEvent;
+import com.etrium.stalagrl.system.EventListener;
+import com.etrium.stalagrl.system.EventManager;
+import com.etrium.stalagrl.system.EventType;
+import com.etrium.stalagrl.Assets;
 
-public class Map
+public class Map implements EventListener
 {
 	public final static int FLOOR_DIRT = 1;
 	public final static int FLOOR_PLANKS = 2;
@@ -48,6 +52,8 @@ public class Map
 	public Texture barbedWireTexture;
 	protected Texture textures[];
 	protected long timestamp = 0; 
+	
+	protected EventManager evtMgr = new EventManager();
 
 	public Map(int p_width, int p_height)
 	{
@@ -259,6 +265,8 @@ public class Map
 		}*/
 		
 		timestamp = System.currentTimeMillis() % 1000;
+		
+		evtMgr.RegisterListener(this, EventType.evtGlobalLightLevel);
 	}
 	
 	public void SetCamera(Camera p_camera)
@@ -346,5 +354,32 @@ public class Map
 			else
 				record.ShowRoof();
 		}
+	}
+
+	@Override
+	public boolean ReceiveEvent(EtriumEvent p_event)
+	{
+		if (p_event.type == EventType.evtGlobalLightLevel)
+		{
+			float level = (float)p_event.data;
+			environment.set(new ColorAttribute(ColorAttribute.AmbientLight, level, level, level, 1.0f));
+			return false;
+		}
+		
+		return false;
+	}
+
+	@Override
+	public void StartListening()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void StopListening()
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }
