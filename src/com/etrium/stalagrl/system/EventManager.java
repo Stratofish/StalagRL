@@ -76,7 +76,7 @@ public class EventManager
             handled = listener.listener.ReceiveEvent(evt);
           }
         }
-        
+        evt = null;
         eItr.remove();
       }
       eventsRunning = false;
@@ -113,6 +113,8 @@ public class EventManager
           handled = listener.listener.ReceiveEvent(p_event);
         }
       }
+      
+      p_event = null;
     } else
     {
       if (!eventsRunning)

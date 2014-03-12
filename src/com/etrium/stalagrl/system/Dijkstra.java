@@ -40,14 +40,14 @@ import com.etrium.stalagrl.MapCell;
 
 public class Dijkstra
 {
-  protected MapCell graph[][];
+  protected MapCell map[][];
   protected int width;
   protected int height;
   protected int nodeCount;
   
   public Dijkstra( MapCell floorMap[][], int p_width, int p_height)
   {
-    graph = floorMap;
+    map = floorMap;
     width = p_width;
     height = p_height;
     nodeCount = width * height;
@@ -73,24 +73,26 @@ public class Dijkstra
         node.neighbours[1] = -1;
         node.neighbours[2] = -1;
         node.neighbours[3] = -1;
-        
-        if (y < (height-1)) 
+
+        if ((y < (height-1)) &&
+        	((map[x][y].collision & MapCell.NORTH) == 0) &&
+        	((map[x][y+1].collision & MapCell.SOUTH) == 0))
           node.neighbours[0] = ((y+1) * width) + x;
                 
-        if (y > 0) 
+        if ((y > 0) &&
+        	((map[x][y].collision & MapCell.SOUTH) == 0) &&
+            ((map[x][y-1].collision & MapCell.NORTH) == 0))
           node.neighbours[1] = ((y-1) * width) + x;
                 
-        if (x < (width-1)) 
+        if ((x < (width-1)) &&
+        	((map[x][y].collision & MapCell.EAST) == 0) &&
+            ((map[x+1][y].collision & MapCell.WEST) == 0))
           node.neighbours[2] = (y * width) + (x + 1);
         
-        if (x > 0) 
+        if ((x > 0) &&
+        	((map[x][y].collision & MapCell.WEST) == 0) &&
+            ((map[x-1][y].collision & MapCell.EAST) == 0))
           node.neighbours[3] = (y * width) + (x - 1);
-         
-        
-        if ((x == 5) && (y == 0))
-        {
-        	node.neighbours[2] = -1;
-        }
         
         dist[(y * width) + x] = 0xfffffff;
         q[(y * width) + x] = node;
@@ -149,14 +151,13 @@ public class Dijkstra
       nodesLeft--;
     }      
     
+    
+    
     ArrayList<Vector2> s = new ArrayList<Vector2>();
     
     int u = (y2 * width) + x2;
     
-    Vector2 vec = new Vector2();
-    vec.x = q[u].x;
-    vec.y = q[u].y;
-    s.add(0, vec);
+    Vector2 vec;
         
     while (previous[u] != -1)
     {
@@ -165,6 +166,14 @@ public class Dijkstra
       vec.y = q[previous[u]].y;
       s.add(0, vec);
       u = previous[u];
+    }
+    
+    if (s.size() > 0)
+    {
+    	vec = new Vector2();
+        vec.x = q[u].x;
+        vec.y = q[u].y;
+        s.add(0, vec);
     }
     
     return s;       

@@ -162,12 +162,12 @@ public class PowCamps implements EventListener
         
         //batch.setProjectionMatrix(camera.combined);
         modelBatch.begin(camera);
-            map.Render(modelBatch, player);
-            player.Render(modelBatch);
-            for (int i = 0; i < POW_COUNT; i++)
-    		{
-            	pows[i].Render(modelBatch);
-    		}
+        map.Render(modelBatch, player);
+        player.Render(modelBatch);
+        for (int i = 0; i < POW_COUNT; i++)
+		{
+        	pows[i].Render(modelBatch);
+		}
         modelBatch.end();
         
         //ScissorStack.popScissors();

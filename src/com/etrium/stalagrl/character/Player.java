@@ -132,9 +132,9 @@ public class Player extends Character implements EventListener
 		{
 			if (upClear())
 			{
-				upHeld = false;
 				y++;
 			}
+			upHeld = false;
 			newRot = 180.0f;
 			handled = true;
 		}
@@ -143,9 +143,9 @@ public class Player extends Character implements EventListener
 		{
 			if (downClear())
 			{
-				downHeld = false;
 				y--;			  
 			}
+			downHeld = false;
 			newRot = 0.0f;
 			handled = true;
 		}
@@ -154,9 +154,9 @@ public class Player extends Character implements EventListener
 		{
 			if (leftClear())
 			{
-				leftHeld = false;
 				x--;
 			}
+			leftHeld = false;
 			newRot = 270.0f;
 			handled = true;
 		}
@@ -165,9 +165,9 @@ public class Player extends Character implements EventListener
 		{ 
 			if (rightClear())
 			{		
-				rightHeld = false;
 				x++;
 			}
+			rightHeld = false;
 			newRot = 90.0f;
 			handled = true;
 		}

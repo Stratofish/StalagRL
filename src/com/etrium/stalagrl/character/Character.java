@@ -124,6 +124,8 @@ public class Character implements EventListener
 			if (y2 > 55) y2 = 55;
 			
 			currentPath = dj.shortestPath(x, y, x2, y2);
+			
+			dj = null;
 		}
 		
 		if ((currentPath != null) &&
