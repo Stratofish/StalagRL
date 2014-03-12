@@ -39,7 +39,7 @@ public class Character implements EventListener
 	
 	protected Map map = null;
 	
-	protected AssetManager assets;
+	//protected AssetManager assets;
 	protected Environment environment;
 	protected ModelInstance instance = null;
 	protected EventManager evtMgr = new EventManager();
@@ -63,9 +63,9 @@ public class Character implements EventListener
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1.0f, 1.0f, 1.0f, 1.0f));
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1.0f, -0.8f, -0.2f));
 		
-		assets = new AssetManager();
-		assets.load(Assets.modelPlayer, Model.class);
-		assets.finishLoading();
+		//assets = new AssetManager();
+		//assets.load(Assets.modelPlayer, Model.class);
+		//assets.finishLoading();
 		
 		evtMgr.RegisterListener(this, EventType.evtGlobalLightLevel);
 	}
@@ -149,9 +149,9 @@ public class Character implements EventListener
 		assert map != null;
 		
 		if ((instance == null) &&
-			(assets.update()))
+			(map.assets.update()))
 		{
-			instance = new ModelInstance(assets.get(Assets.modelPlayer, Model.class));
+			instance = new ModelInstance(map.assets.get(Assets.modelPlayer, Model.class));
 			
 			instance.transform.translate(x+0.5f, y+0.5f, z);
 		}

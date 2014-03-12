@@ -68,6 +68,7 @@ public class Map implements EventListener
 		assets.load(Assets.modelTower, Model.class);
 		assets.load(Assets.modelWall1, Model.class);
 		assets.load(Assets.modelBarbedWire, Model.class);
+		assets.load(Assets.modelPlayer, Model.class);
 		assets.finishLoading();
 		
 		environment = new Environment();

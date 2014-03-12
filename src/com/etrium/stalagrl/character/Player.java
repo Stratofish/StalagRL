@@ -37,9 +37,9 @@ public class Player extends Character implements EventListener
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1.0f, 1.0f, 1.0f, 1.0f));
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1.0f, -0.8f, -0.2f));
 		
-		assets = new AssetManager();
-		assets.load(Assets.modelPlayer, Model.class);
-		assets.finishLoading();
+		//assets = new AssetManager();
+		//assets.load(Assets.modelPlayer, Model.class);
+		//assets.finishLoading();
 		
 		evtMgr.RegisterListener(this, EventType.evtControlUp);
 		evtMgr.RegisterListener(this, EventType.evtControlDown);
@@ -173,7 +173,7 @@ public class Player extends Character implements EventListener
 		}
 		
 		if ((handled) &&
-			(assets.update()))
+			(map.assets.update()))
 		{
 			float movZ = z;
 			z = map.floorMap[(int)x][(int)y].floorLevel;
