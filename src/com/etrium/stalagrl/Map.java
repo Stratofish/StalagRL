@@ -16,8 +16,10 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.etrium.stalagrl.Assets;
+import com.badlogic.gdx.math.Vector2;
 import com.etrium.stalagrl.character.Character;
+import com.etrium.stalagrl.Assets;
+import com.etrium.stalagrl.system.Dijkstra;
 
 public class Map
 {
@@ -200,7 +202,7 @@ public class Map
 				mc.type = FLOOR_DIRT;
 				floorMap[w][h] = mc;
 			}
-		}
+		} 
 		
 		/* Cycle through regions and copy collision map over to floor map */
 		for (int r = 0; r < regionRecords.size(); r++)
@@ -247,6 +249,17 @@ public class Map
 		floorTiles = new ModelInstance[width][height];
 		
 		MakeModels();
+		
+		/* Test code here */
+		Dijkstra dj = new Dijkstra(floorMap, width, height);
+		List sh = dj.shortestPath(0, 0, 6, 0);
+			
+		for (int i = 0; i < sh.size(); i++)
+		{
+		  Vector2 vec = (Vector2) sh.get(i);
+		  floorMap[(int) vec.x][(int) vec.y].type = FLOOR_STONES;
+		}
+		
 		timestamp = System.currentTimeMillis() % 1000;
 	}
 	
