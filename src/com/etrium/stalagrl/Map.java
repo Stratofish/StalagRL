@@ -34,8 +34,8 @@ public class Map implements EventListener
 	public Object mapWindow;
 	public String curLevel;
 	
-	protected int width = 1;
-	protected int height = 1;
+	public int width = 1;
+	public int height = 1;
 	
 	private Camera camera = null;
 	private ModelInstance floorTiles[][];

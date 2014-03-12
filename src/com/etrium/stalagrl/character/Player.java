@@ -121,7 +121,7 @@ public class Player extends Character implements EventListener
   }
 	
 	@Override
-	public void DoControl()
+	public boolean DoControl()
 	{
 		boolean handled = false;
 		
@@ -190,7 +190,11 @@ public class Player extends Character implements EventListener
 			evt.type = EventType.evtTimeIncrease;
 			evt.data = null;
 			evtMgr.SendEvent(evt, false);
+			
+			return true;
 		}
+		
+		return false;
 	}
 	
 	public void CenterMapWindowOnPlayer()

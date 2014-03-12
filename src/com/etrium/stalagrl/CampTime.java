@@ -12,7 +12,7 @@ public class CampTime implements EventListener
 	private static final int DARK_STARTS = 19;
 	private static final int DARK_ENDS = 7;
 	private static final float DAY_LIGHT = 1.0f;
-	private static final float NIGHT_LIGHT = 0.4f;
+	private static final float NIGHT_LIGHT = 0.2f;
 	
 	public int hour = 9;
 	public int minute = 0;

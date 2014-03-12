@@ -143,17 +143,13 @@ public class PowCamps implements EventListener
             keyMap.CheckKeys();
         }
 
-        //boolean playerAction = player.DoControl();
-        
-        // Only update map stuff if player had a turn
-        //if (playerAction)
-        //{
-        //  map.update();
-        //  playerAction = false;
-        //}
-        
-
-        player.DoControl();
+        if (player.DoControl())
+        {
+	        for (int i = 0; i < POW_COUNT; i++)
+			{
+	        	pows[i].DoControl();
+			}
+        }
         player.CenterMapWindowOnPlayer();
         
         inventory.DoControl();

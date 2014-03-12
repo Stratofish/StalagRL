@@ -1,5 +1,7 @@
 package com.etrium.stalagrl.character;
 
+import java.util.List;
+
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -7,9 +9,11 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.math.Vector2;
 import com.etrium.stalagrl.Assets;
 import com.etrium.stalagrl.Map;
 import com.etrium.stalagrl.MapCell;
+import com.etrium.stalagrl.system.Dijkstra;
 import com.etrium.stalagrl.system.EtriumEvent;
 import com.etrium.stalagrl.system.EventListener;
 import com.etrium.stalagrl.system.EventManager;
@@ -39,6 +43,8 @@ public class Character implements EventListener
 	protected Environment environment;
 	protected ModelInstance instance = null;
 	protected EventManager evtMgr = new EventManager();
+	
+	protected List<Vector2> currentPath = null;
 	
 	public Character()
 	{
@@ -103,8 +109,37 @@ public class Character implements EventListener
 		SetPosition(x,  y,  z);
 	}
 	
-	public void DoControl()
+	public boolean DoControl()
 	{
+		if ((currentPath == null) &&
+			(Math.random() > 0.9))
+		{
+			Dijkstra dj = new Dijkstra(map.floorMap, map.width, map.height);
+			int x2 = x + (int) (10 * (Math.random())) - 5;
+			int y2 = y + (int) (10 * (Math.random())) - 5;
+			
+			if (x2 < 5) x2 = 5;
+			if (x2 > 55) x2 = 55;
+			if (y2 < 5) y2 = 5;
+			if (y2 > 55) y2 = 55;
+			
+			currentPath = dj.shortestPath(x, y, x2, y2);
+		}
+		
+		if ((currentPath != null) &&
+			(currentPath.size() != 0))
+		{
+			Vector2 target = currentPath.get(0);
+			currentPath.remove(0);
+			x = (int)target.x;
+			y = (int)target.y;
+			SetPosition(x,  y,  z);
+			
+			if (currentPath.size() == 0)
+				currentPath = null;
+		}
+		
+		return true;
 	}
 	
 	public void Render(ModelBatch batch)

@@ -119,6 +119,12 @@ public class Dijkstra
         break;
       }
       
+      if ((q[u].x == x2) &&
+    	  (q[u].y == y2))
+      {
+    	  break;
+      }
+      
       if (dist[u] == 0xfffffff)
       {       
         break;
