@@ -204,14 +204,6 @@ public class Map
 			}
 		} 
 		
-		environment = new Environment();
-		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1.0f));
-		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1.0f, -0.8f, -0.2f));
-		
-		assets = new AssetManager();
-		assets.load(Assets.modelFloor, Model.class);
-		assets.finishLoading();
-		
 		/* Cycle through regions and copy collision map over to floor map */
 		for (int r = 0; r < regionRecords.size(); r++)
 			regionRecords.get(r).AddCollisionData();
@@ -259,14 +251,14 @@ public class Map
 		MakeModels();
 		
 		/* Test code here */
-		Dijkstra dj = new Dijkstra(floorMap, width, height);
+/*		Dijkstra dj = new Dijkstra(floorMap, width, height);
 		List<Vector2> sh = dj.shortestPath(0, 0, 6, 0);
 			
 		for (int i = 0; i < sh.size(); i++)
 		{
 		  Vector2 vec = (Vector2) sh.get(i);
 		  floorMap[(int) vec.x][(int) vec.y].type = FLOOR_STONES;
-		}
+		}*/
 		
 		timestamp = System.currentTimeMillis() % 1000;
 	}

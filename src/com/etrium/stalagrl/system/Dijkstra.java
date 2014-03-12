@@ -6,6 +6,8 @@ import java.util.List;
 import com.badlogic.gdx.math.Vector2;
 import com.etrium.stalagrl.MapCell;
 
+ //From wikipedia - http://en.wikipedia.org/wiki/Dijkstra's_algorithm
+ //
  //function Dijkstra(Graph, source):
  //2      for each vertex v in Graph:                                // Initializations
  //3          dist[v]  := infinity ;                                  // Unknown distance function from 
@@ -140,16 +142,6 @@ public class Dijkstra
       q[u].done = true;
       nodesLeft--;
     }      
-    
-    for (int a = 0; a < nodeCount; a++)
-    {    
-      System.out.print(dist[a] + ", ");
-      if (a % width == (width-1))
-      {
-        System.out.println();
-      }
-    }
-    
     
     ArrayList<Vector2> s = new ArrayList<Vector2>();
     
