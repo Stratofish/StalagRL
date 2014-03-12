@@ -129,7 +129,7 @@ public class PowCamps implements EventListener
 		inventory.AddItem(new Item( ItemType.CROWBAR));
 		inventory.AddItem(new Item( ItemType.KEY));
 		
-		campTime.SetTime(6, 30);
+		campTime.SetTime(6, 00);
 	}
 
 	public void dispose()

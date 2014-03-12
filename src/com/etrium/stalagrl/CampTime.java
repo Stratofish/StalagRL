@@ -19,7 +19,6 @@ public class CampTime implements EventListener
 	public int hour = 9;
 	public int minute = 0;
 	protected int unifiedTime = 0;
-	protected int minuteFraction = 1000 / 60; 
 	protected EventManager evtMgr = new EventManager();
 	
 	protected ArrayList<Activity> activities;
@@ -35,17 +34,22 @@ public class CampTime implements EventListener
 		activities = new ArrayList<Activity>();
 		
 		Activity activity = new Activity();
-		activity.startTime = 7480;
-		activity.leadTime = 480;
-		activity.name = "Breakfast";
+		activity.startTime = 7000;
+		activity.leadTime = 500;
+		activity.name = "Morning roll call";
+		activities.add(activity);
 		
+		activity = new Activity();
+		activity.startTime = 8000;
+		activity.leadTime = 500;
+		activity.name = "Breakfast";
 		activities.add(activity);
 	}
 	
 	int GetUnifiedTime()
 	{
-		unifiedTime = (hour * 1000) + (minuteFraction * minute);
-		
+		unifiedTime = (hour * 1000) + (int)(minute * 16.6667f);
+		System.out.println(unifiedTime);
 		return unifiedTime;
 	}
 	
@@ -83,20 +87,20 @@ public class CampTime implements EventListener
 		// Dusk
 		if (hour == DARK_STARTS)
 		{
-			float part = minuteFraction * (float)minute;
+			int part = (int)(minute * 16.6667f);
 			float range = DAY_LIGHT - NIGHT_LIGHT;
 			
-			customLightLevel = DAY_LIGHT - (part * range);
+			customLightLevel = DAY_LIGHT - ((part * range) / 1000.0f);
 			customLight = true;
 		}
 		
 		// Dawn
 		if (hour == DARK_ENDS-1)
 		{
-			float part = minuteFraction * (float)minute;
+			int part = (int)(minute * 16.6667f);
 			float range = DAY_LIGHT - NIGHT_LIGHT;
 			
-			customLightLevel = (part * range) + NIGHT_LIGHT;
+			customLightLevel = ((part * range) / 1000.0f) + NIGHT_LIGHT;
 			customLight = true;
 		}
 		
@@ -130,11 +134,6 @@ public class CampTime implements EventListener
 		Activity currentActivity = null; 
 		EventType evtType = EventType.evtNull;
 		
-		if (time == 7480)
-		{
-			int r = 12;
-		}
-		
 		int size = activities.size();
 		for (int i = 0; i < size; i++)
 		{
@@ -148,7 +147,6 @@ public class CampTime implements EventListener
 			{
 				currentActivity = activity;
 				evtType = EventType.evtActivityStart;
-				System.out.println("dd");
 			}
 			else if (time == (activity.startTime + activity.length))
 			{
