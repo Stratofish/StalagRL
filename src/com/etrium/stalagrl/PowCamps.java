@@ -28,7 +28,8 @@ import com.etrium.stalagrl.system.EventManager;
 
 public class PowCamps implements EventListener
 {
-
+	private static final int POW_COUNT = 20;
+	
 	private EventManager evtMgr;
 	private KeyMap keyMap;
 	private Map map;
@@ -48,7 +49,7 @@ public class PowCamps implements EventListener
 	private TextButton quitNoButton = null;
 	private boolean quitDialogVisible = false;
 	protected Player player = null;
-	protected Character pow = null;
+	protected Character pows[] = new Character[POW_COUNT];
 	
 	protected CampTime campTime = new CampTime();
 	
@@ -111,8 +112,13 @@ public class PowCamps implements EventListener
 		player.SetCamera(camera);
 		player.SetMap(map);
 		
-		pow = new Character(25, 20);
-		pow.SetMap(map);
+		for (int i = 0; i < POW_COUNT; i++)
+		{
+			int x = (int) (5 + (Math.random() * 50));
+			int y = (int) (5 + (Math.random() * 50));
+			pows[i] = new Character(x, y);
+			pows[i].SetMap(map);
+		}
 		
 		InventoryHandler inventoryHandler = new InventoryHandler( guiStage, guiSkin);  
 		inventory = new Inventory( 5, inventoryHandler);
@@ -162,7 +168,10 @@ public class PowCamps implements EventListener
         modelBatch.begin(camera);
             map.Render(modelBatch, player);
             player.Render(modelBatch);
-            pow.Render(modelBatch);
+            for (int i = 0; i < POW_COUNT; i++)
+    		{
+            	pows[i].Render(modelBatch);
+    		}
         modelBatch.end();
         
         //ScissorStack.popScissors();
