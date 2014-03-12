@@ -154,13 +154,6 @@ public class PowCamps implements EventListener
         
         inventory.DoControl();
         
-        //Rectangle scissors = new Rectangle();
-        //Rectangle clipBounds = new Rectangle((map.mapWindow.x)-(1024-640-85) - (1024/2),
-        //                                     (map.mapWindow.y)-(768-640+420)-(768/2),640,640);
-        //ScissorStack.calculateScissors(camera, batch.getTransformMatrix(), clipBounds, scissors);
-        //ScissorStack.pushScissors(scissors);
-        
-        //batch.setProjectionMatrix(camera.combined);
         modelBatch.begin(camera);
         map.Render(modelBatch, player);
         player.Render(modelBatch);
@@ -170,16 +163,11 @@ public class PowCamps implements EventListener
 		}
         modelBatch.end();
         
-        //ScissorStack.popScissors();
-
         levelLabel.setText("* * * Dungeon level "+map.curLevel+" * * *");
         
         logScrollPane.setScrollPercentY(100.0f);
         guiStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         guiStage.draw();
-        
-        //tooltip.Update();
-        //tooltip.UpdateGear();		
 	}
 
 	public void ShowQuitDialog()
