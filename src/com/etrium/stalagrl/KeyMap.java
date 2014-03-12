@@ -27,7 +27,9 @@ public class KeyMap
     protected boolean inventory4Held = false;
     protected boolean inventory5Held = false;    
     protected boolean inventoryBackHeld = false;
-    protected boolean inventoryFWDHeld = false;                 
+    protected boolean inventoryFWDHeld = false; 
+    
+    protected boolean useHeld = false;
     
     public KeyMap()
     {
@@ -137,31 +139,6 @@ public class KeyMap
                 evtMgr.SendEvent(evt,  true);
                 
                 rightHeld = false;
-            }
-        }
-        
-        // Space
-        if (Gdx.input.isKeyPressed(Keys.SPACE))
-        {
-            if (!spaceHeld)
-            {
-                EtriumEvent evt = new EtriumEvent();
-                evt.type = EventType.evtControlDown;
-                evt.data = (Object)ControlType.SPACE;
-                evtMgr.SendEvent(evt,  true);
-                
-                spaceHeld = true;
-            }
-        } else
-        {
-            if (spaceHeld)
-            {
-                EtriumEvent evt = new EtriumEvent();
-                evt.type = EventType.evtControlUp;
-                evt.data = (Object)ControlType.SPACE;
-                evtMgr.SendEvent(evt,  true);
-                
-                spaceHeld = false;
             }
         }
 
@@ -339,7 +316,33 @@ public class KeyMap
                 inventoryFWDHeld = false;
             }
         }
+                       
+        // Use key
+        if (Gdx.input.isKeyPressed(Keys.SPACE) ||
+            Gdx.input.isKeyPressed(Keys.E))
+        {
+            if (!useHeld)
+            {
+                EtriumEvent evt = new EtriumEvent();
+                evt.type = EventType.evtControlDown;
+                evt.data = (Object)ControlType.USE;
+                evtMgr.SendEvent(evt,  true);
                 
+                useHeld = true;
+            }
+        } else
+        {
+            if (useHeld)
+            {
+                EtriumEvent evt = new EtriumEvent();
+                evt.type = EventType.evtControlUp;
+                evt.data = (Object)ControlType.USE;
+                evtMgr.SendEvent(evt,  true);
+                
+                useHeld = false;
+            }
+        }
+        
         // God mode
         if (Gdx.input.isKeyPressed(Keys.F1))
         {

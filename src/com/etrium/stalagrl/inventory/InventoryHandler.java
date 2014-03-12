@@ -1,7 +1,11 @@
-package com.etrium.stalagrl;
+package com.etrium.stalagrl.inventory;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.jws.soap.SOAPBinding.Use;
+
+import org.lwjgl.Sys;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,14 +19,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.etrium.stalagrl.Assets;
+import com.etrium.stalagrl.inventory.Inventory;
 import com.etrium.stalagrl.system.ControlType;
 import com.etrium.stalagrl.system.EtriumEvent;
 import com.etrium.stalagrl.system.EventListener;
 import com.etrium.stalagrl.system.EventManager;
 import com.etrium.stalagrl.system.EventType;
-import com.etrium.stalagrl.Inventory;
 
-public class InventoryRenderer implements EventListener
+public class InventoryHandler implements EventListener
 {
   public class ItemData
   {      
@@ -39,6 +44,7 @@ public class InventoryRenderer implements EventListener
   protected boolean inventory5Held = false;    
   protected boolean inventoryBackHeld = false;
   protected boolean inventoryFWDHeld = false;
+  protected boolean UseHeld = false;
   
   private EventManager evtMgr = new EventManager();
   private boolean listening = true;
@@ -53,7 +59,7 @@ public class InventoryRenderer implements EventListener
   /* Start off pointing at first entry */
   int selected;
   
-  public InventoryRenderer( Stage p_stage, Skin p_skin)
+  public InventoryHandler( Stage p_stage, Skin p_skin)
   {
     stage = p_stage;
     skin = p_skin;
@@ -212,6 +218,14 @@ public class InventoryRenderer implements EventListener
       handled = true;
     }    
 
+    if (UseHeld)
+    {
+      UseHeld = false;
+      
+      System.out.println("Use");
+      handled = true;
+    }
+    
     if (handled)      
       Update();
   }
@@ -273,6 +287,12 @@ public class InventoryRenderer implements EventListener
                       handled = true;
                       break;
                     }
+                    case USE:
+                    {
+                      UseHeld = false;
+                      handled = true;
+                      break;
+                    }
                 }
                 
                 if (handled)
@@ -327,6 +347,12 @@ public class InventoryRenderer implements EventListener
                   case INVENTORYFWD:
                   {
                     inventoryFWDHeld = true;
+                    handled = true;
+                    break;
+                  }
+                  case USE:
+                  {
+                    UseHeld = true;
                     handled = true;
                     break;
                   }

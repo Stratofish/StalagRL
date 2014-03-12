@@ -16,8 +16,8 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.etrium.stalagrl.character.Character;
 import com.etrium.stalagrl.Assets;
+import com.etrium.stalagrl.character.Character;
 
 public class Map
 {

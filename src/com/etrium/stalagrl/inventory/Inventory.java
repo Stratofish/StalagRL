@@ -1,11 +1,11 @@
-package com.etrium.stalagrl;
+package com.etrium.stalagrl.inventory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Inventory
 { 
-  private InventoryRenderer renderer = null;  
+  private InventoryHandler inventoryHandler = null;  
   
   public List<Item> items = new ArrayList<Item>();  
   
@@ -24,12 +24,12 @@ public class Inventory
     init( p_maxItems);
   }
   
-  public Inventory(int p_maxItems, InventoryRenderer p_renderer)
+  public Inventory(int p_maxItems, InventoryHandler p_handler)
   {
     init( p_maxItems);
 
-    renderer = p_renderer;
-    renderer.SetInventory(this);
+    inventoryHandler = p_handler;
+    inventoryHandler.SetInventory(this);
   }
 
   public int GetItemCount()
@@ -47,8 +47,8 @@ public class Inventory
     if (items.size() < 6)
     {
       items.add(p_item);    
-      if (renderer != null) 
-        renderer.Update();
+      if (inventoryHandler != null) 
+        inventoryHandler.Update();
       return true;
     }
     
@@ -83,7 +83,7 @@ public class Inventory
   
   public void DoControl()
   {
-    if (renderer != null)
-      renderer.DoControl();
+    if (inventoryHandler != null)
+      inventoryHandler.DoControl();
   }
 }
