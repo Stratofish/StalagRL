@@ -37,23 +37,29 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Dijkstra
 {
-  protected int graph[][]; 
+  protected int graph[][];
+  protected int width;
+  protected int height;
+  protected int nodeCount;
   
-  public Dijkstra( int floorMap[][])
+  public Dijkstra( int floorMap[][], int p_width, int p_height)
   {
     graph = floorMap;
+    width = p_width;
+    height = p_height;
+    nodeCount = width * height;
   }
   
-  public List shortestPath( int x1, int y1, int x2, int y2)
+  public List<Vector2> shortestPath( int x1, int y1, int x2, int y2)
   {
-    int dist[] = new int[10*10];
-    int previous[] = new int[10*10];
+    int dist[] = new int[nodeCount];
+    int previous[] = new int[nodeCount];
     
-    DijkstraNode q[] = new DijkstraNode[10*10]; 
+    DijkstraNode q[] = new DijkstraNode[nodeCount]; 
     
-    for (int y = 0; y < 10; y++)
+    for (int y = 0; y < height; y++)
     {      
-      for (int x = 0; x < 10; x++)
+      for (int x = 0; x < width; x++)
       {
         DijkstraNode node =  new DijkstraNode();
         node.x = x;
@@ -65,44 +71,50 @@ public class Dijkstra
         node.neighbours[2] = -1;
         node.neighbours[3] = -1;
         
-        if (y < 9) 
-          node.neighbours[0] = ((y+1) * 10) + x;
+        if (y < (height-1)) 
+          node.neighbours[0] = ((y+1) * width) + x;
                 
         if (y > 0) 
-          node.neighbours[1] = ((y-1) * 10) + x;
+          node.neighbours[1] = ((y-1) * width) + x;
                 
-        if (x < 9) 
-          node.neighbours[2] = (y * 10) + (x + 1);
+        if (x < (width-1)) 
+          node.neighbours[2] = (y * width) + (x + 1);
         
         if (x > 0) 
-          node.neighbours[3] = (y * 10) + (x - 1);
+          node.neighbours[3] = (y * width) + (x - 1);
          
-        dist[(y * 10) + x] = 0xfffffff;
-        q[(y * 10) + x] = node;
-        previous[(y * 10) + x] = -1; 
+        
+        if ((x == 5) && (y == 0))
+        {
+        	node.neighbours[2] = -1;
+        }
+        
+        dist[(y * width) + x] = 0xfffffff;
+        q[(y * width) + x] = node;
+        previous[(y * width) + x] = -1; 
       }
     }
     
-    dist[(y1 * 10) + x1] = 0;
+    dist[(y1 * width) + x1] = 0;
     
-    int nodesLeft = 10 * 10;
+    int nodesLeft = nodeCount;
     while (nodesLeft > 0)
     {
       int u = -1;
       int udist = 0xfffffff;
       
-      for (int i = 0; i < 10*10; i++)
+      for (int i = 0; i < nodeCount; i++)
       {
-        if ((dist[i] < udist) && (!q[i].done))
-          u = i;
+    	  if ((dist[i] < udist) && (!q[i].done))
+    	  {
+    		  u = i;
+    		  udist = dist[i];
+    	  }
       }
-      
+
       if (u == -1){      
         break;
       }
-      
-      q[u].done = true;
-      nodesLeft--;
       
       if (dist[u] == 0xfffffff)
       {       
@@ -112,7 +124,7 @@ public class Dijkstra
       for (int v = 0; v < 4; v++)
       {
         int neighbour = q[u].neighbours[v];
-        
+       
         if (neighbour != -1)
         {          
           int alt = dist[u] + 1;    
@@ -123,21 +135,24 @@ public class Dijkstra
           }
         }               
       }
+      
+      q[u].done = true;
+      nodesLeft--;
     }      
     
-    for (int a = 0; a < 10 * 10; a++)
+    for (int a = 0; a < nodeCount; a++)
     {    
       System.out.print(dist[a] + ", ");
-      if (a % 10 == 9)
+      if (a % width == (width-1))
       {
         System.out.println();
       }
     }
     
     
-    List s = new ArrayList<Vector2>();
+    ArrayList<Vector2> s = new ArrayList<Vector2>();
     
-    int u = (y2 * 10) + x2;
+    int u = (y2 * width) + x2;
     
     Vector2 vec = new Vector2();
     vec.x = q[u].x;

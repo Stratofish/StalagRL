@@ -113,8 +113,8 @@ public class Map
 		} 
 		
 		/* Test code here */
-    Dijkstra dj = new Dijkstra(floorMap);
-    List sh = dj.shortestPath(0, 0, 7, 7);
+    Dijkstra dj = new Dijkstra(floorMap, width, height);
+    List sh = dj.shortestPath(0, 0, 6, 0);
 		
     for (int i = 0; i < sh.size(); i++)
     {
