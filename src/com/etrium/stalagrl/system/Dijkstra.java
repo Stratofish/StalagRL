@@ -45,61 +45,79 @@ public class Dijkstra
   protected int height;
   protected int nodeCount;
   
+  protected static int dist[] = null;
+  protected static int previous[] = null;
+  protected static DijkstraNode q[] = null;
+  
   public Dijkstra( MapCell floorMap[][], int p_width, int p_height)
   {
     map = floorMap;
     width = p_width;
     height = p_height;
     nodeCount = width * height;
+    
+    if (q == null)
+    {
+    	dist = new int[nodeCount];
+        previous = new int[nodeCount];
+        q = new DijkstraNode[nodeCount];
+        
+        RebuildCollisionTable();
+    }
+  }
+  
+  public void RebuildCollisionTable()
+  {
+	  for (int y = 0; y < height; y++)
+	  {      
+	      for (int x = 0; x < width; x++)
+	      {
+	        DijkstraNode node =  new DijkstraNode();
+	        node.x = x;
+	        node.y = y;
+	        node.neighbours = new int[4];        
+	        
+	        node.neighbours[0] = -1;
+	        node.neighbours[1] = -1;
+	        node.neighbours[2] = -1;
+	        node.neighbours[3] = -1;
+
+	        if ((y < (height-1)) &&
+	        	((map[x][y].collision & MapCell.NORTH) == 0) &&
+	        	((map[x][y+1].collision & MapCell.SOUTH) == 0))
+	          node.neighbours[0] = ((y+1) * width) + x;
+	                
+	        if ((y > 0) &&
+	        	((map[x][y].collision & MapCell.SOUTH) == 0) &&
+	            ((map[x][y-1].collision & MapCell.NORTH) == 0))
+	          node.neighbours[1] = ((y-1) * width) + x;
+	                
+	        if ((x < (width-1)) &&
+	        	((map[x][y].collision & MapCell.EAST) == 0) &&
+	            ((map[x+1][y].collision & MapCell.WEST) == 0))
+	          node.neighbours[2] = (y * width) + (x + 1);
+	        
+	        if ((x > 0) &&
+	        	((map[x][y].collision & MapCell.WEST) == 0) &&
+	            ((map[x-1][y].collision & MapCell.EAST) == 0))
+	          node.neighbours[3] = (y * width) + (x - 1);
+	        
+	        dist[(y * width) + x] = 0xfffffff;
+	        q[(y * width) + x] = node;
+	        previous[(y * width) + x] = -1; 
+	      }
+	  }
   }
   
   public List<Vector2> shortestPath( int x1, int y1, int x2, int y2)
   {
-    int dist[] = new int[nodeCount];
-    int previous[] = new int[nodeCount];
-    
-    DijkstraNode q[] = new DijkstraNode[nodeCount]; 
-    
-    for (int y = 0; y < height; y++)
-    {      
-      for (int x = 0; x < width; x++)
-      {
-        DijkstraNode node =  new DijkstraNode();
-        node.x = x;
-        node.y = y;
-        node.neighbours = new int[4];        
-        
-        node.neighbours[0] = -1;
-        node.neighbours[1] = -1;
-        node.neighbours[2] = -1;
-        node.neighbours[3] = -1;
-
-        if ((y < (height-1)) &&
-        	((map[x][y].collision & MapCell.NORTH) == 0) &&
-        	((map[x][y+1].collision & MapCell.SOUTH) == 0))
-          node.neighbours[0] = ((y+1) * width) + x;
-                
-        if ((y > 0) &&
-        	((map[x][y].collision & MapCell.SOUTH) == 0) &&
-            ((map[x][y-1].collision & MapCell.NORTH) == 0))
-          node.neighbours[1] = ((y-1) * width) + x;
-                
-        if ((x < (width-1)) &&
-        	((map[x][y].collision & MapCell.EAST) == 0) &&
-            ((map[x+1][y].collision & MapCell.WEST) == 0))
-          node.neighbours[2] = (y * width) + (x + 1);
-        
-        if ((x > 0) &&
-        	((map[x][y].collision & MapCell.WEST) == 0) &&
-            ((map[x-1][y].collision & MapCell.EAST) == 0))
-          node.neighbours[3] = (y * width) + (x - 1);
-        
-        dist[(y * width) + x] = 0xfffffff;
-        q[(y * width) + x] = node;
-        previous[(y * width) + x] = -1; 
-      }
-    }
-    
+	  for (int i = 0; i < nodeCount; i++)
+	  {
+		  dist[i] = 0xfffffff;
+		  previous[i] = -1;
+		  q[i].done = false;
+	  }
+	  
     dist[(y1 * width) + x1] = 0;
     
     int nodesLeft = nodeCount;
