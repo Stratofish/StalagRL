@@ -80,6 +80,7 @@ public class Inventory implements EventListener
         
     evtMgr.RegisterListener(this, EventType.evtControlUp);
     evtMgr.RegisterListener(this, EventType.evtControlDown);
+    evtMgr.RegisterListener(this, EventType.evtResize);
   }
 
   public boolean AddItem(Item p_item)
@@ -371,6 +372,13 @@ public class Inventory implements EventListener
                 }
                 
         break;
+      }
+      case evtResize:
+      {
+    	  window.setPosition((Gdx.graphics.getWidth() - 350) / 2, 5);
+    	  
+    	  // Let other receivers get this event
+    	  return false;
       }
     }
     

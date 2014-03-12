@@ -3,7 +3,6 @@ package com.etrium.stalagrl;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultShaderProvider;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -86,11 +85,13 @@ public class PowCamps implements EventListener
         evtMgr.RegisterListener(this, EventType.evtControlUp);
         evtMgr.RegisterListener(this, EventType.evtPlayerUIChanged);
         evtMgr.RegisterListener(this, EventType.evtQuitConfirm);
+        evtMgr.RegisterListener(this, EventType.evtResize);
         
         modelBatch = new ModelBatch(new DefaultShaderProvider());
         
-        camera = new OrthographicCamera(20, 20);
-        //camera = new PerspectiveCamera(65, 1024, 768);
+        float ar = ((float)Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth()) * 1.5f;
+        
+        camera = new OrthographicCamera(20, 18*ar);
 		camera.position.set(-4.0f, -4.0f, 6.0f);
 		camera.lookAt(0.0f, 0.0f, 0.0f);
 		camera.up.x = 0.0f;
@@ -98,7 +99,7 @@ public class PowCamps implements EventListener
 		camera.up.z = 1.0f;
 		camera.near = -50.0f;
 		camera.far = 1000.0f;
-		camera.update();
+		camera.update(true);
 		
 		map = new Map(100, 100);
 		map.SetCamera(camera);
@@ -120,8 +121,6 @@ public class PowCamps implements EventListener
 
 	public void dispose()
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	public void render()
@@ -176,7 +175,7 @@ public class PowCamps implements EventListener
 	public void ShowQuitDialog()
     {
         quitDialog = new Window("Really quit", guiSkin);
-        quitDialog.setPosition(350, 400);
+        quitDialog.setPosition((Gdx.graphics.getWidth()-350)/2, 400);
         quitDialog.setSize(300, 200);
         quitLabel = new Label("You will lose all progress if you\nreturn to the start screen.\nAre you sure?", guiSkin);
         quitYesButton = new TextButton("Yes, quit", guiSkin);
@@ -216,7 +215,12 @@ public class PowCamps implements EventListener
 	{
 		Gdx.gl.glViewport(0, 0, p_width, p_height);
 		guiStage.setViewport(p_width, p_height, true);
-		camera.update();
+		
+		float ar = ((float)p_height / (float)p_width) * 1.5f;
+		System.out.println(ar);
+		camera.viewportWidth = 20;
+		camera.viewportHeight = 18*ar;
+		camera.update(true);
 	}
 	
 	@SuppressWarnings("incomplete-switch")
@@ -246,6 +250,13 @@ public class PowCamps implements EventListener
                     return true;
                 }
                 break;
+			}
+			case evtResize:
+			{
+				resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+				
+				// Let other receivers get this event
+				return false;
 			}
 		}
 		

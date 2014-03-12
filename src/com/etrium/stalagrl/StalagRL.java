@@ -83,30 +83,10 @@ public class StalagRL implements ApplicationListener, EventListener
 		width = p_width;
 		height = p_height;
 		
-		switch (state)
-		{
-		    case STARTSCREEN:
-            {
-                //startScreen.resize(width, height);
-                break;
-            }
-		    case WIN:
-            {
-                //winScreen.resize(width, height);
-                break;
-            }
-		    case LOSE:
-            {
-                //loseScreen.resize(width, height);
-                break;
-            }
-		    case GAME:
-		    {
-		    	if (powCamps != null)
-		    		powCamps.resize(width, height);
-		        break;
-		    }
-		}
+		EtriumEvent evt = new EtriumEvent();
+		evt.type = EventType.evtResize;
+		evt.data = null;
+		evtMgr.SendEvent(evt,  true);
 	}
 
 	@Override

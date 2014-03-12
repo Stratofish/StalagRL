@@ -286,7 +286,7 @@ public class Map
 	{
 		assert camera != null;
 		
-		Gdx.gl.glViewport(0, 0, 1024, 768);
+		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
 		int x = player.GetX();
@@ -321,7 +321,7 @@ public class Map
 		long timeDiff = newTime - timestamp;
 		timestamp = newTime;
 		
-		System.out.println("Frame time: " + timeDiff + "ms");
+		//System.out.println("Frame time: " + timeDiff + "ms");
 	}
 	
 	public void CheckPlayerPosition(int p_x, int p_y)

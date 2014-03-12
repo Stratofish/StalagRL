@@ -18,5 +18,6 @@ public enum EventType
   evtGameLost,
   evtStartScreen,
   evtGameQuit,
-  evtQuitConfirm
+  evtQuitConfirm,
+  evtResize
 }
