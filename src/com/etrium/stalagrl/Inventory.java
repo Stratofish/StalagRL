@@ -26,54 +26,30 @@ import com.etrium.stalagrl.system.EventType;
 
 public class Inventory implements EventListener
 {
-  public class ItemData
-  {      
-    public Texture texture;
-    public TextureRegion textureRegion;
-    public Sprite token;
-    public Image image;
-    public Item item;
-    public Window tooltip;
-  }
-
   protected boolean inventory1Held = false;
   protected boolean inventory2Held = false;
   protected boolean inventory3Held = false;
   protected boolean inventory4Held = false;
   protected boolean inventory5Held = false;    
   protected boolean inventoryBackHeld = false;
-  protected boolean inventoryFWDHeld = false;  
-  
-  private EventManager evtMgr = new EventManager();
-  
-  private Stage stage;
-  private Skin skin;
-  public Window window;
-  
-  public Item items[] = new Item[5];    
-  public List<ItemData> itemData = new ArrayList<ItemData>();
-  
-  private int selected;
-  
-  private boolean listening = true;
-  
-  public Inventory(Stage p_stage, Skin p_skin)
-  {
-    stage = p_stage;
-    skin = p_skin;               
-    
-    for (int i = 0; i < 5; i++)
-    {
-      items[i] = new Item( ItemType.EMPTY);
-    }
-    itemData.clear();
-   
-    window = new Window("Inventory", skin);
-    window.setPosition((Gdx.graphics.getWidth() - 350) / 2, 5);
-    window.setSize(350, 96);
-    window.setLayoutEnabled(false);
+  protected boolean inventoryFWDHeld = false;
 
-    stage.addActor(window);
+  private EventManager evtMgr = new EventManager();
+  private InventoryRenderer renderer = null;  
+  
+  public List<Item> items = new ArrayList<Item>();  
+
+  private int selected;
+  private int maxItems;
+
+  private boolean listening = true;
+
+  private void init(int p_maxItems)
+  {     
+    maxItems = p_maxItems;
+    
+    // Initially the list will be empty
+    items.clear();
     
     /* Start off pointing at first entry */
     selected = 1;
@@ -82,85 +58,51 @@ public class Inventory implements EventListener
     evtMgr.RegisterListener(this, EventType.evtControlDown);
     evtMgr.RegisterListener(this, EventType.evtResize);
   }
-
-  public boolean AddItem(Item p_item)
+  
+  public Inventory(int p_maxItems)    
   {
-    int itemSlot = -1;
-    
-    int i = 0;
-    while (itemSlot == -1 && i < 5)
-    {
-      if (items[i].GetItemType() == ItemType.EMPTY)
-      {        
-        itemSlot = i;
-        items[i] = p_item;
-      }
-      
-      i++;
-    }
-    
-    if (itemSlot == -1)
-      return false;
-        
-    Update();
-    return true;
+    init( p_maxItems);
   }
   
-  public void Update()
+  public Inventory(int p_maxItems, InventoryRenderer p_renderer)
   {
-    window.clear();
-    itemData.clear();
+    init( p_maxItems);
 
-    for (int i = 0; i < 5; i++)
-    {                                      
-      Item item = items[i];
-      
-      ItemData id = new ItemData();
-      
-      id.texture = new Texture(Gdx.files.internal(item.GetIconName()));
-      id.texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-      id.textureRegion = new TextureRegion(id.texture, 0, 0, 64, 64);            
-        
-      id.token = new Sprite(id.textureRegion);
-      id.token.setSize(48, 48);
-      id.token.setOrigin(0, 0);
-        
-      Drawable img = new SpriteDrawable(id.token);
-      id.image = new Image(img);
-      id.image.setX( 20 + (i * 66));
-      id.image.setY( 24);
-        
-      window.add(id.image);
-        
-      Label label = new Label( item.GetName(), skin);
-      label.setWidth(62);
-      label.setX( 13 + (i * 66));
-      label.setY( 5);
-      label.setAlignment(0);
-      label.setFontScale(0.80f);
-        
-      window.add(label);
-      
-      if (i + 1 == selected) 
-      {                              
-        Texture texture = new Texture(Gdx.files.internal(Assets.iconHighlight));
-        texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-        TextureRegion textureRegion = new TextureRegion(texture, 0, 0, 64, 64);            
-        
-        Sprite token = new Sprite(textureRegion);
-        token.setSize(48, 48);
-        token.setOrigin(0, 0);
-        
-        img = new SpriteDrawable(token);
-        Image image = new Image(img);
-        image.setX( 20 + (i * 66));
-        image.setY( 24);
-        
-        window.add(image);
-      }
-    }
+    renderer = p_renderer;
+    renderer.SetInventory(this);
   }
 
+  public int GetItemCount()
+  {
+    return items.size();
+  }
+
+  public int GetMaxItems()
+  {
+    return maxItems;
+  }
+  
+  public int GetSelected()
+  {
+    return selected;
+  }
+  
+  public boolean AddItem(Item p_item)
+  {
+    if (items.size() < 6)
+    {
+      items.add(p_item);    
+      if (renderer != null) 
+        renderer.Update();
+      return true;
+    }
+    
+    return false;
+  }
+  
+
+
+  /*
   public void RemoveItem(Item item)
   {
     ItemData id = null;
@@ -182,6 +124,7 @@ public class Inventory implements EventListener
     
     Update();
   }
+  */
   
   public void DoControl()
   {
@@ -245,9 +188,10 @@ public class Inventory implements EventListener
         
       handled = true;
     }    
-       
+
     if (handled)
-      Update();
+      if (renderer != null)
+        renderer.Update();
   }
   
   @SuppressWarnings("incomplete-switch")

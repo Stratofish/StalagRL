@@ -22,6 +22,7 @@ import com.etrium.stalagrl.system.EtriumEvent;
 import com.etrium.stalagrl.system.EventListener;
 import com.etrium.stalagrl.system.EventManager;
 import com.etrium.stalagrl.Inventory;
+import com.etrium.stalagrl.InventoryRenderer;
 import com.etrium.stalagrl.Item;
 import com.etrium.stalagrl.ItemType;
 
@@ -111,9 +112,9 @@ public class PowCamps implements EventListener
 		pow = new Character(25, 20);
 		pow.SetMap(map);
 		
-		inventory = new Inventory( guiStage, guiSkin);		
-		inventory.Update();
-		
+		InventoryRenderer inventoryRenderer = new InventoryRenderer( guiStage, guiSkin);  
+		inventory = new Inventory( 5, inventoryRenderer);
+
 		inventory.AddItem(new Item( ItemType.COMPASS)); 
 		inventory.AddItem(new Item( ItemType.CROWBAR));
 		inventory.AddItem(new Item( ItemType.KEY));
