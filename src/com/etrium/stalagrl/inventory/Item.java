@@ -35,9 +35,10 @@ public class Item
   
   private static final int itemDetailCount = 9; 
   
-  private ItemDetail Details;
+  private ItemDetail Details;  
+  private ItemHandler itemHandler;
   
-  public Item(ItemType p_itemType)
+  public Item(ItemType p_itemType) 
   {    
     Details = null;
     
@@ -45,6 +46,18 @@ public class Item
     {
       if (itemDetails[d].itemType == p_itemType)
         Details = itemDetails[d];
+    }
+    
+    itemHandler = null;    
+    if (Details != null)
+    {
+      if (Details.handlerClass != null)
+      try {
+        itemHandler = (ItemHandler) Class.forName(Details.handlerClass).newInstance();
+      }
+      catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+        itemHandler = null;
+      }
     }
   }
 

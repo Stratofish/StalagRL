@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Inventory
-{ 
-  private InventoryHandler inventoryHandler = null;  
-  
-  public List<Item> items = new ArrayList<Item>();  
-  
-  private int maxItems; 
+{
+  private InventoryHandler inventoryHandler = null;
+
+  public List<Item> items = new ArrayList<Item>();
+
+  private int maxItems;
 
   private void init(int p_maxItems)
-  {     
+  {
     maxItems = p_maxItems;
-    
+
     // Initially the list will be empty
     items.clear();
   }
@@ -55,31 +55,22 @@ public class Inventory
     return false;
   }
   
-
-
-  /*
   public void RemoveItem(Item item)
   {
-    ItemData id = null;
+    int id = -1;
     
-    for (int i = 0; i < itemData.size(); i++)
+    for (int i = 0; i < items.size(); i++)
     {
-      if (itemData.get(i).item == item)
-      {
-        id = itemData.get(i);
-      }
+      if (items.get(i) == item)    
+        id = i;
     }
     
-    if (id != null)
-    {
-      itemData.remove(id);
-    }
+    if (id != -1)
+      items.remove(id);
     
-    //items.remove(item);
-    
-    Update();
+    if (inventoryHandler != null) 
+      inventoryHandler.Update();
   }
-  */
   
   public void DoControl()
   {
