@@ -24,6 +24,7 @@ import com.etrium.stalagrl.system.EventListener;
 import com.etrium.stalagrl.system.EventManager;
 import com.etrium.stalagrl.Inventory;
 import com.etrium.stalagrl.Item;
+import com.etrium.stalagrl.ItemType;
 
 public class PowCamps implements EventListener
 {
@@ -112,11 +113,9 @@ public class PowCamps implements EventListener
 		inventory = new Inventory( guiStage, guiSkin);		
 		inventory.Update();
 		
-		inventory.AddItem(new Item( "Wire Cutters"));
-		inventory.AddItem(new Item( "Key"));
-		inventory.AddItem(new Item( "Shovel"));
-		inventory.AddItem(new Item( "Papers"));
-		inventory.AddItem(new Item( "Chocolate"));
+		inventory.AddItem(new Item( ItemType.COMPASS)); 
+		inventory.AddItem(new Item( ItemType.CROWBAR));
+		inventory.AddItem(new Item( ItemType.KEY));
 	}
 
 	public void dispose()

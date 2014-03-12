@@ -64,7 +64,7 @@ public class Inventory implements EventListener
     
     for (int i = 0; i < 5; i++)
     {
-      items[i] = null;          
+      items[i] = new Item( ItemType.EMPTY);
     }
     itemData.clear();
    
@@ -89,7 +89,7 @@ public class Inventory implements EventListener
     int i = 0;
     while (itemSlot == -1 && i < 5)
     {
-      if (items[i] == null)
+      if (items[i].GetItemType() == ItemType.EMPTY)
       {        
         itemSlot = i;
         items[i] = p_item;
@@ -116,48 +116,29 @@ public class Inventory implements EventListener
       
       ItemData id = new ItemData();
       
-      if (item != null)
-      {            
-        id.texture = new Texture(Gdx.files.internal(item.GetIconName()));
-        id.texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-        id.textureRegion = new TextureRegion(id.texture, 0, 0, 64, 64);            
+      id.texture = new Texture(Gdx.files.internal(item.GetIconName()));
+      id.texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+      id.textureRegion = new TextureRegion(id.texture, 0, 0, 64, 64);            
         
-        id.token = new Sprite(id.textureRegion);
-        id.token.setSize(48, 48);
-        id.token.setOrigin(0, 0);
+      id.token = new Sprite(id.textureRegion);
+      id.token.setSize(48, 48);
+      id.token.setOrigin(0, 0);
         
-        Drawable img = new SpriteDrawable(id.token);
-        id.image = new Image(img);
-        id.image.setX( 20 + (i * 66));
-        id.image.setY( 24);
+      Drawable img = new SpriteDrawable(id.token);
+      id.image = new Image(img);
+      id.image.setX( 20 + (i * 66));
+      id.image.setY( 24);
         
-        window.add(id.image);
+      window.add(id.image);
         
-        Label label = new Label( item.GetName(), skin);
-        label.setWidth(62);
-        label.setX( 13 + (i * 66));
-        label.setY( 1);
-        label.setAlignment(0);
-        label.setFontScale(0.75f);
+      Label label = new Label( item.GetName(), skin);
+      label.setWidth(62);
+      label.setX( 13 + (i * 66));
+      label.setY( 5);
+      label.setAlignment(0);
+      label.setFontScale(0.80f);
         
-        window.add(label);
-      }
-      else
-      {
-        id.texture = null;
-        id.textureRegion = null;          
-        id.token = null;
-        id.image = null;
-        
-        Label label = new Label( "Empty", skin);
-        label.setWidth(62);
-        label.setX( 13 + (i * 66));
-        label.setY( 1);
-        label.setAlignment(0);
-        label.setFontScale(0.75f);
-        
-        window.add(label);
-      }
+      window.add(label);
       
       if (i + 1 == selected) 
       {                              
@@ -169,13 +150,12 @@ public class Inventory implements EventListener
         token.setSize(48, 48);
         token.setOrigin(0, 0);
         
-        Drawable img = new SpriteDrawable(token);
+        img = new SpriteDrawable(token);
         Image image = new Image(img);
         image.setX( 20 + (i * 66));
         image.setY( 24);
         
         window.add(image);
-        
       }
     }
   }
