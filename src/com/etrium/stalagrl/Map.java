@@ -57,6 +57,7 @@ public class Map implements EventListener
 	private Texture concreteTexture;
 	private Texture grassTexture;
 	public Texture barbedWireTexture;
+	public Texture hutTexture;
 	protected Texture textures[];
 	protected long timestamp = 0; 
 	
@@ -81,6 +82,35 @@ public class Map implements EventListener
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1.0f));
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1.0f, -0.8f, -0.2f));
+		
+		// Load textures
+		dirtTexture = new Texture(Gdx.files.internal(Assets.textureDirt));
+		dirtTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		
+		woodFloorTexture = new Texture(Gdx.files.internal(Assets.texturePlanks));
+		woodFloorTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		
+		stonesTexture = new Texture(Gdx.files.internal(Assets.textureStones));
+		stonesTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		
+		concreteTexture = new Texture(Gdx.files.internal(Assets.textureConcrete));
+		concreteTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		
+		grassTexture = new Texture(Gdx.files.internal(Assets.textureGrass));
+		grassTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		
+		barbedWireTexture = new Texture(Gdx.files.internal(Assets.textureBarbedWire));
+		barbedWireTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		
+		textures = new Texture[7];
+		textures[FLOOR_DIRT] = dirtTexture;
+		textures[FLOOR_PLANKS] = woodFloorTexture;
+		textures[FLOOR_STONES] = stonesTexture;
+		textures[FLOOR_CONCRETE] = concreteTexture;
+		textures[FLOOR_GRASS] = grassTexture;
+		
+		hutTexture = new Texture(Gdx.files.internal(Assets.textureHut));
+		hutTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		
 		// Setup regions
 		regionRecords = new ArrayList<MapRegionRecord>();
@@ -234,44 +264,9 @@ public class Map implements EventListener
       floorMap[width - 1][h].collision |= MapCell.EAST;
     }				
 
-		dirtTexture = new Texture(Gdx.files.internal(Assets.textureDirt));
-		dirtTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		
-		woodFloorTexture = new Texture(Gdx.files.internal(Assets.texturePlanks));
-		woodFloorTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		
-		stonesTexture = new Texture(Gdx.files.internal(Assets.textureStones));
-		stonesTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		
-		concreteTexture = new Texture(Gdx.files.internal(Assets.textureConcrete));
-		concreteTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		
-		grassTexture = new Texture(Gdx.files.internal(Assets.textureGrass));
-		grassTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		
-		barbedWireTexture = new Texture(Gdx.files.internal(Assets.textureBarbedWire));
-		barbedWireTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		
-		textures = new Texture[6];
-		textures[FLOOR_DIRT] = dirtTexture;
-		textures[FLOOR_PLANKS] = woodFloorTexture;
-		textures[FLOOR_STONES] = stonesTexture;
-		textures[FLOOR_CONCRETE] = concreteTexture;
-		textures[FLOOR_GRASS] = grassTexture;
-		
 		floorTiles = new ModelInstance[width][height];
 		
 		MakeModels();
-		
-		/* Test code here */
-/*		Dijkstra dj = new Dijkstra(floorMap, width, height);
-		List<Vector2> sh = dj.shortestPath(0, 0, 6, 0);
-			
-		for (int i = 0; i < sh.size(); i++)
-		{
-		  Vector2 vec = (Vector2) sh.get(i);
-		  floorMap[(int) vec.x][(int) vec.y].type = FLOOR_STONES;
-		}*/
 		
 		timestamp = System.currentTimeMillis() % 1000;
 		

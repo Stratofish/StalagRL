@@ -15,6 +15,7 @@ public class Assets
   public final static String textureStones = Assets.texturePath + "/Stones.png";
   public final static String textureConcrete = Assets.texturePath + "/Concrete.png";
   public final static String textureBarbedWire = Assets.texturePath + "/barbedwire.png";
+  public final static String textureHut = Assets.texturePath + "/hut.png";
   
   // Model Constants
   public final static String modelFloor = Assets.modelPath + "/plain-floor.g3db";

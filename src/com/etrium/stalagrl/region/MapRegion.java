@@ -2,6 +2,7 @@ package com.etrium.stalagrl.region;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -11,7 +12,6 @@ import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.math.Vector2;
 import com.etrium.stalagrl.Map;
 import com.etrium.stalagrl.MapCell;
-import com.etrium.stalagrl.inventory.Item;
 
 public class MapRegion
 {  
@@ -24,6 +24,7 @@ public class MapRegion
 	public float floorLevel = 0.0f;
 	public int collisionMap[][] = null;
 	public ArrayList<Vector2> hiddingPlaces = new ArrayList<Vector2>();	
+	protected Texture texture = null;
 	
 	Map map = null;
 
@@ -34,6 +35,8 @@ public class MapRegion
 	public void SetMap(Map p_map)
 	{
 		map = p_map;
+		
+		texture = map.woodFloorTexture;
 	}
 
 	public void AddCollisionData(MapRegionRecord record)
@@ -107,7 +110,7 @@ public class MapRegion
 			int count = instance.materials.size;
 			for (int j = 0; j < count; j++)
 			{
-				instance.materials.get(j).set(TextureAttribute.createDiffuse(map.woodFloorTexture));
+				instance.materials.get(j).set(TextureAttribute.createDiffuse(texture));
 			}
 		}
 	}

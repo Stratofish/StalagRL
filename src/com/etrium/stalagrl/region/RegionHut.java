@@ -1,7 +1,6 @@
 package com.etrium.stalagrl.region;
 
 import com.badlogic.gdx.math.Vector2;
-
 import com.etrium.stalagrl.Assets;
 import com.etrium.stalagrl.Map;
 import com.etrium.stalagrl.MapCell;
@@ -50,8 +49,8 @@ public class RegionHut extends MapRegion
 		addBed( 8, 0);
 		
 		addBed( 4, 3);
-    addBed( 6, 3);
-    addBed( 8, 3);
+	    addBed( 6, 3);
+	    addBed( 8, 3);
     
 		lightCount = 3;
 		lights = new RegionLight[3];
@@ -86,6 +85,21 @@ public class RegionHut extends MapRegion
 		light.b = 1.0f;
 		light.intensity = 8.0f;
 		lights[2] = light;
+		
+		texture = map.hutTexture;
+	}
+	
+	/*public void SetMap(Map p_map)
+	{
+		super.SetMap(map);
+		
+		texture = map.hutTexture;
+	}*/
+	
+	@Override
+	public void MakeModel(MapRegionRecord record)
+	{
+		super.MakeModel(record);
 	}
 	
 	private void addBed( int p_bedx, int p_bedy)

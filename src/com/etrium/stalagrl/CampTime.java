@@ -49,7 +49,6 @@ public class CampTime implements EventListener
 	int GetUnifiedTime()
 	{
 		unifiedTime = (hour * 1000) + (int)(minute * 16.6667f);
-		System.out.println(unifiedTime);
 		return unifiedTime;
 	}
 	
