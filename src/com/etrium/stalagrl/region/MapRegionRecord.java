@@ -18,19 +18,32 @@ public class MapRegionRecord
 	public int y = 0;
 	public List<ModelInstance> modelInstances = null;
 	public Environment environment = null;
+	public boolean dummy = false;
+	
+	public MapRegionRecord()
+	{
+	}
+	
+	public MapRegionRecord(boolean p_dummy)
+	{
+		dummy = p_dummy;
+	}
 	
 	public void HideRoof()
 	{
-		int instanceCount = modelInstances.size();
-		if (instanceCount > 0)
+		if (!dummy)
 		{
-			for (int i = 0; i < instanceCount; i++)
+			int instanceCount = modelInstances.size();
+			if (instanceCount > 0)
 			{
-				Node node = modelInstances.get(i).getNode("Roof");
-				if (node != null)
+				for (int i = 0; i < instanceCount; i++)
 				{
-					node.parts.get(0).material.set(ColorAttribute.createDiffuse(1.0f, 1.0f, 1.0f, 0.0f));
-					node.parts.get(0).material.set(new BlendingAttribute(true, GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA, 0.0f));
+					Node node = modelInstances.get(i).getNode("Roof");
+					if (node != null)
+					{
+						node.parts.get(0).material.set(ColorAttribute.createDiffuse(1.0f, 1.0f, 1.0f, 0.0f));
+						node.parts.get(0).material.set(new BlendingAttribute(true, GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA, 0.0f));
+					}
 				}
 			}
 		}
@@ -38,16 +51,19 @@ public class MapRegionRecord
 	
 	public void ShowRoof()
 	{
-		int instanceCount = modelInstances.size();
-		if (instanceCount > 0)
+		if (!dummy)
 		{
-			for (int i = 0; i < instanceCount; i++)
+			int instanceCount = modelInstances.size();
+			if (instanceCount > 0)
 			{
-				Node node = modelInstances.get(i).getNode("Roof");
-				if (node != null)
+				for (int i = 0; i < instanceCount; i++)
 				{
-					node.parts.get(0).material.set(ColorAttribute.createDiffuse(1.0f, 1.0f, 1.0f, 1.0f));
-					node.parts.get(0).material.set(new BlendingAttribute(true, GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA, 1.0f));
+					Node node = modelInstances.get(i).getNode("Roof");
+					if (node != null)
+					{
+						node.parts.get(0).material.set(ColorAttribute.createDiffuse(1.0f, 1.0f, 1.0f, 1.0f));
+						node.parts.get(0).material.set(new BlendingAttribute(true, GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA, 1.0f));
+					}
 				}
 			}
 		}
@@ -66,30 +82,38 @@ public class MapRegionRecord
 	
 	public void AddCollisionData()
 	{
-		region. AddCollisionData(this);
+		if (!dummy)
+			region. AddCollisionData(this);
 	}
 	
 	public void AddHiddingPlaces()
 	{
-	  region.AddHiddingPlaceData(this);
+		if (!dummy)
+			region.AddHiddingPlaceData(this);
 	}
 	
 	public void AddRegiontoMap()
 	{
-		modelInstances = new ArrayList<ModelInstance>();
-		region.AddRegionToMap(this);
+		if (!dummy)
+		{
+			modelInstances = new ArrayList<ModelInstance>();
+			region.AddRegionToMap(this);
+		}
 	}
 	
 	public void Render(ModelBatch modelBatch)
 	{
-		int instanceCount = modelInstances.size();
-		if (instanceCount > 0)
+		if (!dummy)
 		{
-			for (int i = 0; i < instanceCount; i++)
+			int instanceCount = modelInstances.size();
+			if (instanceCount > 0)
 			{
-				ModelInstance instance = modelInstances.get(i);
-				if (instance != null)
-					modelBatch.render(instance, environment);
+				for (int i = 0; i < instanceCount; i++)
+				{
+					ModelInstance instance = modelInstances.get(i);
+					if (instance != null)
+						modelBatch.render(instance, environment);
+				}
 			}
 		}
 	}

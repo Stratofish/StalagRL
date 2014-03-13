@@ -15,7 +15,7 @@ import com.etrium.stalagrl.MapCell;
 
 public class MapRegion
 {  
-  public int width = 1;
+	public int width = 1;
 	public int height = 1;
 	public int type = Map.FLOOR_DIRT;
 	public String modelType = "";
@@ -25,6 +25,7 @@ public class MapRegion
 	public int collisionMap[][] = null;
 	public ArrayList<Vector2> hiddingPlaces = new ArrayList<Vector2>();	
 	protected Texture texture = null;
+	public MapRegionType regionType = MapRegionType.NONE;
 	
 	Map map = null;
 

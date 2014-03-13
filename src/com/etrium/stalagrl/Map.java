@@ -21,6 +21,9 @@ import com.etrium.stalagrl.inventory.Item;
 import com.etrium.stalagrl.inventory.ItemType;
 import com.etrium.stalagrl.region.MapRegion;
 import com.etrium.stalagrl.region.MapRegionRecord;
+import com.etrium.stalagrl.region.MapRegionType;
+import com.etrium.stalagrl.region.RegionActivity;
+import com.etrium.stalagrl.region.RegionDummy;
 import com.etrium.stalagrl.region.RegionFloor;
 import com.etrium.stalagrl.region.RegionHut;
 import com.etrium.stalagrl.region.RegionTower;
@@ -61,7 +64,10 @@ public class Map implements EventListener
 	public Texture barbedWireTexture;
 	public Texture hutTexture;
 	protected Texture textures[];
-	protected long timestamp = 0; 
+	protected long timestamp = 0;
+	public Activity currentActivity = null;
+	public boolean currentActivityLead = false;
+	public List<RegionActivity> activityRegions = null;
 	
 	protected EventManager evtMgr = new EventManager();
 
@@ -118,7 +124,8 @@ public class Map implements EventListener
 		regionRecords = new ArrayList<MapRegionRecord>();
 		MapRegion hutRegion = new RegionHut(this);
 		MapRegion towerRegion = new RegionTower(this);
-		MapRegion rollCallRegion = new RegionFloor(this, FLOOR_STONES, 5, 10);
+		MapRegion floorRegion = new RegionFloor(this, FLOOR_STONES, 5, 10);
+		MapRegion freetimeRegion = new RegionDummy(this, 50, 50);
 		MapRegion wireSouthRegion = new RegionExtrude(this, RegionExtrude.WEST, 50, Assets.modelBarbedWire);
 		MapRegion wireSouthOuterRegion = new RegionExtrude(this, RegionExtrude.WEST, 60, Assets.modelBarbedWire);
 		MapRegion wireNorthRegion = new RegionExtrude(this, RegionExtrude.EAST, 50, Assets.modelBarbedWire);
@@ -129,6 +136,8 @@ public class Map implements EventListener
 		MapRegion wireEastOuterRegion = new RegionExtrude(this, RegionExtrude.SOUTH, 60, Assets.modelBarbedWire);
 	
 		// Setup region instances
+		activityRegions = new ArrayList<RegionActivity>();
+		
 		MapRegionRecord mrr = new MapRegionRecord();
 		mrr.region = wireSouthRegion;
 		mrr.x = 54;
@@ -226,11 +235,20 @@ public class Map implements EventListener
 		regionRecords.add(mrr);
 		
 		mrr = new MapRegionRecord();
-		mrr.region = rollCallRegion;
+		mrr.region = floorRegion;
 		mrr.x = 42;
 		mrr.y = 31;
 		regionRecords.add(mrr);
+		RegionActivity ar = new RegionActivity(mrr, MapRegionType.ROLLCALL);
+		activityRegions.add(ar);
 			
+		mrr = new MapRegionRecord(true);
+		mrr.region = freetimeRegion;
+		mrr.x = 5;
+		mrr.y = 5;
+		ar = new RegionActivity(mrr, MapRegionType.FREE_TIME);
+		activityRegions.add(ar);
+		
 		// Create floor map
 		floorMap = new MapCell[width][height];
 		
@@ -371,6 +389,12 @@ public class Map implements EventListener
 		}
 	}
 
+	public void SetCurrentActivity(Activity p_activity, boolean p_lead)
+	{
+		currentActivity = p_activity;
+		currentActivityLead = p_lead;
+	}
+	
 	@Override
 	public boolean ReceiveEvent(EtriumEvent p_event)
 	{

@@ -2,6 +2,7 @@ package com.etrium.stalagrl;
 
 import java.util.ArrayList;
 
+import com.etrium.stalagrl.region.MapRegionType;
 import com.etrium.stalagrl.system.EtriumEvent;
 import com.etrium.stalagrl.system.EventListener;
 import com.etrium.stalagrl.system.EventManager;
@@ -9,7 +10,7 @@ import com.etrium.stalagrl.system.EventType;
 
 public class CampTime implements EventListener
 {
-	private static final int TIME_STEP = 10;
+	private static final int TIME_STEP = 1;
 	
 	private static final int DARK_STARTS = 19;
 	private static final int DARK_ENDS = 7;
@@ -30,20 +31,27 @@ public class CampTime implements EventListener
 		
 		freeTimeActivity = new Activity();
 		freeTimeActivity.name = "Free time";
+		freeTimeActivity.regionType = MapRegionType.FREE_TIME;
 		
 		activities = new ArrayList<Activity>();
 		
 		Activity activity = new Activity();
 		activity.startTime = 7000;
-		activity.leadTime = 500;
+		activity.leadTime = 1000;
 		activity.name = "Morning roll call";
+		activity.regionType = MapRegionType.ROLLCALL;
 		activities.add(activity);
 		
 		activity = new Activity();
-		activity.startTime = 8000;
-		activity.leadTime = 500;
+		activity.startTime = 8500;
+		activity.leadTime = 1000;
 		activity.name = "Breakfast";
 		activities.add(activity);
+		
+		EtriumEvent evt = new EtriumEvent();
+		evt.type = EventType.evtActivityStart;
+		evt.data = freeTimeActivity;
+		evtMgr.SendEvent(evt, true);
 	}
 	
 	int GetUnifiedTime()
@@ -137,7 +145,8 @@ public class CampTime implements EventListener
 		for (int i = 0; i < size; i++)
 		{
 			Activity activity = activities.get(i);
-			if (time == (activity.startTime - activity.leadTime))
+			if ((activity.leadTime > 0) &&
+				(time == (activity.startTime - activity.leadTime)))
 			{
 				currentActivity = activity;
 				evtType = EventType.evtActivityLeadStart;

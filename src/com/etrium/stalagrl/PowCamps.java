@@ -256,12 +256,20 @@ public class PowCamps implements EventListener
 			{
 				Activity act = (Activity)p_event.data;
 				System.out.println("Activity " + act.name + " starts soon");
+				map.SetCurrentActivity(act, true);
+				
+				for (int i = 0; i < POW_COUNT; i++)
+				{
+					pows[i].ResetPath();
+				}
+				
 				break;
 			}
 			case evtActivityStart:
 			{
 				Activity act = (Activity)p_event.data;
 				System.out.println("Activity " + act.name + " has started");
+				map.SetCurrentActivity(act, false);
 				break;
 			}
 		}

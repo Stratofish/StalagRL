@@ -9,9 +9,12 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.math.Vector2;
+import com.etrium.stalagrl.Activity;
 import com.etrium.stalagrl.Assets;
 import com.etrium.stalagrl.Map;
 import com.etrium.stalagrl.MapCell;
+import com.etrium.stalagrl.region.MapRegionRecord;
+import com.etrium.stalagrl.region.MapRegionType;
 import com.etrium.stalagrl.system.Dijkstra;
 import com.etrium.stalagrl.system.EtriumEvent;
 import com.etrium.stalagrl.system.EventListener;
@@ -104,23 +107,65 @@ public class Character implements EventListener
 		SetPosition(x,  y,  z);
 	}
 	
+	public void ResetPath()
+	{
+		currentPath = null;
+	}
+	
 	public boolean DoControl()
 	{
-		if ((currentPath == null) &&
-			(Math.random() > 0.9))
+		//System.out.println("dc");
+		if (currentPath == null)
 		{
-			Dijkstra dj = new Dijkstra(map.floorMap, map.width, map.height);
-			int x2 = x + (int) (10 * (Math.random())) - 5;
-			int y2 = y + (int) (10 * (Math.random())) - 5;
+			// Get boundaries
+			Activity act = map.currentActivity;
+			if ((act != null) &&
+				(act.regionType == MapRegionType.FREE_TIME))
+			{
+				int r = 6;
+			}
+			MapRegionRecord mrr = null;
 			
-			if (x2 < 5) x2 = 5;
-			if (x2 > 55) x2 = 55;
-			if (y2 < 5) y2 = 5;
-			if (y2 > 55) y2 = 55;
+			int size = map.activityRegions.size();
+			for (int i = 0; i < size; i++)
+			{
+				if ((act != null) &&
+					(map.activityRegions.get(i).type == act.regionType))
+				{
+					mrr = map.activityRegions.get(i).record;
+					//System.out.println(mrr.x + ", " + mrr.y);
+				}
+			}
 			
-			currentPath = dj.shortestPath(x, y, x2, y2);
+			if (mrr != null)
+			{
+				int x1 = mrr.x;
+				int y1 = mrr.y;
+				int width = mrr.region.width;
+				int height = mrr.region.height;
 			
-			dj = null;
+				//System.out.println(width + " * " + height);
+				
+				boolean moveNow = true;
+				
+				if (!map.currentActivityLead)
+				{
+					if (Math.random() > 0.1)
+						moveNow = false;
+				}
+
+				if (moveNow)
+				{
+					Dijkstra dj = new Dijkstra(map.floorMap, map.width, map.height);
+					int x2 = x1 + (int) (width * (Math.random())) - 1;
+					int y2 = y1 + (int) (height * (Math.random())) - 1;
+					
+					currentPath = dj.shortestPath(x, y, x2, y2);
+					
+					dj = null;
+					System.out.println("Newmove");
+				}
+			}
 		}
 		
 		if ((currentPath != null) &&
