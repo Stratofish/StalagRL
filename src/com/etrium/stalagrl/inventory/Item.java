@@ -1,6 +1,8 @@
 package com.etrium.stalagrl.inventory;
 
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.etrium.stalagrl.Assets;
+import com.etrium.stalagrl.ItemRenderer;
 import com.etrium.stalagrl.inventory.ItemType;
 
 public class Item
@@ -30,13 +32,14 @@ public class Item
       , new ItemDetail( ItemType.PAPERS     , Assets.iconPapers     , "Papers"     , "itemHandlerPapers")
       , new ItemDetail( ItemType.SPADE      , Assets.iconSpade      , "Spade"      , "itemHandlerSpade")
       , new ItemDetail( ItemType.WATCH      , Assets.iconWatch      , "Watch"      , "itemHandlerWatch")
-      , new ItemDetail( ItemType.WIRECUTTERS, Assets.iconWirecutters, "Wirecutters", "itemHandlerWirecutters")
+      , new ItemDetail( ItemType.WIRECUTTERS, Assets.iconWireCutters, "Wirecutters", "itemHandlerWirecutters")
       };
   
   private static final int itemDetailCount = 9; 
   
   private ItemDetail Details;  
   private ItemHandler itemHandler;
+  private ItemRenderer itemRenderer;
   
   public Item(ItemType p_itemType) 
   {    
@@ -61,6 +64,16 @@ public class Item
     }
   }
 
+  public ItemRenderer GetItemRenderer()
+  {
+    return itemRenderer;
+  }
+  
+  public void SetItemRenderer( ItemRenderer p_renderer)
+  {
+    itemRenderer = p_renderer;
+  }
+  
   public ItemType GetItemType()
   {
      return Details.itemType;
@@ -75,4 +88,13 @@ public class Item
   {
      return Details.name;
   }
+  
+  public void render(ModelBatch modelBatch)
+  {
+    if (itemRenderer != null)
+    {
+      itemRenderer.Render(modelBatch);
+    }
+  }
 }
+

@@ -67,25 +67,25 @@ public class PowCamps implements EventListener
 		guiTime = new GUITime(guiSkin, guiStage);
 		guiActivity = new GUIActivity(guiSkin, guiStage);
 	    
-	    Log.CreateLog( guiStage, guiSkin);
-	
-	    evtMgr.RegisterListener(this, EventType.evtLogActivity);
-	    evtMgr.RegisterListener(this, EventType.evtCharDead);
-	    evtMgr.RegisterListener(this, EventType.evtUpLevel);
-	    evtMgr.RegisterListener(this, EventType.evtDownLevel);
-	    evtMgr.RegisterListener(this, EventType.evtControlDown);
-	    evtMgr.RegisterListener(this, EventType.evtControlUp);
-	    evtMgr.RegisterListener(this, EventType.evtPlayerUIChanged);
-	    evtMgr.RegisterListener(this, EventType.evtQuitConfirm);
-	    evtMgr.RegisterListener(this, EventType.evtResize);
-	    evtMgr.RegisterListener(this, EventType.evtActivityLeadStart);
-	    evtMgr.RegisterListener(this, EventType.evtActivityStart);
-	    
-	    modelBatch = new ModelBatch(new DefaultShaderProvider());
-	    
-	    float ar = ((float)Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth()) * 1.5f;
-	    
-	    camera = new OrthographicCamera(20, 18*ar);
+    Log.CreateLog( guiStage, guiSkin);
+
+    evtMgr.RegisterListener(this, EventType.evtLogActivity);
+    evtMgr.RegisterListener(this, EventType.evtCharDead);
+    evtMgr.RegisterListener(this, EventType.evtUpLevel);
+    evtMgr.RegisterListener(this, EventType.evtDownLevel);
+    evtMgr.RegisterListener(this, EventType.evtControlDown);
+    evtMgr.RegisterListener(this, EventType.evtControlUp);
+    evtMgr.RegisterListener(this, EventType.evtPlayerUIChanged);
+    evtMgr.RegisterListener(this, EventType.evtQuitConfirm);
+    evtMgr.RegisterListener(this, EventType.evtResize);
+    evtMgr.RegisterListener(this, EventType.evtActivityLeadStart);
+    evtMgr.RegisterListener(this, EventType.evtActivityStart);
+    
+    modelBatch = new ModelBatch(new DefaultShaderProvider());
+    
+    float ar = ((float)Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth()) * 1.5f;
+    
+    camera = new OrthographicCamera(20, 18*ar);
 		camera.position.set(-4.0f, -4.0f, 6.0f);
 		camera.lookAt(0.0f, 0.0f, 0.0f);
 		camera.up.x = 0.0f;
@@ -157,8 +157,6 @@ public class PowCamps implements EventListener
 		}
         modelBatch.end();
         
-        Log.Render();
-        
         guiStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         guiStage.draw();
 	}
@@ -211,7 +209,7 @@ public class PowCamps implements EventListener
 
 		camera.viewportWidth = 20;
 		camera.viewportHeight = 18*ar;
-		camera.update(true);
+		camera.update(true);		
 	}
 	
 	@SuppressWarnings("incomplete-switch")
@@ -245,6 +243,8 @@ public class PowCamps implements EventListener
 			case evtResize:
 			{
 				resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+				
+				Log.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 				
 				// Let other receivers get this event
 				return false;

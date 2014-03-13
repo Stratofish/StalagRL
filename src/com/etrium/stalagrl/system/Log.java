@@ -31,9 +31,9 @@ public class Log
     p_guiStage.addActor(window);
   }
 
-  static public void Render()
+  static public void resize( int p_width, int p_height)
   {
-    //scrollPane.setScrollPercentY(0.0f);
+    window.setPosition(((p_width + 350) / 2) + 10, -300.0f);    
   }
   
   static public void action( String p_text)

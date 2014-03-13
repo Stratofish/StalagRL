@@ -57,7 +57,7 @@ public class Player extends Character implements EventListener
 		camera = p_camera;
 	}
 	
-	public boolean upClear()
+	public boolean UpClear()
 	{
 	  boolean result = true; 
 	  
@@ -74,7 +74,7 @@ public class Player extends Character implements EventListener
 	  return result;
 	}
 
-	public boolean downClear()
+	public boolean DownClear()
   {
     boolean result = true; 
     
@@ -91,7 +91,7 @@ public class Player extends Character implements EventListener
     return result;
   }
 	
-	public boolean leftClear()
+	public boolean LeftClear()
   {
     boolean result = true;
 	  
@@ -108,7 +108,7 @@ public class Player extends Character implements EventListener
     return result;
   }
 	
-	public boolean rightClear()
+	public boolean RightClear()
   {
     boolean result = true;
 	  
@@ -126,7 +126,7 @@ public class Player extends Character implements EventListener
     return result;
   }
 	
-	private boolean takeItemFromCell( MapCell p_takeFromCell)
+	private boolean TakeItemFromCell( MapCell p_takeFromCell)
 	{       
 	  Item item = p_takeFromCell.hiddenItem;
 	  
@@ -140,15 +140,15 @@ public class Player extends Character implements EventListener
 	    }
 	  }
 	  return false;
-	}
+	}		
 	
-	public void useItem()
+	public void UseItem()
 	{
 	  MapCell testCell = map.floorMap[x][y];
 	  	  
 	  /* Check the cell the player is in */
 	  if ((testCell.hiddingPlace) && (testCell.hiddenItem != null))           
-      if (takeItemFromCell( testCell))
+      if (TakeItemFromCell( testCell))
         Log.action("Item applied to inventory");
       else
         Log.action("Your inventory is full");                      
@@ -180,7 +180,7 @@ public class Player extends Character implements EventListener
 	    }	    	   
 	    	    	   
 	    if ((testCell.hiddingPlace) && (testCell.hiddenItem != null))	    	     
-  	    if (takeItemFromCell( testCell))
+  	    if (TakeItemFromCell( testCell))
 	        Log.action("Item applied to inventory");
 	      else
   	      Log.action("Your inventory is full");	            	   
@@ -189,7 +189,7 @@ public class Player extends Character implements EventListener
 	  }	  
 	}
 	
-	private void dropItem()
+	private void DropItem()
 	{
 	  Item removedItem = inventory.RemoveSelectedItem();
 	  
@@ -199,7 +199,9 @@ public class Player extends Character implements EventListener
 	  }
 	  else
 	  {
-	    Log.action("Item has been removed");
+	    map.floorMap[x][y].DropFloorItem( removedItem, null);
+	    
+	    Log.action("Item has been dropped on the floor");
 	  }
 	}
 	
@@ -213,7 +215,7 @@ public class Player extends Character implements EventListener
 		
 		if (upHeld)
 		{
-			if (upClear())
+			if (UpClear())
 			{				
 			  y++;
 			}
@@ -225,7 +227,7 @@ public class Player extends Character implements EventListener
 		
 		if (downHeld)
 		{
-			if (downClear())
+			if (DownClear())
 			{
 				y--;			  
 			}
@@ -237,7 +239,7 @@ public class Player extends Character implements EventListener
 		
 		if (leftHeld)
 		{
-			if (leftClear())
+			if (LeftClear())
 			{
 				x--;
 			}
@@ -249,7 +251,7 @@ public class Player extends Character implements EventListener
 		
 		if (rightHeld)
 		{ 
-			if (rightClear())
+			if (RightClear())
 			{		
 				x++;
 			}
@@ -261,14 +263,14 @@ public class Player extends Character implements EventListener
 
     if (useHeld)
     {
-      useItem();
+      UseItem();
       useHeld = false;           
       handled = true;
     }
 		
 		if (dropHeld)
 		{
-		  dropItem();
+		  DropItem();
 		  dropHeld = false;
 		  handled = true;
 		}

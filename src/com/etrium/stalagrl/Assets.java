@@ -39,7 +39,7 @@ public class Assets
   public final static String iconPapers = Assets.iconPath + "/icon-papers.png";
   public final static String iconSpade = Assets.iconPath + "/icon-spade.png";
   public final static String iconWatch = Assets.iconPath + "/icon-watch.png";
-  public final static String iconWirecutters = Assets.iconPath + "/icon-wirecutters.png";  
+  public final static String iconWireCutters = Assets.iconPath + "/icon-wirecutters.png";  
   
   // Item Constants  
   public final static String itemCompass = Assets.itemPath + "/item-compass.png";
@@ -49,5 +49,5 @@ public class Assets
   public final static String itemPapers = Assets.itemPath + "/item-papers.png";
   public final static String itemSpade = Assets.itemPath + "/item-spade.png";
   public final static String itemWatch = Assets.itemPath + "/item-watch.png";
-  public final static String itemWirecutters = Assets.itemPath + "/item-wirecutters.png";  
+  public final static String itemWireCutters = Assets.itemPath + "/item-wirecutters.png";  
 }

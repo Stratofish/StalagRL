@@ -11,15 +11,15 @@ import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.math.Vector2;
 
-public class FloorItem
+public class ItemRenderer
 {
-  private Map map;
+    private Map map;
   private Vector2 coordinates;  
   private Texture texture;
   ModelInstance instance;
   Environment environment; 
   
-  public FloorItem( Map p_map, Vector2 p_coordinates, Texture p_texture, Environment p_environment)
+  public ItemRenderer( Map p_map, Vector2 p_coordinates, Texture p_texture, Environment p_environment)
   {
     map = p_map;
     coordinates = p_coordinates;

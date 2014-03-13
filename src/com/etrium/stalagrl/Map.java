@@ -67,13 +67,21 @@ public class Map implements EventListener
 	public Texture hutTexture;
 	public Texture foodTexture;
 	public Texture compassTexture;
+	public Texture crowbarTexture;
+	public Texture keyTexture;
+	public Texture lockPickTexture;
+	public Texture papersTexture;
+	public Texture spadeTexture;
+	public Texture watchTexture;
+	public Texture wireCuttersTexture;
 	protected Texture textures[];
+	public Texture itemTextures[];
 	protected long timestamp = 0;
 	public Activity currentActivity = null;
 	public boolean currentActivityLead = false;
 	public List<RegionActivity> activityRegions = null;
 	
-	public FloorItem floorItem;
+	public ArrayList<ItemRenderer> floorItems = new ArrayList<ItemRenderer>();
 	
 	protected EventManager evtMgr = new EventManager();
 
@@ -123,7 +131,7 @@ public class Map implements EventListener
 		textures[FLOOR_PLANKS] = woodFloorTexture;
 		textures[FLOOR_STONES] = stonesTexture;
 		textures[FLOOR_CONCRETE] = concreteTexture;
-		textures[FLOOR_GRASS] = grassTexture;
+		textures[FLOOR_GRASS] = grassTexture;				
 		
 		hutTexture = new Texture(Gdx.files.internal(Assets.textureHut));
 		hutTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
@@ -132,6 +140,37 @@ public class Map implements EventListener
 		
 		compassTexture = new Texture(Gdx.files.internal(Assets.itemCompass));
 		compassTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+    
+    crowbarTexture = new Texture(Gdx.files.internal(Assets.itemCrowbar));
+    crowbarTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+    
+    keyTexture = new Texture(Gdx.files.internal(Assets.itemKey));
+    keyTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+    
+    lockPickTexture = new Texture(Gdx.files.internal(Assets.itemLockpick));
+    lockPickTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+    
+    papersTexture = new Texture(Gdx.files.internal(Assets.itemPapers));
+    papersTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+    
+    spadeTexture = new Texture(Gdx.files.internal(Assets.itemSpade));
+    spadeTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+    
+    watchTexture = new Texture(Gdx.files.internal(Assets.itemWatch));
+    watchTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+    
+    wireCuttersTexture = new Texture(Gdx.files.internal(Assets.itemWireCutters));
+    wireCuttersTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        
+    itemTextures = new Texture[9];
+    itemTextures[ItemType.COMPASS.ordinal()] = compassTexture;
+    itemTextures[ItemType.CROWBAR.ordinal()] = crowbarTexture;
+    itemTextures[ItemType.KEY.ordinal()] = keyTexture;
+    itemTextures[ItemType.LOCKPICK.ordinal()] = lockPickTexture;
+    itemTextures[ItemType.PAPERS.ordinal()] = papersTexture;
+    itemTextures[ItemType.SPADE.ordinal()] = spadeTexture;
+    itemTextures[ItemType.WATCH.ordinal()] = watchTexture;
+    itemTextures[ItemType.WIRECUTTERS.ordinal()] = wireCuttersTexture;
 
 		// Setup regions
 		regionRecords = new ArrayList<MapRegionRecord>();
@@ -292,7 +331,7 @@ public class Map implements EventListener
 		{
 			for (int h = 0; h < height; h++)
 			{
-				MapCell mc = new MapCell();
+				MapCell mc = new MapCell(this, w, h);
 				mc.type = FLOOR_DIRT;
 				floorMap[w][h] = mc;
 			}
@@ -332,9 +371,7 @@ public class Map implements EventListener
 		floorTiles = new ModelInstance[width][height];
 		
 		MakeModels();
-		
-		floorItem = new FloorItem(this, new Vector2(10f, 20f), compassTexture, environment);
-		
+				
 		timestamp = System.currentTimeMillis() % 1000;
 		
 		evtMgr.RegisterListener(this, EventType.evtGlobalLightLevel);
@@ -407,7 +444,17 @@ public class Map implements EventListener
 		for (int i = 0; i < size; i++)
 			regionRecords.get(i).Render(modelBatch);			
 		
-		floorItem.Render(modelBatch);
+		/* Render each of the items that is on the floor */
+		for (int i = 0; i < floorItems.size(); i++)
+		{
+		  floorItems.get(i).Render(modelBatch);
+		}
+		
+		long newTime = System.currentTimeMillis() % 1000;
+		//long timeDiff = newTime - timestamp;
+		timestamp = newTime;
+		
+		//System.out.println("Frame time: " + timeDiff + "ms");
 	}
 	
 	public void CheckPlayerPosition(int p_x, int p_y)
