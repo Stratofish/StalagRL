@@ -38,6 +38,7 @@ public class CampTime implements EventListener
 		Activity activity = new Activity();
 		activity.startTime = 7000;
 		activity.leadTime = 1000;
+		activity.length = 500;
 		activity.name = "Morning roll call";
 		activity.regionType = MapRegionType.ROLLCALL;
 		activities.add(activity);
@@ -45,6 +46,7 @@ public class CampTime implements EventListener
 		activity = new Activity();
 		activity.startTime = 8500;
 		activity.leadTime = 1000;
+		activity.length = 500;
 		activity.name = "Breakfast";
 		activities.add(activity);
 		

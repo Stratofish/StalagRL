@@ -157,13 +157,12 @@ public class Character implements EventListener
 				if (moveNow)
 				{
 					Dijkstra dj = new Dijkstra(map.floorMap, map.width, map.height);
-					int x2 = x1 + (int) (width * (Math.random())) - 1;
-					int y2 = y1 + (int) (height * (Math.random())) - 1;
+					int x2 = x1 + (int) (width * (Math.random()));
+					int y2 = y1 + (int) (height * (Math.random()));
 					
 					currentPath = dj.shortestPath(x, y, x2, y2);
 					
 					dj = null;
-					System.out.println("Newmove");
 				}
 			}
 		}
