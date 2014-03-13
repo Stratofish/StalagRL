@@ -24,6 +24,7 @@ public class Assets
   public final static String modelTower = Assets.modelPath + "/tower.g3db";
   public final static String modelWall1 = Assets.modelPath + "/wall1.g3db";
   public final static String modelBarbedWire = Assets.modelPath + "/barbedwire.g3db";
+  public final static String modelItemMesh = Assets.modelPath + "/itemmesh.g3db";
   
   // Icon Constants
   public final static String iconBorder = Assets.iconPath + "/icon-border.png";
