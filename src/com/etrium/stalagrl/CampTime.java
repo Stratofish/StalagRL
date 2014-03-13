@@ -76,8 +76,6 @@ public class CampTime implements EventListener
 			hour -= 24;
 		}
 		
-		System.out.println(hour + ":" + minute);
-		
 		RunSchedule();
 	}
 	

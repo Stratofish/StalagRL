@@ -8,8 +8,6 @@ import com.badlogic.gdx.graphics.g3d.utils.DefaultShaderProvider;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
@@ -36,9 +34,6 @@ public class PowCamps implements EventListener
 	private Map map;
 	private Camera camera;
 	private ModelBatch modelBatch;
-	private Label levelLabel;
-	private ScrollPane logScrollPane = null;
-	private Window logWindow = null;
 	private Stage guiStage;
 	private Skin guiSkin;
 	private Inventory inventory;
@@ -53,6 +48,8 @@ public class PowCamps implements EventListener
 	protected Character pows[] = new Character[POW_COUNT];
 	
 	protected CampTime campTime = new CampTime();
+	
+	protected GUITime guiTime = null; 
 
 	public PowCamps()
 	{
@@ -66,9 +63,7 @@ public class PowCamps implements EventListener
         
 		guiSkin = new Skin(Gdx.files.internal("data/uiskin.json"));
 		
-		levelLabel = new Label("* * * Dungeon level 35 * * *", guiSkin);
-		levelLabel.setPosition(40.0f, 730.0f);
-
+		guiTime = new GUITime(guiSkin, guiStage);
 	    
 	    Log.CreateLog( guiStage, guiSkin);
 	
@@ -137,6 +132,8 @@ public class PowCamps implements EventListener
         {
             keyMap.CheckKeys();
         }
+        
+        guiTime.SetTime(campTime.hour, campTime.minute);
 
         if (player.DoControl())
         {
@@ -157,8 +154,6 @@ public class PowCamps implements EventListener
         	pows[i].Render(modelBatch);
 		}
         modelBatch.end();
-        
-        levelLabel.setText("* * * Dungeon level "+map.curLevel+" * * *");
         
         Log.Render();
         
