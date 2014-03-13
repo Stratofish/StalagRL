@@ -26,6 +26,7 @@ import com.etrium.stalagrl.region.MapRegionType;
 import com.etrium.stalagrl.region.RegionActivity;
 import com.etrium.stalagrl.region.RegionDummy;
 import com.etrium.stalagrl.region.RegionFloor;
+import com.etrium.stalagrl.region.RegionFood;
 import com.etrium.stalagrl.region.RegionHut;
 import com.etrium.stalagrl.region.RegionTower;
 import com.etrium.stalagrl.region.RegionExtrude;
@@ -64,6 +65,7 @@ public class Map implements EventListener
 	private Texture grassTexture;
 	public Texture barbedWireTexture;
 	public Texture hutTexture;
+	public Texture foodTexture;
 	public Texture compassTexture;
 	protected Texture textures[];
 	protected long timestamp = 0;
@@ -88,6 +90,7 @@ public class Map implements EventListener
 		assets.load(Assets.modelTower, Model.class);
 		assets.load(Assets.modelWall1, Model.class);
 		assets.load(Assets.modelBarbedWire, Model.class);
+		assets.load(Assets.modelFood, Model.class);
 		assets.load(Assets.modelPlayer, Model.class);
 		assets.load(Assets.modelItemMesh, Model.class);
 		assets.finishLoading();
@@ -124,9 +127,11 @@ public class Map implements EventListener
 		
 		hutTexture = new Texture(Gdx.files.internal(Assets.textureHut));
 		hutTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		foodTexture = new Texture(Gdx.files.internal(Assets.textureFood));
+		foodTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		
 		compassTexture = new Texture(Gdx.files.internal(Assets.itemCompass));
-    compassTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		compassTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
 		// Setup regions
 		regionRecords = new ArrayList<MapRegionRecord>();
@@ -134,7 +139,7 @@ public class Map implements EventListener
 		MapRegion towerRegion = new RegionTower(this);
 		MapRegion floorRegion = new RegionFloor(this, FLOOR_STONES, 5, 10);
 		MapRegion freetimeRegion = new RegionDummy(this, 50, 50);
-		MapRegion foodRegion = new RegionDummy(this, 20, 10);
+		MapRegion foodRegion = new RegionFood(this);
 		MapRegion wireSouthRegion = new RegionExtrude(this, RegionExtrude.WEST, 50, Assets.modelBarbedWire);
 		MapRegion wireSouthOuterRegion = new RegionExtrude(this, RegionExtrude.WEST, 60, Assets.modelBarbedWire);
 		MapRegion wireNorthRegion = new RegionExtrude(this, RegionExtrude.EAST, 50, Assets.modelBarbedWire);
@@ -251,11 +256,12 @@ public class Map implements EventListener
 		RegionActivity ar = new RegionActivity(mrr, MapRegionType.ROLLCALL);
 		activityRegions.add(ar);
 			
-		mrr = new MapRegionRecord(true);
+		mrr = new MapRegionRecord();
 		mrr.region = foodRegion;
 		mrr.x = 20;
 		mrr.y = 10;
 		ar = new RegionActivity(mrr, MapRegionType.FOOD);
+		regionRecords.add(mrr);
 		activityRegions.add(ar);
 		
 		mrr = new MapRegionRecord(true);
@@ -402,12 +408,6 @@ public class Map implements EventListener
 			regionRecords.get(i).Render(modelBatch);			
 		
 		floorItem.Render(modelBatch);
-		
-		long newTime = System.currentTimeMillis() % 1000;
-		//long timeDiff = newTime - timestamp;
-		timestamp = newTime;
-		
-		//System.out.println("Frame time: " + timeDiff + "ms");
 	}
 	
 	public void CheckPlayerPosition(int p_x, int p_y)

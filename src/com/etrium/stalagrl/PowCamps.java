@@ -208,7 +208,7 @@ public class PowCamps implements EventListener
 		guiStage.setViewport(p_width, p_height, true);
 		
 		float ar = ((float)p_height / (float)p_width) * 1.5f;
-		System.out.println(ar);
+
 		camera.viewportWidth = 20;
 		camera.viewportHeight = 18*ar;
 		camera.update(true);

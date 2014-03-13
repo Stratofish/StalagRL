@@ -17,6 +17,7 @@ public class Assets
   public final static String textureConcrete = Assets.texturePath + "/Concrete.png";
   public final static String textureBarbedWire = Assets.texturePath + "/barbedwire.png";
   public final static String textureHut = Assets.texturePath + "/hut.png";
+  public final static String textureFood = Assets.texturePath + "/food.png";
   
   // Model Constants
   public final static String modelFloor = Assets.modelPath + "/plain-floor.g3db";
@@ -26,6 +27,7 @@ public class Assets
   public final static String modelWall1 = Assets.modelPath + "/wall1.g3db";
   public final static String modelBarbedWire = Assets.modelPath + "/barbedwire.g3db";
   public final static String modelItemMesh = Assets.modelPath + "/itemmesh.g3db";
+  public final static String modelFood = Assets.modelPath + "/food.g3db";
   
   // Icon Constants
   public final static String iconBorder = Assets.iconPath + "/icon-border.png";

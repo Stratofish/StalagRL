@@ -114,7 +114,6 @@ public class Character implements EventListener
 	
 	public boolean DoControl()
 	{
-		//System.out.println("dc");
 		if (currentPath == null)
 		{
 			// Get boundaries
