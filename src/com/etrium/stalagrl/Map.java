@@ -17,6 +17,8 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.etrium.stalagrl.character.Character;
+import com.etrium.stalagrl.inventory.Item;
+import com.etrium.stalagrl.inventory.ItemType;
 import com.etrium.stalagrl.region.MapRegion;
 import com.etrium.stalagrl.region.MapRegionRecord;
 import com.etrium.stalagrl.region.RegionFloor;
@@ -247,10 +249,19 @@ public class Map implements EventListener
 		/* Cycle through regions and copy collision map over to floor map */
 		for (int r = 0; r < regionRecords.size(); r++)
 			regionRecords.get(r).AddCollisionData();
-		
+
+		/* Cycle through regions and copy all hiding places over to floor map */
 		for (int r = 0; r < regionRecords.size(); r++)
       regionRecords.get(r).AddHiddingPlaces();
-			
+
+		/* TODO For now just put an item at each hidden location */
+		for (int i = 0; i < hiddingPlaces.size(); i++)
+		{
+		  MapCell hiddingPlace = hiddingPlaces.get(i);
+		  Item item = new Item( ItemType.PAPERS);
+		  hiddingPlace.hiddenItem = item;
+		}
+				
     /* Set collision zone for edges of map */
 		for (int w = 0; w < width; w++)
     {

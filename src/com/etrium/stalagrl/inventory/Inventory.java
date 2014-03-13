@@ -43,7 +43,7 @@ public class Inventory
   
   public boolean AddItem(Item p_item)
   {
-    if (items.size() < 6)
+    if (items.size() < maxItems)
     {
       items.add(p_item);    
       if (inventoryHandler != null) 

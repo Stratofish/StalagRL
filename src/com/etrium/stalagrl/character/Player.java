@@ -5,11 +5,14 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.etrium.stalagrl.MapCell;
+import com.etrium.stalagrl.inventory.Inventory;
+import com.etrium.stalagrl.inventory.Item;
 import com.etrium.stalagrl.system.ControlType;
 import com.etrium.stalagrl.system.EtriumEvent;
 import com.etrium.stalagrl.system.EventListener;
 import com.etrium.stalagrl.system.EventManager;
 import com.etrium.stalagrl.system.EventType;
+import com.etrium.stalagrl.system.Log;
 
 public class Player extends Character implements EventListener
 {
@@ -18,10 +21,12 @@ public class Player extends Character implements EventListener
 	protected boolean leftHeld = false;
 	protected boolean rightHeld = false;
 	protected boolean useHeld = false;
+	protected int direction = MapCell.SOUTH; 
 	
 	private EventManager evtMgr = new EventManager();
 	private Camera camera = null;
-	private boolean listening = true;
+	private boolean listening = true;	
+	private Inventory inventory = null;
 	
 	public Player(int p_x, int p_y)
 	{
@@ -38,6 +43,11 @@ public class Player extends Character implements EventListener
 		evtMgr.RegisterListener(this, EventType.evtControlUp);
 		evtMgr.RegisterListener(this, EventType.evtControlDown);
 		evtMgr.RegisterListener(this, EventType.evtGlobalLightLevel);
+	}
+	
+	public void SetInventory(Inventory p_inventory)
+	{
+	  inventory = p_inventory;
 	}
 	
 	public void SetCamera(Camera p_camera)
@@ -114,6 +124,76 @@ public class Player extends Character implements EventListener
     return result;
   }
 	
+	private boolean takeItemFromCell( MapCell p_takeFromCell)
+	{       
+	  Item item = p_takeFromCell.hiddenItem;
+	  
+	  if (item != null)
+	  {	  
+	    if (inventory.AddItem(item))
+	    {
+	      /* If item is successfully applied to players inventory then remove it from the MapCell object. */
+	      p_takeFromCell.hiddenItem = null;
+	      return true;
+	    }
+	  }
+	  return false;
+	}
+	
+	public void useItem() 
+	{
+	  MapCell testCell = map.floorMap[x][y];
+	  
+	  System.out.println("Look for item at " + x + ", " + y);
+	  /* Check the cell the player is in */
+	  if (testCell.hiddingPlace)
+	    if (testCell.hiddenItem != null)
+        Log.action("There is nothing here");
+      else        
+        if (takeItemFromCell( testCell))
+          Log.action("Item Applied to inventory");
+        else
+          Log.action("Your Inventory is full");                      
+	  else
+	  {
+	    /* Check the cell the player is facing */
+	    switch (direction)
+	    {
+	      case MapCell.NORTH:
+	      {
+	        testCell = map.floorMap[x][y + 1];
+	        break;
+	      }
+	      case MapCell.SOUTH:
+        {
+          testCell = map.floorMap[x][y - 1];
+          break;
+        }
+	      case MapCell.WEST:
+        {
+          testCell = map.floorMap[x - 1][y];
+          break;
+        }
+	      case MapCell.EAST:
+        {
+          testCell = map.floorMap[x + 1][y];
+          break;
+        }
+	    }	    	   
+	    	    	   
+	    if (testCell.hiddingPlace) 
+	      if (testCell.hiddenItem != null)
+	        Log.action("There is nothing here");
+	      else	      
+  	      if (takeItemFromCell( testCell))
+	          Log.action("Item Applied to inventory");
+	        else
+  	        Log.action("Your Inventory is full");	            	   
+	    else	    
+	      Log.action("There is nothing here"); 	    
+	  }	  
+	}
+	
 	@Override
 	public boolean DoControl()
 	{
@@ -125,11 +205,12 @@ public class Player extends Character implements EventListener
 		if (upHeld)
 		{
 			if (upClear())
-			{
-				y++;
+			{				
+			  y++;
 			}
 			upHeld = false;
 			newRot = 180.0f;
+			direction = MapCell.NORTH;
 			handled = true;
 		}
 		
@@ -141,6 +222,7 @@ public class Player extends Character implements EventListener
 			}
 			downHeld = false;
 			newRot = 0.0f;
+			direction = MapCell.SOUTH;
 			handled = true;
 		}
 		
@@ -152,6 +234,7 @@ public class Player extends Character implements EventListener
 			}
 			leftHeld = false;
 			newRot = 270.0f;
+			direction = MapCell.WEST;
 			handled = true;
 		}
 		
@@ -163,14 +246,14 @@ public class Player extends Character implements EventListener
 			}
 			rightHeld = false;
 			newRot = 90.0f;
+			direction = MapCell.EAST;
 			handled = true;
 		}
 
     if (useHeld)
     {
-      useHeld = false;
-      
-      System.out.println("Use");
+      useItem();
+      useHeld = false;           
       handled = true;
     }
 		

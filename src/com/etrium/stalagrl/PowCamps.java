@@ -25,6 +25,7 @@ import com.etrium.stalagrl.system.EventType;
 import com.etrium.stalagrl.system.EtriumEvent;
 import com.etrium.stalagrl.system.EventListener;
 import com.etrium.stalagrl.system.EventManager;
+import com.etrium.stalagrl.system.Log;
 
 public class PowCamps implements EventListener
 {
@@ -52,7 +53,7 @@ public class PowCamps implements EventListener
 	protected Character pows[] = new Character[POW_COUNT];
 	
 	protected CampTime campTime = new CampTime();
-	
+
 	public PowCamps()
 	{
 		evtMgr = new EventManager();
@@ -68,18 +69,8 @@ public class PowCamps implements EventListener
 		levelLabel = new Label("* * * Dungeon level 35 * * *", guiSkin);
 		levelLabel.setPosition(40.0f, 730.0f);
 
-	    String[] s = {""};
-	    List list = new List(s, guiSkin);
-	    list.setHeight(12.0f);
-	    logScrollPane = new ScrollPane(list, guiSkin);
-	    logScrollPane.setOverscroll(false,  false);
-	    logScrollPane.setFadeScrollBars(false);
-	    logWindow = new Window("Activity", guiSkin);
-	    logWindow.setPosition(1024-10-(16), -300.0f);
-	    logWindow.setSize(300.0f, 100.0f);
-	    logWindow.row().fill().expandX().expandY();
-	    logWindow.add(logScrollPane);
-	    //guiStage.addActor(logWindow);
+	    
+	    Log.CreateLog( guiStage, guiSkin);
 	
 	    evtMgr.RegisterListener(this, EventType.evtLogActivity);
 	    evtMgr.RegisterListener(this, EventType.evtCharDead);
@@ -129,6 +120,8 @@ public class PowCamps implements EventListener
 		inventory.AddItem(new Item( ItemType.CROWBAR));
 		inventory.AddItem(new Item( ItemType.KEY));
 		
+		player.SetInventory(inventory);
+		
 		campTime.SetTime(6, 00);
 	}
 
@@ -167,7 +160,8 @@ public class PowCamps implements EventListener
         
         levelLabel.setText("* * * Dungeon level "+map.curLevel+" * * *");
         
-        logScrollPane.setScrollPercentY(100.0f);
+        Log.Render();
+        
         guiStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         guiStage.draw();
 	}
