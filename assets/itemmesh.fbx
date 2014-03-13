@@ -12,8 +12,8 @@ FBXHeaderExtension:  {
 		Month: 03
 		Day: 13
 		Hour: 17
-		Minute: 32
-		Second: 58
+		Minute: 47
+		Second: 20
 		Millisecond: 0
 	}
 	Creator: "FBX SDK/FBX Plugins build 20070228"
@@ -21,7 +21,7 @@ FBXHeaderExtension:  {
 		FlagPLE: 0
 	}
 }
-CreationTime: "2014-03-13 17:32:58:000"
+CreationTime: "2014-03-13 17:47:20:000"
 Creator: "Blender version 2.69 (sub 0)"
 
 ; Object definitions
