@@ -49,7 +49,8 @@ public class PowCamps implements EventListener
 	
 	protected CampTime campTime = new CampTime();
 	
-	protected GUITime guiTime = null; 
+	protected GUITime guiTime = null;
+	protected GUIActivity guiActivity = null;
 
 	public PowCamps()
 	{
@@ -64,6 +65,7 @@ public class PowCamps implements EventListener
 		guiSkin = new Skin(Gdx.files.internal("data/uiskin.json"));
 		
 		guiTime = new GUITime(guiSkin, guiStage);
+		guiActivity = new GUIActivity(guiSkin, guiStage);
 	    
 	    Log.CreateLog( guiStage, guiSkin);
 	
@@ -258,6 +260,8 @@ public class PowCamps implements EventListener
 					pows[i].ResetPath();
 				}
 				
+				guiActivity.SetActivity(act.name,  true);
+				
 				break;
 			}
 			case evtActivityStart:
@@ -265,6 +269,9 @@ public class PowCamps implements EventListener
 				Activity act = (Activity)p_event.data;
 				System.out.println("Activity " + act.name + " has started");
 				map.SetCurrentActivity(act, false);
+				
+				guiActivity.SetActivity(act.name,  false);
+				
 				break;
 			}
 		}

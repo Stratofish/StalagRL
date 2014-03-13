@@ -16,7 +16,7 @@ public class GUITime
 		stage = p_stage;
 		
 		label = new Label("Test", skin);
-		label.setPosition(50.0f, 50.0f);
+		label.setPosition(50.0f, 80.0f);
 		label.setFontScale(2.0f);
 		
 		stage.addActor(label);
