@@ -327,7 +327,7 @@ public class Map implements EventListener
 		
 		MakeModels();
 		
-		floorItem = new FloorItem(this, new Vector2(10f, 20f), stonesTexture, environment);
+		floorItem = new FloorItem(this, new Vector2(10f, 20f), compassTexture, environment);
 		
 		timestamp = System.currentTimeMillis() % 1000;
 		
@@ -392,14 +392,14 @@ public class Map implements EventListener
 			{
 				for (int h = yMin; h < yMax; h++)
 				{
-					//modelBatch.render(floorTiles[w][h], environment);
+					modelBatch.render(floorTiles[w][h], environment);
 				}
 			}
 		}
 		
 		int size = regionRecords.size();
-		//for (int i = 0; i < size; i++)
-//			regionRecords.get(i).Render(modelBatch);			
+		for (int i = 0; i < size; i++)
+			regionRecords.get(i).Render(modelBatch);			
 		
 		floorItem.Render(modelBatch);
 		

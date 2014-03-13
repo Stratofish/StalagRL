@@ -119,11 +119,7 @@ public class Character implements EventListener
 		{
 			// Get boundaries
 			Activity act = map.currentActivity;
-			if ((act != null) &&
-				(act.regionType == MapRegionType.FREE_TIME))
-			{
-				int r = 6;
-			}
+
 			MapRegionRecord mrr = null;
 			
 			int size = map.activityRegions.size();
@@ -133,7 +129,6 @@ public class Character implements EventListener
 					(map.activityRegions.get(i).type == act.regionType))
 				{
 					mrr = map.activityRegions.get(i).record;
-					//System.out.println(mrr.x + ", " + mrr.y);
 				}
 			}
 			
@@ -143,8 +138,6 @@ public class Character implements EventListener
 				int y1 = mrr.y;
 				int width = mrr.region.width;
 				int height = mrr.region.height;
-			
-				//System.out.println(width + " * " + height);
 				
 				boolean moveNow = true;
 				

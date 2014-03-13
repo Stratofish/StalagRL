@@ -27,7 +27,7 @@ public class FloorItem
     environment = p_environment;
     
     instance = new ModelInstance(map.assets.get(Assets.modelItemMesh, Model.class));
-    instance.transform.translate(coordinates.x, coordinates.y, 0.0f);    
+    instance.transform.translate(coordinates.x, coordinates.y, map.floorMap[(int) coordinates.x][(int) coordinates.y].floorLevel);
 
     Node node = instance.getNode("Walls");
     if (node != null)
@@ -44,7 +44,6 @@ public class FloorItem
   
   public void Render( ModelBatch modelBatch)
   {
-   System.out.println("Test");
     modelBatch.render(instance, environment);
   }
 }
