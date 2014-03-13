@@ -10,7 +10,7 @@ import com.etrium.stalagrl.system.EventType;
 
 public class CampTime implements EventListener
 {
-	private static final int TIME_STEP = 1;
+	private static final int TIME_STEP = 3;
 	
 	private static final int DARK_STARTS = 19;
 	private static final int DARK_ENDS = 7;
@@ -48,6 +48,39 @@ public class CampTime implements EventListener
 		activity.leadTime = 1000;
 		activity.length = 500;
 		activity.name = "Breakfast";
+		activity.regionType = MapRegionType.FOOD;
+		activities.add(activity);
+		
+		activity = new Activity();
+		activity.startTime = 12000;
+		activity.leadTime = 1000;
+		activity.length = 500;
+		activity.name = "Lunch";
+		activity.regionType = MapRegionType.FOOD;
+		activities.add(activity);
+		
+		activity = new Activity();
+		activity.startTime = 14000;
+		activity.leadTime = 1000;
+		activity.length = 3000;
+		activity.name = "Excercise";
+		activity.regionType = MapRegionType.EXCERCISE;
+		activities.add(activity);
+		
+		activity = new Activity();
+		activity.startTime = 19000;
+		activity.leadTime = 1000;
+		activity.length = 500;
+		activity.name = "Dinner";
+		activity.regionType = MapRegionType.FOOD;
+		activities.add(activity);
+		
+		activity = new Activity();
+		activity.startTime =22000;
+		activity.leadTime = 1000;
+		activity.length = 8000;
+		activity.name = "Sleep";
+		activity.regionType = MapRegionType.SLEEP;
 		activities.add(activity);
 		
 		EtriumEvent evt = new EtriumEvent();

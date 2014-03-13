@@ -4,5 +4,8 @@ public enum MapRegionType
 {
 	NONE,
 	ROLLCALL,
-	FREE_TIME
+	FREE_TIME,
+	FOOD,
+	EXCERCISE,
+	SLEEP
 }

@@ -126,6 +126,7 @@ public class Map implements EventListener
 		MapRegion towerRegion = new RegionTower(this);
 		MapRegion floorRegion = new RegionFloor(this, FLOOR_STONES, 5, 10);
 		MapRegion freetimeRegion = new RegionDummy(this, 50, 50);
+		MapRegion foodRegion = new RegionDummy(this, 20, 10);
 		MapRegion wireSouthRegion = new RegionExtrude(this, RegionExtrude.WEST, 50, Assets.modelBarbedWire);
 		MapRegion wireSouthOuterRegion = new RegionExtrude(this, RegionExtrude.WEST, 60, Assets.modelBarbedWire);
 		MapRegion wireNorthRegion = new RegionExtrude(this, RegionExtrude.EAST, 50, Assets.modelBarbedWire);
@@ -242,6 +243,27 @@ public class Map implements EventListener
 		RegionActivity ar = new RegionActivity(mrr, MapRegionType.ROLLCALL);
 		activityRegions.add(ar);
 			
+		mrr = new MapRegionRecord(true);
+		mrr.region = foodRegion;
+		mrr.x = 20;
+		mrr.y = 10;
+		ar = new RegionActivity(mrr, MapRegionType.FOOD);
+		activityRegions.add(ar);
+		
+		mrr = new MapRegionRecord(true);
+		mrr.region = foodRegion;
+		mrr.x = 30;
+		mrr.y = 15;
+		ar = new RegionActivity(mrr, MapRegionType.EXCERCISE);
+		activityRegions.add(ar);
+		
+		mrr = new MapRegionRecord(true);
+		mrr.region = foodRegion;
+		mrr.x = 40;
+		mrr.y = 20;
+		ar = new RegionActivity(mrr, MapRegionType.SLEEP);
+		activityRegions.add(ar);
+		
 		mrr = new MapRegionRecord(true);
 		mrr.region = freetimeRegion;
 		mrr.x = 5;
