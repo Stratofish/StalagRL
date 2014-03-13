@@ -17,7 +17,7 @@ public class Inventory
     // Initially the list will be empty
     items.clear();
   }
-  
+
   public Inventory(int p_maxItems)    
   {
     init( p_maxItems);
@@ -54,22 +54,23 @@ public class Inventory
     return false;
   }
   
-  public void RemoveItem(Item item)
+  public Item RemoveSelectedItem()
   {
-    int id = -1;
-    
-    for (int i = 0; i < items.size(); i++)
+    if (inventoryHandler != null)
     {
-      if (items.get(i) == item)    
-        id = i;
+      int selected = inventoryHandler.selected;
+      
+      if (selected < GetItemCount())
+      {
+        Item item = items.get(selected);
+        items.remove(inventoryHandler.selected);
+        inventoryHandler.Update();
+        return item;
+      }
     }
-    
-    if (id != -1)
-      items.remove(id);
-    
-    if (inventoryHandler != null) 
-      inventoryHandler.Update();
-  }
+      
+    return null;
+  }   
   
   public void DoControl()
   {

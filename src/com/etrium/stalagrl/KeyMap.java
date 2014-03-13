@@ -30,6 +30,7 @@ public class KeyMap
     protected boolean inventoryFWDHeld = false; 
     
     protected boolean useHeld = false;
+    protected boolean dropHeld = false;
     
     public KeyMap()
     {
@@ -340,6 +341,32 @@ public class KeyMap
                 evtMgr.SendEvent(evt,  true);
                 
                 useHeld = false;
+            }
+        }
+        
+        // Drop key
+        if (Gdx.input.isKeyPressed(Keys.BACKSPACE) ||
+            Gdx.input.isKeyPressed(Keys.F))
+        {
+            if (!dropHeld)
+            {
+                EtriumEvent evt = new EtriumEvent();
+                evt.type = EventType.evtControlDown;
+                evt.data = (Object)ControlType.DROP;
+                evtMgr.SendEvent(evt,  true);
+                
+                dropHeld = true;
+            }
+        } else
+        {
+            if (dropHeld)
+            {
+                EtriumEvent evt = new EtriumEvent();
+                evt.type = EventType.evtControlUp;
+                evt.data = (Object)ControlType.DROP;
+                evtMgr.SendEvent(evt,  true);
+                
+                dropHeld = false;
             }
         }
         

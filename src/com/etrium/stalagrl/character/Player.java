@@ -21,6 +21,8 @@ public class Player extends Character implements EventListener
 	protected boolean leftHeld = false;
 	protected boolean rightHeld = false;
 	protected boolean useHeld = false;
+	protected boolean dropHeld = false;
+	
 	protected int direction = MapCell.SOUTH; 
 	
 	private EventManager evtMgr = new EventManager();
@@ -140,20 +142,16 @@ public class Player extends Character implements EventListener
 	  return false;
 	}
 	
-	public void useItem() 
+	public void useItem()
 	{
 	  MapCell testCell = map.floorMap[x][y];
-	  
-	  System.out.println("Look for item at " + x + ", " + y);
+	  	  
 	  /* Check the cell the player is in */
-	  if (testCell.hiddingPlace)
-	    if (testCell.hiddenItem != null)
-        Log.action("There is nothing here");
-      else        
-        if (takeItemFromCell( testCell))
-          Log.action("Item Applied to inventory");
-        else
-          Log.action("Your Inventory is full");                      
+	  if ((testCell.hiddingPlace) && (testCell.hiddenItem != null))           
+      if (takeItemFromCell( testCell))
+        Log.action("Item applied to inventory");
+      else
+        Log.action("Your inventory is full");                      
 	  else
 	  {
 	    /* Check the cell the player is facing */
@@ -181,17 +179,28 @@ public class Player extends Character implements EventListener
         }
 	    }	    	   
 	    	    	   
-	    if (testCell.hiddingPlace) 
-	      if (testCell.hiddenItem != null)
-	        Log.action("There is nothing here");
-	      else	      
-  	      if (takeItemFromCell( testCell))
-	          Log.action("Item Applied to inventory");
-	        else
-  	        Log.action("Your Inventory is full");	            	   
+	    if ((testCell.hiddingPlace) && (testCell.hiddenItem != null))	    	     
+  	    if (takeItemFromCell( testCell))
+	        Log.action("Item applied to inventory");
+	      else
+  	      Log.action("Your inventory is full");	            	   
 	    else	    
 	      Log.action("There is nothing here"); 	    
 	  }	  
+	}
+	
+	private void dropItem()
+	{
+	  Item removedItem = inventory.RemoveSelectedItem();
+	  
+	  if (removedItem == null)
+	  {
+	    Log.action("No item to remove");
+	  }
+	  else
+	  {
+	    Log.action("Item has been removed");
+	  }
 	}
 	
 	@Override
@@ -257,7 +266,14 @@ public class Player extends Character implements EventListener
       handled = true;
     }
 		
-		if ((handled) &&
+		if (dropHeld)
+		{
+		  dropItem();
+		  dropHeld = false;
+		  handled = true;
+		}
+    
+    if ((handled) &&
 			(map.assets.update()))
 		{
 			float movZ = z;
@@ -334,11 +350,17 @@ public class Player extends Character implements EventListener
                       handled = true;
                       break;
                     }
+                    case DROP:
+                    {
+                      dropHeld = false;
+                      handled = true;
+                      break;
+                    }
                 }
                 
                 if (handled)
                 {
-                    return true;
+                  return true;
                 }
                 
                 break;
@@ -379,6 +401,12 @@ public class Player extends Character implements EventListener
                       handled = true;
                       break;
                     }
+                    case DROP:
+                    {
+                      dropHeld = true;
+                      handled = true;
+                      break;
+                    }                    
                 }
                 
                 if (handled)

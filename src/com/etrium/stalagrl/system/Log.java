@@ -33,7 +33,7 @@ public class Log
 
   static public void Render()
   {
-    scrollPane.setScrollPercentY(0.0f);
+    //scrollPane.setScrollPercentY(0.0f);
   }
   
   static public void action( String p_text)

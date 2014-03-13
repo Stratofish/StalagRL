@@ -134,7 +134,7 @@ public class InventoryHandler implements EventListener
         
       window.add(label);
       
-      if (i + 1 == selected)
+      if (i == selected)
       {                              
         Texture texture = new Texture(Gdx.files.internal(Assets.iconHighlight));
         texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -161,35 +161,35 @@ public class InventoryHandler implements EventListener
     if (inventory1Held)    
     {
       inventory1Held = false;
-      selected = 1;
+      selected = 0;
       handled = true;
     }
     
     if (inventory2Held)    
     {
       inventory2Held = false;
-      selected = 2;
+      selected = 1;
       handled = true;
     }
     
     if (inventory3Held)    
     {
       inventory3Held = false;
-      selected = 3;
+      selected = 2;
       handled = true;
     }
     
     if (inventory4Held)    
     {
       inventory4Held = false;
-      selected = 4;
+      selected = 3;
       handled = true;
     }
     
     if (inventory5Held)    
     {
       inventory5Held = false;
-      selected = 5;
+      selected = 4;
       handled = true;
     }
     
@@ -197,8 +197,8 @@ public class InventoryHandler implements EventListener
     {
       inventoryBackHeld = false;
       
-      if ( selected == 1)
-        selected = 5;
+      if ( selected == 0)
+        selected = 4;
       else
         selected--;
         
@@ -209,8 +209,8 @@ public class InventoryHandler implements EventListener
     {
       inventoryFWDHeld = false;
       
-      if ( selected == 5)
-        selected = 1;
+      if ( selected == 4)
+        selected = 0;
       else
         selected++;
         

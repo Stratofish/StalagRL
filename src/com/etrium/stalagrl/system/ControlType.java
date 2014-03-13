@@ -7,6 +7,7 @@ public enum ControlType
     LEFT,
     RIGHT,
     USE,
+    DROP,
     GODMODE,
     NOCLIP,
     REVEALMAP,
