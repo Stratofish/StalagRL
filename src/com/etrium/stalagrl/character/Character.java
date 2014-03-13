@@ -126,11 +126,20 @@ public class Character implements EventListener
 		if ((currentPath != null) &&
 			(currentPath.size() != 0))
 		{
+			float newRot = rot; 
+			
 			Vector2 target = currentPath.get(0);
 			currentPath.remove(0);
+			
+			if (target.y > y) newRot = 180.0f;
+			if (target.y < y) newRot = 0.0f;
+			if (target.x > x) newRot = 90.0f;
+			if (target.x < x) newRot = 270.0f;
+			
 			x = (int)target.x;
 			y = (int)target.y;
 			SetPosition(x,  y,  z);
+			instance.transform.rotate(0.0f,  0.0f,  1.0f, newRot);
 			
 			if (currentPath.size() == 0)
 				currentPath = null;
