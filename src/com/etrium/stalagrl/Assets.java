@@ -7,6 +7,7 @@ public class Assets
   public final static String texturePath = Assets.dataPath + "/textures";
   public final static String modelPath = Assets.dataPath + "/models";
   public final static String iconPath = Assets.texturePath + "/icons";
+  public final static String itemPath = Assets.texturePath + "/items";
   
   // Texture Constants
   public final static String textureDirt  = Assets.texturePath + "/dirt.png";
@@ -37,4 +38,14 @@ public class Assets
   public final static String iconSpade = Assets.iconPath + "/icon-spade.png";
   public final static String iconWatch = Assets.iconPath + "/icon-watch.png";
   public final static String iconWirecutters = Assets.iconPath + "/icon-wirecutters.png";  
+  
+  // Item Constants  
+  public final static String itemCompass = Assets.itemPath + "/item-compass.png";
+  public final static String itemCrowbar = Assets.itemPath + "/item-crowbar.png";
+  public final static String itemKey = Assets.itemPath + "/item-key.png";
+  public final static String itemLockpick = Assets.itemPath + "/item-lockpick.png";
+  public final static String itemPapers = Assets.itemPath + "/item-papers.png";
+  public final static String itemSpade = Assets.itemPath + "/item-spade.png";
+  public final static String itemWatch = Assets.itemPath + "/item-watch.png";
+  public final static String itemWirecutters = Assets.itemPath + "/item-wirecutters.png";  
 }

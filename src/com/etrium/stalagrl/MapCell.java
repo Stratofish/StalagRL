@@ -1,5 +1,7 @@
 package com.etrium.stalagrl;
 
+import java.util.ArrayList;
+
 import com.etrium.stalagrl.inventory.Item;
 
 public class MapCell
@@ -17,6 +19,8 @@ public class MapCell
 	public boolean hiddingPlace = false;
 	public Item hiddenItem = null;
 	
+	public ArrayList<Item> floorItems = new ArrayList<Item>();
+
 	public int GetCollision()
 	{
 		return collision | charCollision;

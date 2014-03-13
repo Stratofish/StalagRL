@@ -18,7 +18,7 @@ public class Item
       icon         = p_icon;
       name         = p_name;      
       handlerClass = p_handlerClass;
-    } 
+    }
   }
    
   private static final ItemDetail[] itemDetails = new ItemDetail[]

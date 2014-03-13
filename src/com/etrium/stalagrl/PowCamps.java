@@ -109,11 +109,11 @@ public class PowCamps implements EventListener
 			pows[i] = new Character(x, y);
 			pows[i].SetMap(map);
 		}
-		
-		InventoryHandler inventoryHandler = new InventoryHandler( guiStage, guiSkin);  
+
+		InventoryHandler inventoryHandler = new InventoryHandler( guiStage, guiSkin);
 		inventory = new Inventory( 5, inventoryHandler);
 
-		inventory.AddItem(new Item( ItemType.COMPASS)); 
+		inventory.AddItem(new Item( ItemType.COMPASS));
 		inventory.AddItem(new Item( ItemType.CROWBAR));
 		inventory.AddItem(new Item( ItemType.KEY));
 		

@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.math.Vector2;
 import com.etrium.stalagrl.character.Character;
 import com.etrium.stalagrl.inventory.Item;
 import com.etrium.stalagrl.inventory.ItemType;
@@ -63,11 +64,14 @@ public class Map implements EventListener
 	private Texture grassTexture;
 	public Texture barbedWireTexture;
 	public Texture hutTexture;
+	public Texture compassTexture;
 	protected Texture textures[];
 	protected long timestamp = 0;
 	public Activity currentActivity = null;
 	public boolean currentActivityLead = false;
 	public List<RegionActivity> activityRegions = null;
+	
+	public FloorItem floorItem;
 	
 	protected EventManager evtMgr = new EventManager();
 
@@ -85,6 +89,7 @@ public class Map implements EventListener
 		assets.load(Assets.modelWall1, Model.class);
 		assets.load(Assets.modelBarbedWire, Model.class);
 		assets.load(Assets.modelPlayer, Model.class);
+		assets.load(Assets.modelItemMesh, Model.class);
 		assets.finishLoading();
 		
 		environment = new Environment();
@@ -120,6 +125,9 @@ public class Map implements EventListener
 		hutTexture = new Texture(Gdx.files.internal(Assets.textureHut));
 		hutTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		
+		compassTexture = new Texture(Gdx.files.internal(Assets.itemCompass));
+    compassTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
 		// Setup regions
 		regionRecords = new ArrayList<MapRegionRecord>();
 		MapRegion hutRegion = new RegionHut(this);
@@ -283,7 +291,7 @@ public class Map implements EventListener
 				floorMap[w][h] = mc;
 			}
 		}
-		
+
 		hiddingPlaces = new ArrayList<MapCell>(); 
 		
 		/* Cycle through regions and copy collision map over to floor map */
@@ -318,6 +326,8 @@ public class Map implements EventListener
 		floorTiles = new ModelInstance[width][height];
 		
 		MakeModels();
+		
+		floorItem = new FloorItem(this, new Vector2(10f, 20f), stonesTexture, environment);
 		
 		timestamp = System.currentTimeMillis() % 1000;
 		
@@ -382,14 +392,16 @@ public class Map implements EventListener
 			{
 				for (int h = yMin; h < yMax; h++)
 				{
-					modelBatch.render(floorTiles[w][h], environment);
+					//modelBatch.render(floorTiles[w][h], environment);
 				}
 			}
 		}
 		
 		int size = regionRecords.size();
-		for (int i = 0; i < size; i++)
-			regionRecords.get(i).Render(modelBatch);
+		//for (int i = 0; i < size; i++)
+//			regionRecords.get(i).Render(modelBatch);			
+		
+		floorItem.Render(modelBatch);
 		
 		long newTime = System.currentTimeMillis() % 1000;
 		//long timeDiff = newTime - timestamp;
