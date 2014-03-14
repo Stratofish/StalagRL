@@ -335,12 +335,12 @@ public class Player extends Character implements EventListener
 			handled = true;
 		}
 
-    if (useHeld)
-    {
-      UseItem();
-      useHeld = false;           
-      handled = true;
-    }
+		if (useHeld)
+		{
+			UseItem();
+			useHeld = false;           
+			handled = true;
+		}
 		
 		if (dropHeld)
 		{
@@ -349,7 +349,7 @@ public class Player extends Character implements EventListener
 		  handled = true;
 		}
     
-    if ((handled) &&
+		if ((handled) &&
 			(map.assets.update()))
 		{
 			float movZ = z;
