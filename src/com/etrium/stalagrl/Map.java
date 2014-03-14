@@ -27,6 +27,7 @@ import com.etrium.stalagrl.region.RegionActivity;
 import com.etrium.stalagrl.region.RegionDummy;
 import com.etrium.stalagrl.region.RegionFloor;
 import com.etrium.stalagrl.region.RegionFood;
+import com.etrium.stalagrl.region.RegionGuardhouse;
 import com.etrium.stalagrl.region.RegionHut;
 import com.etrium.stalagrl.region.RegionTower;
 import com.etrium.stalagrl.region.RegionExtrude;
@@ -99,6 +100,7 @@ public class Map implements EventListener
 		assets.load(Assets.modelWall1, Model.class);
 		assets.load(Assets.modelBarbedWire, Model.class);
 		assets.load(Assets.modelFood, Model.class);
+		assets.load(Assets.modelGuardhouse, Model.class);
 		assets.load(Assets.modelPlayer, Model.class);
 		assets.load(Assets.modelItemMesh, Model.class);
 		assets.finishLoading();
@@ -179,14 +181,14 @@ public class Map implements EventListener
 		MapRegion floorRegion = new RegionFloor(this, FLOOR_STONES, 5, 10);
 		MapRegion freetimeRegion = new RegionDummy(this, 50, 50);
 		MapRegion foodRegion = new RegionFood(this);
+		MapRegion guardhouseRegion = new RegionGuardhouse(this);
 		MapRegion wireSouthRegion = new RegionExtrude(this, RegionExtrude.WEST, 50, Assets.modelBarbedWire);
 		MapRegion wireSouthOuterRegion = new RegionExtrude(this, RegionExtrude.WEST, 60, Assets.modelBarbedWire);
-		MapRegion wireNorthRegion = new RegionExtrude(this, RegionExtrude.EAST, 50, Assets.modelBarbedWire);
-		MapRegion wireNorthOuterRegion = new RegionExtrude(this, RegionExtrude.EAST, 60, Assets.modelBarbedWire);
+		MapRegion wireNorthOuterRegion = new RegionExtrude(this, RegionExtrude.EAST, 5, Assets.modelBarbedWire);
 		MapRegion wireWestRegion = new RegionExtrude(this, RegionExtrude.NORTH, 50, Assets.modelBarbedWire);
-		MapRegion wireWestOuterRegion = new RegionExtrude(this, RegionExtrude.NORTH, 60, Assets.modelBarbedWire);
+		MapRegion wireWestOuterRegion = new RegionExtrude(this, RegionExtrude.NORTH, 73, Assets.modelBarbedWire);
 		MapRegion wireEastRegion = new RegionExtrude(this, RegionExtrude.SOUTH, 50, Assets.modelBarbedWire);
-		MapRegion wireEastOuterRegion = new RegionExtrude(this, RegionExtrude.SOUTH, 60, Assets.modelBarbedWire);
+		MapRegion wireEastOuterRegion = new RegionExtrude(this, RegionExtrude.SOUTH, 73, Assets.modelBarbedWire);
 	
 		// Setup region instances
 		activityRegions = new ArrayList<RegionActivity>();
@@ -224,19 +226,19 @@ public class Map implements EventListener
 		mrr = new MapRegionRecord();
 		mrr.region = wireEastOuterRegion;
 		mrr.x = 59;
-		mrr.y = 59;
-		regionRecords.add(mrr);
-		
-		mrr = new MapRegionRecord();
-		mrr.region = wireNorthRegion;
-		mrr.x = 5;
-		mrr.y = 54;
+		mrr.y = 73;
 		regionRecords.add(mrr);
 		
 		mrr = new MapRegionRecord();
 		mrr.region = wireNorthOuterRegion;
 		mrr.x = 0;
-		mrr.y = 59;
+		mrr.y = 73;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = wireNorthOuterRegion;
+		mrr.x = 55;
+		mrr.y = 73;
 		regionRecords.add(mrr);
 		
 		mrr = new MapRegionRecord();
@@ -297,11 +299,17 @@ public class Map implements EventListener
 			
 		mrr = new MapRegionRecord();
 		mrr.region = foodRegion;
-		mrr.x = 20;
-		mrr.y = 10;
+		mrr.x = 35;
+		mrr.y = 56;
 		ar = new RegionActivity(mrr, MapRegionType.FOOD);
 		regionRecords.add(mrr);
 		activityRegions.add(ar);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = guardhouseRegion;
+		mrr.x = 5;
+		mrr.y = 55;
+		regionRecords.add(mrr);
 		
 		mrr = new MapRegionRecord(true);
 		mrr.region = foodRegion;

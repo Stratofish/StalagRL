@@ -102,16 +102,19 @@ public class MapRegion
 			
 			record.modelInstances.add(instance);
 		}
-		
-		int instanceCount = record.modelInstances.size();
-		if (instanceCount > 0)
+
+		if (texture != null)
 		{
-			ModelInstance instance = record.modelInstances.get(0);
-				
-			int count = instance.materials.size;
-			for (int j = 0; j < count; j++)
+			int instanceCount = record.modelInstances.size();
+			if (instanceCount > 0)
 			{
-				instance.materials.get(j).set(TextureAttribute.createDiffuse(texture));
+				ModelInstance instance = record.modelInstances.get(0);
+					
+				int count = instance.materials.size;
+				for (int j = 0; j < count; j++)
+				{
+					instance.materials.get(j).set(TextureAttribute.createDiffuse(texture));
+				}
 			}
 		}
 	}
