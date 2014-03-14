@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.etrium.stalagrl.Assets;
+import com.etrium.stalagrl.Map;
 import com.etrium.stalagrl.MapCell;
 import com.etrium.stalagrl.system.EventManager;
 import com.etrium.stalagrl.system.EventType;
@@ -14,7 +15,7 @@ public class Guard extends Character
 	
 	private EventManager evtMgr = new EventManager();
 	
-	protected GuardRole role = new GuardRolePerimeter(); 
+	protected GuardRole role; 
 	
 	public Guard(int p_x, int p_y)
 	{
@@ -33,80 +34,21 @@ public class Guard extends Character
 		evtMgr.RegisterListener(this, EventType.evtGlobalLightLevel);
 		
 		modelName = Assets.modelGuard;
+		
 	}
 	
-	public boolean UpClear()
+	public void SetMap(Map p_map)
 	{
-	  boolean result = true; 
-	  
-	  // Check for current cell wall collision
-	  if ((map.floorMap[(int)x][(int)y].GetCollision() & MapCell.NORTH) != 0) 	  
-		  result = false;
-	  else
-	  {
-		  // Check neighbouring cell wall collision.
-		  if ((map.floorMap[(int)x][(int)y + 1].GetCollision() & MapCell.SOUTH) != 0)    
-			  result = false;
-	  }
-	  
-	  return result;
+		super.SetMap(p_map);
+		
+		role = new GuardRolePerimeter(map, this);
 	}
-
-	public boolean DownClear()
-  {
-    boolean result = true; 
-    
-    // Check for current cell wall collision
-    if ((map.floorMap[(int)x][(int)y].GetCollision() & MapCell.SOUTH) != 0)    
-      result = false;
-    else
-    {
-      // Check neighbouring cell wall collision.
-      if ((map.floorMap[(int)x][(int)y - 1].GetCollision() & MapCell.NORTH) != 0)    
-        result = false;
-    }
-    
-    return result;
-  }
 	
-	public boolean LeftClear()
-  {
-    boolean result = true;
-	  
-    // Check for current cell wall collision
-    if ((map.floorMap[(int)x][(int)y].GetCollision() & MapCell.WEST) != 0)    
-      result = false;
-    else
-    {
-      // Check neighbouring cell wall collision.
-      if ((map.floorMap[(int)x - 1][(int)y].GetCollision() & MapCell.EAST) != 0)    
-        result = false;
-    }
-    
-    return result;
-  }
-	
-	public boolean RightClear()
-  {
-    boolean result = true;
-	  
-	  // Check for current cell wall collision
-    if ((map.floorMap[(int)x][(int)y].GetCollision() & MapCell.EAST) != 0)    
-      result = false;
-    else
-    {
-      // Check neighbouring cell wall collision.
-      if ((map.floorMap[(int)x + 1][(int)y].GetCollision() & MapCell.WEST) != 0)    
-        result = false;
-      
-    }
-
-    return result;
-  }
-
 	@Override
 	public boolean DoControl()
 	{
-		super.DoControl();
+		role.DoControl();
+		
+		//super.DoControl();
 		return false;
 	}}

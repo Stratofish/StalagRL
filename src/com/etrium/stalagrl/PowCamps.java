@@ -29,7 +29,7 @@ import com.etrium.stalagrl.system.Log;
 public class PowCamps implements EventListener
 {
 	private static final int POW_COUNT = 20;
-	private static final int GUARD_COUNT = 10;
+	private static final int GUARD_COUNT = 4;
 	
 	private EventManager evtMgr;
 	private KeyMap keyMap;
@@ -115,8 +115,8 @@ public class PowCamps implements EventListener
 		
 		for (int i = 0; i < GUARD_COUNT; i++)
 		{
-			int x = (int) (5 + (Math.random() * 50));
-			int y = (int) (5 + (Math.random() * 50));
+			int x = (int) (1 + (Math.random() * 3));
+			int y = (int) (1 + (Math.random() * 50));
 			guards[i] = new Guard(x, y);
 			guards[i].SetMap(map);
 		}
