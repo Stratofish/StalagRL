@@ -14,7 +14,6 @@ import com.etrium.stalagrl.Assets;
 import com.etrium.stalagrl.Map;
 import com.etrium.stalagrl.MapCell;
 import com.etrium.stalagrl.region.MapRegionRecord;
-import com.etrium.stalagrl.region.MapRegionType;
 import com.etrium.stalagrl.system.Dijkstra;
 import com.etrium.stalagrl.system.EtriumEvent;
 import com.etrium.stalagrl.system.EventListener;
@@ -40,6 +39,8 @@ public class Character implements EventListener
 	protected float rot = 0.0f;
 	
 	protected Map map = null;
+	
+	protected String modelName = Assets.modelPlayer;;
 	
 	//protected AssetManager assets;
 	protected Environment environment;
@@ -191,7 +192,7 @@ public class Character implements EventListener
 		if ((instance == null) &&
 			(map.assets.update()))
 		{
-			instance = new ModelInstance(map.assets.get(Assets.modelPlayer, Model.class));
+			instance = new ModelInstance(map.assets.get(modelName, Model.class));
 			
 			instance.transform.translate(x+0.5f, y+0.5f, z);
 		}

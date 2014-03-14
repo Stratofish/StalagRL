@@ -27,7 +27,7 @@ public class GUIActivity
 	
 	public void SetActivity(String p_name, boolean p_lead)
 	{
-		String str = "Activity " + p_name;
+		String str = p_name;
 		
 		if (p_lead)
 			str += " starts soon";

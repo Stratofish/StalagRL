@@ -1,6 +1,5 @@
 package com.etrium.stalagrl.region;
 
-import com.badlogic.gdx.math.Vector2;
 import com.etrium.stalagrl.Assets;
 import com.etrium.stalagrl.Map;
 import com.etrium.stalagrl.MapCell;

@@ -16,6 +16,7 @@ import com.etrium.stalagrl.inventory.Inventory;
 import com.etrium.stalagrl.inventory.InventoryHandler;
 import com.etrium.stalagrl.inventory.Item;
 import com.etrium.stalagrl.inventory.ItemType;
+import com.etrium.stalagrl.character.Guard;
 import com.etrium.stalagrl.character.Player;
 import com.etrium.stalagrl.character.Character;
 import com.etrium.stalagrl.system.ControlType;
@@ -28,6 +29,7 @@ import com.etrium.stalagrl.system.Log;
 public class PowCamps implements EventListener
 {
 	private static final int POW_COUNT = 20;
+	private static final int GUARD_COUNT = 10;
 	
 	private EventManager evtMgr;
 	private KeyMap keyMap;
@@ -46,6 +48,7 @@ public class PowCamps implements EventListener
 	private boolean quitDialogVisible = false;
 	protected Player player = null;
 	protected Character pows[] = new Character[POW_COUNT];
+	protected Guard guards[] = new Guard[GUARD_COUNT];
 	
 	protected CampTime campTime = new CampTime();
 	
@@ -109,6 +112,14 @@ public class PowCamps implements EventListener
 			pows[i] = new Character(x, y);
 			pows[i].SetMap(map);
 		}
+		
+		for (int i = 0; i < GUARD_COUNT; i++)
+		{
+			int x = (int) (5 + (Math.random() * 50));
+			int y = (int) (5 + (Math.random() * 50));
+			guards[i] = new Guard(x, y);
+			guards[i].SetMap(map);
+		}
 
 		InventoryHandler inventoryHandler = new InventoryHandler( guiStage, guiSkin);
 		inventory = new Inventory( 5, inventoryHandler);
@@ -143,6 +154,10 @@ public class PowCamps implements EventListener
 			{
 	        	pows[i].DoControl();
 			}
+	        for (int i = 0; i < GUARD_COUNT; i++)
+			{
+	        	guards[i].DoControl();
+			}
         }
         player.CenterMapWindowOnPlayer();
         
@@ -154,6 +169,10 @@ public class PowCamps implements EventListener
         for (int i = 0; i < POW_COUNT; i++)
 		{
         	pows[i].Render(modelBatch);
+		}
+        for (int i = 0; i < GUARD_COUNT; i++)
+		{
+        	guards[i].Render(modelBatch);
 		}
         modelBatch.end();
         

@@ -76,6 +76,14 @@ public class CampTime implements EventListener
 		activities.add(activity);
 		
 		activity = new Activity();
+		activity.startTime = 8500;
+		activity.leadTime = 1000;
+		activity.length = 500;
+		activity.name = "Evening roll call";
+		activity.regionType = MapRegionType.ROLLCALL;
+		activities.add(activity);
+		
+		activity = new Activity();
 		activity.startTime =22000;
 		activity.leadTime = 1000;
 		activity.length = 8000;

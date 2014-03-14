@@ -16,7 +16,6 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.math.Vector2;
 import com.etrium.stalagrl.character.Character;
 import com.etrium.stalagrl.inventory.Item;
 import com.etrium.stalagrl.inventory.ItemType;
@@ -102,6 +101,7 @@ public class Map implements EventListener
 		assets.load(Assets.modelFood, Model.class);
 		assets.load(Assets.modelGuardhouse, Model.class);
 		assets.load(Assets.modelPlayer, Model.class);
+		assets.load(Assets.modelGuard, Model.class);
 		assets.load(Assets.modelItemMesh, Model.class);
 		assets.finishLoading();
 		
@@ -180,6 +180,7 @@ public class Map implements EventListener
 		MapRegion towerRegion = new RegionTower(this);
 		MapRegion floorRegion = new RegionFloor(this, FLOOR_STONES, 5, 10);
 		MapRegion freetimeRegion = new RegionDummy(this, 50, 50);
+		MapRegion sleepRegion = new RegionDummy(this, 21, 11);
 		MapRegion foodRegion = new RegionFood(this);
 		MapRegion guardhouseRegion = new RegionGuardhouse(this);
 		MapRegion wireSouthRegion = new RegionExtrude(this, RegionExtrude.WEST, 50, Assets.modelBarbedWire);
@@ -313,15 +314,15 @@ public class Map implements EventListener
 		
 		mrr = new MapRegionRecord(true);
 		mrr.region = foodRegion;
-		mrr.x = 30;
-		mrr.y = 15;
+		mrr.x = 40;
+		mrr.y = 20;
 		ar = new RegionActivity(mrr, MapRegionType.EXCERCISE);
 		activityRegions.add(ar);
 		
 		mrr = new MapRegionRecord(true);
-		mrr.region = foodRegion;
-		mrr.x = 40;
-		mrr.y = 20;
+		mrr.region = sleepRegion;
+		mrr.x = 15;
+		mrr.y = 30;
 		ar = new RegionActivity(mrr, MapRegionType.SLEEP);
 		activityRegions.add(ar);
 		
