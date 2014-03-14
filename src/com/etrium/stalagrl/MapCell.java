@@ -75,27 +75,27 @@ public class MapCell
     
     if (floorItemCount != 0)
     {
-      Item item = floorItems.get(0);
-      ItemRenderer renderer = item.GetItemRenderer();
+      Item pickupItem = floorItems.get(0);
+      ItemRenderer renderer = pickupItem.GetItemRenderer();
       map.floorItems.remove(renderer);
-      item.SetItemRenderer(null);
-      floorItems.remove(item);
+      pickupItem.SetItemRenderer(null);
+      floorItems.remove(pickupItem);
       
       if (floorItems.size() > 0)
       {
-        item = floorItems.get(0);
+        Item topItem = floorItems.get(0);
         
         /* Create a new renderer for the new item that will be on the floor */
         renderer = new ItemRenderer( map
                                    , new Vector2( (float)x, (float)y)
-                                   , map.itemTextures[item.GetItemType().ordinal()]
+                                   , map.itemTextures[topItem.GetItemType().ordinal()]
                                    , map.environment);
                                    //p_environment);
-        item.SetItemRenderer(renderer); 
+        topItem.SetItemRenderer(renderer); 
         map.floorItems.add(0, renderer);        
       }
       
-      return item;
+      return pickupItem;
     }
     
     return null;
