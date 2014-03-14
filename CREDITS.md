@@ -23,3 +23,4 @@ Models
 ------
 
 http://www.blendswap.com/blends/view/66412
+http://www.blendswap.com/blends/view/71071

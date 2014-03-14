@@ -59,49 +59,139 @@ public class RegionGuardhouse extends MapRegion
 		AddBlock(34, 11, 1, 3);
 		AddBlock(34, 15, 1, 3);
 		
-	  /* Add collision values for beds */
-		/*
-		AddBed( 4, 0);
-		AddBed( 6, 0);
-		AddBed( 8, 0);
+		// Add collision values for furniture */
+		AddBlock(7, 3, 2, 1);
 		
-		AddBed( 4, 3);
-	    AddBed( 6, 3);
-	    AddBed( 8, 3);
-    */
+		AddBlock(14, 13, 2, 1);
+		AddBlock(14, 10, 2, 1);
+		AddBlock(14, 6, 2, 1);
+		AddBlock(14, 3, 2, 1);
+		AddBlock(21, 13, 2, 1);
+		AddBlock(21, 10, 2, 1);
+		AddBlock(21, 3, 2, 1);
+		AddBlock(18, 14, 1, 2);
+		AddBlock(18, 1, 1, 2);
+		
+		AddBlock(31, 15, 3, 1);
+		AddBlock(32, 16, 1, 1);
+		AddBlock(33, 11, 1, 2);
+		
+		AddBlock(37, 17, 2, 1);	
+		AddBlock(38, 13, 1, 3);
+		AddBlock(39, 14, 1, 1);
+		
 		lightCount = 3;
-		lights = new RegionLight[3];
+		lights = new RegionLight[11];
 		
 		RegionLight light = new RegionLight();
-		light.x = 1.5f;
-		light.y = 0.2f;
-		light.z = 2.0f;
+		light.x = 2.5f;
+		light.y = 5.5f;
+		light.z = 3.5f;
 		light.r = 1.0f;
 		light.g = 1.0f;
 		light.b = 1.0f;
-		light.intensity = 2.0f;
-		light.external = true;
+		light.intensity = 5.0f;
 		lights[0] = light;
 		
 		light = new RegionLight();
-		light.x = 2.5f;
-		light.y = 2.5f;
-		light.z = 2.2f;
+		light.x = 8f;
+		light.y = 7.5f;
+		light.z = 3.5f;
 		light.r = 1.0f;
 		light.g = 1.0f;
 		light.b = 1.0f;
-		light.intensity = 8.0f;
+		light.intensity = 5.0f;
 		lights[1] = light;
 		
 		light = new RegionLight();
-		light.x = 7.5f;
+		light.x = 8f;
 		light.y = 2.5f;
-		light.z = 2.2f;
+		light.z = 3.5f;
 		light.r = 1.0f;
 		light.g = 1.0f;
 		light.b = 1.0f;
-		light.intensity = 8.0f;
+		light.intensity = 5.0f;
 		lights[2] = light;
+		
+		light = new RegionLight();
+		light.x = 18.5f;
+		light.y = 13f;
+		light.z = 3.5f;
+		light.r = 1.0f;
+		light.g = 1.0f;
+		light.b = 1.0f;
+		light.intensity = 5.0f;
+		lights[3] = light;
+		
+		light = new RegionLight();
+		light.x = 18.5f;
+		light.y = 4f;
+		light.z = 3.5f;
+		light.r = 1.0f;
+		light.g = 1.0f;
+		light.b = 1.0f;
+		light.intensity = 5.0f;
+		lights[4] = light;
+		
+		light = new RegionLight();
+		light.x = 26.5f;
+		light.y = 14f;
+		light.z = 3.5f;
+		light.r = 1.0f;
+		light.g = 1.0f;
+		light.b = 1.0f;
+		light.intensity = 5.0f;
+		lights[5] = light;
+		
+		light = new RegionLight();
+		light.x = 26.5f;
+		light.y = 6.5f;
+		light.z = 3.5f;
+		light.r = 1.0f;
+		light.g = 1.0f;
+		light.b = 1.0f;
+		light.intensity = 5.0f;
+		lights[6] = light;
+		
+		light = new RegionLight();
+		light.x = 32f;
+		light.y = 14.5f;
+		light.z = 3.5f;
+		light.r = 1.0f;
+		light.g = 1.0f;
+		light.b = 1.0f;
+		light.intensity = 5.0f;
+		lights[7] = light;
+		
+		light = new RegionLight();
+		light.x = 38f;
+		light.y = 14.5f;
+		light.z = 3.5f;
+		light.r = 1.0f;
+		light.g = 1.0f;
+		light.b = 1.0f;
+		light.intensity = 5.0f;
+		lights[8] = light;
+		
+		light = new RegionLight();
+		light.x = 33f;
+		light.y = 5.5f;
+		light.z = 3.5f;
+		light.r = 1.0f;
+		light.g = 1.0f;
+		light.b = 1.0f;
+		light.intensity = 5.0f;
+		lights[9] = light;
+		
+		light = new RegionLight();
+		light.x = 42f;
+		light.y = 5.5f;
+		light.z = 3.5f;
+		light.r = 1.0f;
+		light.g = 1.0f;
+		light.b = 1.0f;
+		light.intensity = 5.0f;
+		lights[10] = light;
 		
 		texture = null;
 	}
@@ -111,15 +201,6 @@ public class RegionGuardhouse extends MapRegion
 	{
 		texture = null;
 		super.MakeModel(record);
-	}
-	
-	private void AddBed( int p_bedx, int p_bedy)
-	{
-	   collisionMap[p_bedx][p_bedy]     |= MapCell.WEST | MapCell.EAST | MapCell.SOUTH;
-	   collisionMap[p_bedx][p_bedy + 1] |= MapCell.WEST | MapCell.EAST | MapCell.NORTH;
-	   
-	   hiddingPlaces.add( new Vector2( (float)p_bedx, (float)p_bedy)); 
-	   hiddingPlaces.add( new Vector2( (float)p_bedx, (float)p_bedy + 1));
 	}
 	
 	private void AddBlock( int p_x, int p_y, int p_width, int p_height)
