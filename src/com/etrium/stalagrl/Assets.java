@@ -30,6 +30,7 @@ public class Assets
   public final static String modelItemMesh = Assets.modelPath + "/itemmesh.g3db";
   public final static String modelFood = Assets.modelPath + "/food.g3db";
   public final static String modelGuardhouse = Assets.modelPath + "/guardhouse.g3db";
+  public final static String modelStove = Assets.modelPath + "/wood_stove.g3db";
   
   // Icon Constants
   public final static String iconBorder = Assets.iconPath + "/icon-border.png";
