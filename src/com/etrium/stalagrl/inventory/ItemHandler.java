@@ -13,7 +13,8 @@ public class ItemHandler
     item = p_item;
   }
   
-  public void use( Item p_item)
+  public boolean UseItem()
   {
+    return false;
   }
 }

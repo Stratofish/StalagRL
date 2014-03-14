@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.etrium.stalagrl.Assets;
 import com.etrium.stalagrl.ItemRenderer;
 import com.etrium.stalagrl.inventory.ItemType;
+import com.etrium.stalagrl.system.Log;
+import com.etrium.stalagrl.inventory.*;
 
 public class Item
 {
@@ -29,14 +31,14 @@ public class Item
    
   private static final ItemDetail[] itemDetails = new ItemDetail[]
       { new ItemDetail( ItemType.EMPTY      , Assets.iconBorder     , ""   , "" , "Empty"      , null) 
-      , new ItemDetail( ItemType.COMPASS    , Assets.iconCompass    , "The", "A", "Compass"    , "itemHandlerCompass")
-      , new ItemDetail( ItemType.CROWBAR    , Assets.iconCrowbar    , "The", "A", "Crowbar"    , "itemHandlerCrowbar")
-      , new ItemDetail( ItemType.KEY        , Assets.iconKey        , "The", "A", "Key"        , "itemHandlerKey")
-      , new ItemDetail( ItemType.LOCKPICK   , Assets.iconLockpick   , "The", "A", "Lockpick"   , "itemHandlerLockpick")
-      , new ItemDetail( ItemType.PAPERS     , Assets.iconPapers     , "The", "" , "Papers"     , "itemHandlerPapers")
-      , new ItemDetail( ItemType.SPADE      , Assets.iconSpade      , "The", "A", "Spade"      , "itemHandlerSpade")
-      , new ItemDetail( ItemType.WATCH      , Assets.iconWatch      , "The", "A", "Watch"      , "itemHandlerWatch")
-      , new ItemDetail( ItemType.WIRECUTTERS, Assets.iconWireCutters, "The", "" , "Wirecutters", "itemHandlerWirecutters")
+      , new ItemDetail( ItemType.COMPASS    , Assets.iconCompass    , "The", "A", "Compass"    , "ItemHandlerCompass")
+      , new ItemDetail( ItemType.CROWBAR    , Assets.iconCrowbar    , "The", "A", "Crowbar"    , "ItemHandlerCrowbar")
+      , new ItemDetail( ItemType.KEY        , Assets.iconKey        , "The", "A", "Key"        , "ItemHandlerKey")
+      , new ItemDetail( ItemType.LOCKPICK   , Assets.iconLockpick   , "The", "A", "Lockpick"   , "ItemHandlerLockpick")
+      , new ItemDetail( ItemType.PAPERS     , Assets.iconPapers     , "The", "" , "Papers"     , "ItemHandlerPapers")
+      , new ItemDetail( ItemType.SPADE      , Assets.iconSpade      , "The", "A", "Spade"      , "ItemHandlerSpade")
+      , new ItemDetail( ItemType.WATCH      , Assets.iconWatch      , "The", "A", "Watch"      , "ItemHandlerWatch")
+      , new ItemDetail( ItemType.WIRECUTTERS, Assets.iconWireCutters, "The", "" , "Wirecutters", "ItemHandlerWirecutters")
       };  
   private static final int itemDetailCount = 9; 
   
@@ -59,10 +61,11 @@ public class Item
     {
       if (Details.handlerClass != null)
       try {
-        itemHandler = (ItemHandler) Class.forName(Details.handlerClass).newInstance();
+        itemHandler = (ItemHandler) Class.forName("com.etrium.stalagrl.inventory." + Details.handlerClass).newInstance();
       }
-      catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+      catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {        
         itemHandler = null;
+        System.out.println(e.toString());
       }
     }
   }
@@ -102,12 +105,23 @@ public class Item
      return Details.name;
   }
   
-  public void render(ModelBatch modelBatch)
+  public void Render(ModelBatch modelBatch)
   {
     if (itemRenderer != null)
     {
       itemRenderer.Render(modelBatch);
     }
+  }
+  
+  public boolean UseItem()
+  {    
+   
+    if (itemHandler != null)
+    {
+      return itemHandler.UseItem();
+    }
+    else
+      return false;
   }
 }
 

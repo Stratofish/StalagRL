@@ -143,9 +143,9 @@ public class Player extends Character implements EventListener
 	}		
 	
   private boolean TakeItemFromFloor( MapCell p_takeFromCell)
-  {           
+  {
     Item item = p_takeFromCell.PickupFloorItem(null);
-    
+   
     if (item != null)
     {
       if (inventory.AddItem(item))
@@ -157,75 +157,87 @@ public class Player extends Character implements EventListener
       p_takeFromCell.DropFloorItem(item, null);
     }
     return false;
-  }	
+  }
 	
 	public void UseItem()
 	{
-	  MapCell testCell = map.floorMap[x][y];
-	  	  
-	  /* Check the cell the player is in */
-	  if ((testCell.hiddingPlace) && (testCell.hiddenItem != null))
-	  {
-      Item hiddenItem = testCell.hiddenItem;
+	  /* First of all call the item handler UseItem method for the currently selected item */
+	  Item currentPlayerItem = inventory.GetCurrentItem();
 	  
-	    if (TakeItemFromCell( testCell))        
-        Log.action("You have found " + hiddenItem.GetItemNewPrefix().toLowerCase() + " " + hiddenItem.GetName().toLowerCase());         
-      else
-        Log.action("Your inventory is full");
-	  }
-	  else
-	  {
-	    /* Check the cell the player is facing */
-	    switch (direction)
-	    {
-	      case MapCell.NORTH:
-	      {
-	        testCell = map.floorMap[x][y + 1];
-	        break;
-	      }
-	      case MapCell.SOUTH:
-        {
-          testCell = map.floorMap[x][y - 1];
-          break;
-        }
-	      case MapCell.WEST:
-        {
-          testCell = map.floorMap[x - 1][y];
-          break;
-        }
-	      case MapCell.EAST:
-        {
-          testCell = map.floorMap[x + 1][y];
-          break;
-        }
-	    }	    	   
-	    	    
-	    Item hiddenItem = testCell.hiddenItem;
-	    
-	    if ((testCell.hiddingPlace) && (testCell.hiddenItem != null))	    	     
-  	    if (TakeItemFromCell( testCell))
-  	      Log.action("You have found " + hiddenItem.GetItemNewPrefix().toLowerCase() + " " + hiddenItem.GetName().toLowerCase());
-	      else
-  	      Log.action("Your inventory is full");	            	   
-	    else	    
-	    {
-	      /* No hidden item tile in front of the player so check the floor of the cell
-	         the player is standing on */
-	      MapCell playersCell = map.floorMap[x][y];
-	      
-	      if (playersCell.FloorItemCount() > 0)
-	      {	        
-	        Item floorItem = playersCell.floorItems.get(0);
-	        
-	        if (TakeItemFromFloor( playersCell))	          
-	          Log.action("You have picked up " + floorItem.GetItemNewPrefix().toLowerCase() + " " + floorItem.GetName().toLowerCase() + " onto the floor");	        
-	        else
-	          Log.action("Your inventory is full");	        
-	      }
-	      else
-	        Log.action("There is nothing here");
+	  boolean actionTaken = false;
+	  
+	  if (currentPlayerItem != null)
+	    actionTaken = currentPlayerItem.UseItem();	  
+	  
+	  /* If use item has taken action already then we don't need to do any further processing */
+	  if (!actionTaken)
+	  {	  
+  	  MapCell testCell = map.floorMap[x][y];
+  	  	  
+  	  /* Check the cell the player is in */
+  	  if ((testCell.hiddingPlace) && (testCell.hiddenItem != null))
+  	  {
+        Item hiddenItem = testCell.hiddenItem;
+  	  
+  	    if (TakeItemFromCell( testCell))        
+          Log.action("You have found " + hiddenItem.GetItemNewPrefix().toLowerCase() + " " + hiddenItem.GetName().toLowerCase());         
+        else
+          Log.action("Your inventory is full");
+  	  }
+  	  else
+  	  {
+  	    /* Check the cell the player is facing */
+  	    switch (direction)
+  	    {
+  	      case MapCell.NORTH:
+  	      {
+  	        testCell = map.floorMap[x][y + 1];
+  	        break;
+  	      }
+  	      case MapCell.SOUTH:
+          {
+            testCell = map.floorMap[x][y - 1];
+            break;
+          }
+  	      case MapCell.WEST:
+          {
+            testCell = map.floorMap[x - 1][y];
+            break;
+          }
+  	      case MapCell.EAST:
+          {
+            testCell = map.floorMap[x + 1][y];
+            break;
+          }
+  	    }	    	   
+  	    	    
+  	    Item hiddenItem = testCell.hiddenItem;
+  	    
+  	    if ((testCell.hiddingPlace) && (testCell.hiddenItem != null))	    	     
+    	    if (TakeItemFromCell( testCell))
+    	      Log.action("You have found " + hiddenItem.GetItemNewPrefix().toLowerCase() + " " + hiddenItem.GetName().toLowerCase());
+  	      else
+    	      Log.action("Your inventory is full");	            	   
+  	    else	    
+  	    {
+  	      /* No hidden item tile in front of the player so check the floor of the cell
+  	         the player is standing on */
+  	      MapCell playersCell = map.floorMap[x][y];
+  	      
+  	      if (playersCell.FloorItemCount() > 0)
+  	      {	        
+  	        Item floorItem = playersCell.floorItems.get(0);
+  	        
+  	        if (TakeItemFromFloor( playersCell))	          
+  	          Log.action("You have picked up " + floorItem.GetItemNewPrefix().toLowerCase() + " " + floorItem.GetName().toLowerCase() + " onto the floor");	        
+  	        else
+  	          Log.action("Your inventory is full");	        
+  	      }
+  	      else
+  	        Log.action("There is nothing here");
+  	    }
 	    }
-	  }	  
+	  }
 	}
 	
 	private void DropItem()

@@ -2,6 +2,8 @@ package com.etrium.stalagrl.inventory;
 
 import java.util.ArrayList;
 
+import com.etrium.stalagrl.system.Log;
+
 public class Inventory
 {
   private InventoryHandler inventoryHandler = null;
@@ -39,6 +41,21 @@ public class Inventory
   public int GetMaxItems()
   {
     return maxItems;
+  }
+  
+  public Item GetCurrentItem()
+  {
+    if (inventoryHandler != null)
+    {
+      int selected = inventoryHandler.selected;
+        
+      if (selected < items.size())     
+      {  
+        return items.get(selected);
+      }
+    }
+
+    return null;
   }
   
   public boolean AddItem(Item p_item)
