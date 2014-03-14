@@ -142,6 +142,22 @@ public class Player extends Character implements EventListener
 	  return false;
 	}		
 	
+  private boolean TakeItemFromFloor( MapCell p_takeFromCell)
+  {           
+    Item item = p_takeFromCell.PickupFloorItem(null);
+    
+    if (item != null)
+    {
+      if (inventory.AddItem(item))
+      {
+        /* If item is successfully applied to players inventory then remove it from the MapCell object. */
+        p_takeFromCell.hiddenItem = null;
+        return true;
+      }
+    }
+    return false;
+  }	
+	
 	public void UseItem()
 	{
 	  MapCell testCell = map.floorMap[x][y];
@@ -185,7 +201,21 @@ public class Player extends Character implements EventListener
 	      else
   	      Log.action("Your inventory is full");	            	   
 	    else	    
-	      Log.action("There is nothing here"); 	    
+	    {
+	      /* No hidden item tile in front of the player so check the floor of the cell
+	         the player is standing on */
+	      MapCell playersCell = map.floorMap[x][y];
+	      
+	      if (playersCell.FloorItemCount() > 0)
+	      {	        
+	        if (TakeItemFromFloor( playersCell))
+	          Log.action("Item applied to inventory");
+	        else
+	          Log.action("Your inventory is full");	        
+	      }
+	      else
+	        Log.action("There is nothing here");
+	    }
 	  }	  
 	}
 	
@@ -199,9 +229,53 @@ public class Player extends Character implements EventListener
 	  }
 	  else
 	  {
-	    map.floorMap[x][y].DropFloorItem( removedItem, null);
+	    MapCell testCell = map.floorMap[x][y];
+      
+	    /* Check the cell the player is in */
+	    if ((testCell.hiddingPlace) && (testCell.hiddenItem == null))           
+	    {
+	      testCell.hiddenItem = removedItem;	      
+	      Log.action("Item hidden away");
+	    }                      
+	    else
+	    {
+	      /* Check the cell the player is facing */
+	      switch (direction)
+	      {
+	        case MapCell.NORTH:
+	        {
+	          testCell = map.floorMap[x][y + 1];
+	          break;
+	        }
+	        case MapCell.SOUTH:
+	        {
+	          testCell = map.floorMap[x][y - 1];
+	          break;
+	        }
+	        case MapCell.WEST:
+	        {
+	          testCell = map.floorMap[x - 1][y];
+	          break;
+	        }
+	        case MapCell.EAST:
+	        {
+	          testCell = map.floorMap[x + 1][y];
+	          break;
+	        }
+	      }
+	                 
+	      if ((testCell.hiddingPlace) && (testCell.hiddenItem == null))            
+	      {
+	        testCell.hiddenItem = removedItem;       
+          Log.action("Item hidden away");  
+	      }                  
+	      else      
+	      {
+	        map.floorMap[x][y].DropFloorItem( removedItem, null);
 	    
-	    Log.action("Item has been dropped on the floor");
+	        Log.action("Item has been dropped on the floor");
+	      }
+	    }
 	  }
 	}
 	
