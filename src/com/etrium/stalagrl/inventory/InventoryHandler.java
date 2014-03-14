@@ -219,7 +219,7 @@ public class InventoryHandler implements EventListener
     
     if (handled)      
       Update();
-  }
+  }   
   
   @SuppressWarnings("incomplete-switch")
   @Override
