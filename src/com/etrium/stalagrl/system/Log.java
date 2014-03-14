@@ -24,8 +24,8 @@ public class Log
     scrollPane.setOverscroll(false,  false);
     scrollPane.setFadeScrollBars(false);
     window = new Window("Activity", p_guiSkin);
-    window.setPosition(1024-10-(16), -300.0f);
-    window.setSize(300.0f, 100.0f);
+    window.setPosition(1024-10-(16), -330.0f);
+    window.setSize(330.0f, 100.0f);
     window.row().fill().expandX().expandY();
     window.add(scrollPane);
     p_guiStage.addActor(window);
@@ -33,7 +33,7 @@ public class Log
 
   static public void resize( int p_width, int p_height)
   {
-    window.setPosition(((p_width + 350) / 2) + 10, -300.0f);    
+    window.setPosition(((p_width + 350) / 2) + 10, -330.0f);    
   }
   
   static public void action( String p_text)

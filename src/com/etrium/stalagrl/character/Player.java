@@ -150,10 +150,11 @@ public class Player extends Character implements EventListener
     {
       if (inventory.AddItem(item))
       {
-        /* If item is successfully applied to players inventory then remove it from the MapCell object. */
-        p_takeFromCell.hiddenItem = null;
         return true;
       }
+      
+      /* If the inventory was full then put the item back on the floor */
+      p_takeFromCell.DropFloorItem(item, null);
     }
     return false;
   }	
@@ -163,11 +164,15 @@ public class Player extends Character implements EventListener
 	  MapCell testCell = map.floorMap[x][y];
 	  	  
 	  /* Check the cell the player is in */
-	  if ((testCell.hiddingPlace) && (testCell.hiddenItem != null))           
-      if (TakeItemFromCell( testCell))
-        Log.action("Item applied to inventory");
+	  if ((testCell.hiddingPlace) && (testCell.hiddenItem != null))
+	  {
+      Item hiddenItem = testCell.hiddenItem;
+	  
+	    if (TakeItemFromCell( testCell))        
+        Log.action("You have found " + hiddenItem.GetItemNewPrefix().toLowerCase() + " " + hiddenItem.GetName().toLowerCase());         
       else
-        Log.action("Your inventory is full");                      
+        Log.action("Your inventory is full");
+	  }
 	  else
 	  {
 	    /* Check the cell the player is facing */
@@ -194,10 +199,12 @@ public class Player extends Character implements EventListener
           break;
         }
 	    }	    	   
-	    	    	   
+	    	    
+	    Item hiddenItem = testCell.hiddenItem;
+	    
 	    if ((testCell.hiddingPlace) && (testCell.hiddenItem != null))	    	     
   	    if (TakeItemFromCell( testCell))
-	        Log.action("Item applied to inventory");
+  	      Log.action("You have found " + hiddenItem.GetItemNewPrefix().toLowerCase() + " " + hiddenItem.GetName().toLowerCase());
 	      else
   	      Log.action("Your inventory is full");	            	   
 	    else	    
@@ -208,8 +215,10 @@ public class Player extends Character implements EventListener
 	      
 	      if (playersCell.FloorItemCount() > 0)
 	      {	        
-	        if (TakeItemFromFloor( playersCell))
-	          Log.action("Item applied to inventory");
+	        Item floorItem = playersCell.floorItems.get(0);
+	        
+	        if (TakeItemFromFloor( playersCell))	          
+	          Log.action("You have picked up " + floorItem.GetItemNewPrefix().toLowerCase() + " " + floorItem.GetName().toLowerCase() + " onto the floor");	        
 	        else
 	          Log.action("Your inventory is full");	        
 	      }
@@ -225,7 +234,7 @@ public class Player extends Character implements EventListener
 	  
 	  if (removedItem == null)
 	  {
-	    Log.action("No item to remove");
+	    Log.action("No item to drop");
 	  }
 	  else
 	  {
@@ -235,13 +244,13 @@ public class Player extends Character implements EventListener
 	    if ((testCell.hiddingPlace) && (testCell.hiddenItem == null))           
 	    {
 	      testCell.hiddenItem = removedItem;	      
-	      Log.action("Item hidden away");
+	      Log.action("You have hidden " + removedItem.GetItemOldPrefix().toLowerCase() + " " + removedItem.GetName().toLowerCase());
 	    }                      
 	    else
 	    {
 	      /* Check the cell the player is facing */
 	      switch (direction)
-	      {
+	      {  
 	        case MapCell.NORTH:
 	        {
 	          testCell = map.floorMap[x][y + 1];
@@ -263,17 +272,17 @@ public class Player extends Character implements EventListener
 	          break;
 	        }
 	      }
-	                 
+
 	      if ((testCell.hiddingPlace) && (testCell.hiddenItem == null))            
 	      {
 	        testCell.hiddenItem = removedItem;       
-          Log.action("Item hidden away");  
+	        Log.action("You have hidden " + removedItem.GetItemOldPrefix().toLowerCase() + " " + removedItem.GetName().toLowerCase());  
 	      }                  
 	      else      
 	      {
 	        map.floorMap[x][y].DropFloorItem( removedItem, null);
 	    
-	        Log.action("Item has been dropped on the floor");
+	        Log.action("You have dropped " + removedItem.GetItemOldPrefix().toLowerCase() + " " + removedItem.GetName().toLowerCase() + " onto the floor");	        
 	      }
 	    }
 	  }
