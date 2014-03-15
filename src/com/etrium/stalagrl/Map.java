@@ -546,7 +546,8 @@ public class Map implements EventListener
 					currentRegionActivity = activityRegions.get(i);
 				}
 			}
-		}
+		} else
+			currentRegionActivity = null;
 	}
 	
 	@Override
