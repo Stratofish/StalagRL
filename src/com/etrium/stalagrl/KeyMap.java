@@ -14,7 +14,6 @@ public class KeyMap
     private boolean downHeld = false;
     private boolean leftHeld = false;
     private boolean rightHeld = false;
-    private boolean spaceHeld = false;
     private boolean quitHeld = false;
     
     private boolean godModeHeld = false; 

@@ -29,7 +29,7 @@ import com.etrium.stalagrl.system.Log;
 public class PowCamps implements EventListener
 {
 	private static final int POW_COUNT = 20;
-	private static final int GUARD_COUNT = 4;
+	private static final int GUARD_COUNT = 20;
 	
 	private EventManager evtMgr;
 	private KeyMap keyMap;
@@ -104,6 +104,7 @@ public class PowCamps implements EventListener
 		player = new Player(50, 35);
 		player.SetCamera(camera);
 		player.SetMap(map);
+		map.SetPlayer(player);
 		
 		for (int i = 0; i < POW_COUNT; i++)
 		{
@@ -127,6 +128,7 @@ public class PowCamps implements EventListener
 		inventory.AddItem(new Item( ItemType.KEY));
 		
 		player.SetInventory(inventory);
+		player.SetGuards(guards, GUARD_COUNT);
 		
 		campTime.SetTime(6, 00);
 	}

@@ -2,8 +2,6 @@ package com.etrium.stalagrl.inventory;
 
 import java.util.ArrayList;
 
-import com.etrium.stalagrl.system.Log;
-
 public class Inventory
 {
   private InventoryHandler inventoryHandler = null;

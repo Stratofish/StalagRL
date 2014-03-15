@@ -2,7 +2,8 @@ package com.etrium.stalagrl.inventory;
 
 public class ItemHandler
 {
-  private Item item;
+  @SuppressWarnings("unused")
+private Item item;
   
   public ItemHandler()
   {

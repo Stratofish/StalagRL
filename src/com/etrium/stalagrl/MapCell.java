@@ -2,7 +2,6 @@ package com.etrium.stalagrl;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.math.Vector2;
 import com.etrium.stalagrl.inventory.Item;

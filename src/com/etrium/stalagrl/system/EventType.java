@@ -24,5 +24,6 @@ public enum EventType
 	evtTimeIncrease,
 	evtGlobalLightLevel,
 	evtActivityStart,
-	evtActivityLeadStart
+	evtActivityLeadStart,
+	evtPlayerOOB
 }

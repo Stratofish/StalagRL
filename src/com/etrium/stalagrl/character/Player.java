@@ -16,6 +16,8 @@ import com.etrium.stalagrl.system.Log;
 
 public class Player extends Character implements EventListener
 {
+	private static int DETECTION_RANGE = 10;
+	
 	protected boolean upHeld = false;
 	protected boolean downHeld = false;
 	protected boolean leftHeld = false;
@@ -29,6 +31,9 @@ public class Player extends Character implements EventListener
 	private Camera camera = null;
 	private boolean listening = true;	
 	private Inventory inventory = null;
+	
+	private Guard guardList[];
+	private int guardCount = 0;
 	
 	public Player(int p_x, int p_y)
 	{
@@ -47,6 +52,12 @@ public class Player extends Character implements EventListener
 		evtMgr.RegisterListener(this, EventType.evtGlobalLightLevel);
 	}
 	
+	public void SetGuards(Guard guards[], int count)
+	{
+		guardList = guards;
+		guardCount = count;
+	}
+
 	public void SetInventory(Inventory p_inventory)
 	{
 	  inventory = p_inventory;
@@ -142,22 +153,22 @@ public class Player extends Character implements EventListener
 	  return false;
 	}		
 	
-  private boolean TakeItemFromFloor( MapCell p_takeFromCell)
-  {
-    Item item = p_takeFromCell.PickupFloorItem(null);
-   
-    if (item != null)
-    {
-      if (inventory.AddItem(item))
-      {
-        return true;
-      }
-      
-      /* If the inventory was full then put the item back on the floor */
-      p_takeFromCell.DropFloorItem(item, null);
-    }
-    return false;
-  }
+	private boolean TakeItemFromFloor( MapCell p_takeFromCell)
+	{
+		Item item = p_takeFromCell.PickupFloorItem(null);
+	   
+		if (item != null)
+		{
+			if (inventory.AddItem(item))
+			{
+				return true;
+			}
+	      
+			/* If the inventory was full then put the item back on the floor */
+			p_takeFromCell.DropFloorItem(item, null);
+		}
+		return false;
+	}
 	
 	public void UseItem()
 	{
@@ -388,6 +399,27 @@ public class Player extends Character implements EventListener
 			evt.type = EventType.evtTimeIncrease;
 			evt.data = null;
 			evtMgr.SendEvent(evt, false);
+			
+			// Check for nearby guards if out of bounds
+			if ((map.currentRegionActivity != null) && 
+				(map.currentRegionActivity.outOfBounds[x][y]))
+			{
+				for (int i = 0; i < guardCount; i++)
+				{
+					// Distance to guard
+					float diffX = Math.abs(guardList[i].x - x);
+					float diffY = Math.abs(guardList[i].y - y);
+					float dist = (float) Math.sqrt((diffX * diffX) + (diffY * diffY));  
+					
+					if (dist < DETECTION_RANGE)
+					{
+						evt = new EtriumEvent();
+						evt.type = EventType.evtPlayerOOB;
+						evt.data = guardList[i];
+						evtMgr.SendEvent(evt, true);
+					}
+				}
+			}
 			
 			return true;
 		}

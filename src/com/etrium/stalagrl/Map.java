@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.etrium.stalagrl.character.Character;
+import com.etrium.stalagrl.character.Player;
 import com.etrium.stalagrl.inventory.Item;
 import com.etrium.stalagrl.inventory.ItemType;
 import com.etrium.stalagrl.region.MapRegion;
@@ -79,11 +80,13 @@ public class Map implements EventListener
 	protected long timestamp = 0;
 	public Activity currentActivity = null;
 	public boolean currentActivityLead = false;
+	public RegionActivity currentRegionActivity = null;
 	public List<RegionActivity> activityRegions = null;
 	
 	public ArrayList<ItemRenderer> floorItems = new ArrayList<ItemRenderer>();
 	
 	protected EventManager evtMgr = new EventManager();
+	public Player player = null;
 
 	public Map(int p_width, int p_height)
 	{
@@ -143,37 +146,40 @@ public class Map implements EventListener
 		compassTexture = new Texture(Gdx.files.internal(Assets.itemCompass));
 		compassTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
     
-    crowbarTexture = new Texture(Gdx.files.internal(Assets.itemCrowbar));
-    crowbarTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-    
-    keyTexture = new Texture(Gdx.files.internal(Assets.itemKey));
-    keyTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-    
-    lockPickTexture = new Texture(Gdx.files.internal(Assets.itemLockpick));
-    lockPickTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-    
-    papersTexture = new Texture(Gdx.files.internal(Assets.itemPapers));
-    papersTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-    
-    spadeTexture = new Texture(Gdx.files.internal(Assets.itemSpade));
-    spadeTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-    
-    watchTexture = new Texture(Gdx.files.internal(Assets.itemWatch));
-    watchTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-    
-    wireCuttersTexture = new Texture(Gdx.files.internal(Assets.itemWireCutters));
-    wireCuttersTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        
-    itemTextures = new Texture[9];
-    itemTextures[ItemType.COMPASS.ordinal()] = compassTexture;
-    itemTextures[ItemType.CROWBAR.ordinal()] = crowbarTexture;
-    itemTextures[ItemType.KEY.ordinal()] = keyTexture;
-    itemTextures[ItemType.LOCKPICK.ordinal()] = lockPickTexture;
-    itemTextures[ItemType.PAPERS.ordinal()] = papersTexture;
-    itemTextures[ItemType.SPADE.ordinal()] = spadeTexture;
-    itemTextures[ItemType.WATCH.ordinal()] = watchTexture;
-    itemTextures[ItemType.WIRECUTTERS.ordinal()] = wireCuttersTexture;
+		crowbarTexture = new Texture(Gdx.files.internal(Assets.itemCrowbar));
+		crowbarTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		
+		keyTexture = new Texture(Gdx.files.internal(Assets.itemKey));
+		keyTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		
+		lockPickTexture = new Texture(Gdx.files.internal(Assets.itemLockpick));
+		lockPickTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		
+		papersTexture = new Texture(Gdx.files.internal(Assets.itemPapers));
+		papersTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		
+		spadeTexture = new Texture(Gdx.files.internal(Assets.itemSpade));
+		spadeTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		
+		watchTexture = new Texture(Gdx.files.internal(Assets.itemWatch));
+		watchTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		
+		wireCuttersTexture = new Texture(Gdx.files.internal(Assets.itemWireCutters));
+		wireCuttersTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		    
+		itemTextures = new Texture[9];
+		itemTextures[ItemType.COMPASS.ordinal()] = compassTexture;
+		itemTextures[ItemType.CROWBAR.ordinal()] = crowbarTexture;
+		itemTextures[ItemType.KEY.ordinal()] = keyTexture;
+		itemTextures[ItemType.LOCKPICK.ordinal()] = lockPickTexture;
+		itemTextures[ItemType.PAPERS.ordinal()] = papersTexture;
+		itemTextures[ItemType.SPADE.ordinal()] = spadeTexture;
+		itemTextures[ItemType.WATCH.ordinal()] = watchTexture;
+		itemTextures[ItemType.WIRECUTTERS.ordinal()] = wireCuttersTexture;
 
+    
+    	// TODO: Load from a file
+    
 		// Setup regions
 		regionRecords = new ArrayList<MapRegionRecord>();
 		MapRegion hutRegion = new RegionHut(this);
@@ -181,7 +187,7 @@ public class Map implements EventListener
 		MapRegion floorRegion = new RegionFloor(this, FLOOR_STONES, 5, 10);
 		MapRegion freetimeRegion = new RegionDummy(this, 50, 50);
 		MapRegion sleepRegion = new RegionDummy(this, 21, 11);
-		MapRegion excerciseRegion = new RegionDummy(this, 19, 72);
+		MapRegion excerciseRegion = new RegionDummy(this, 20, 72);
 		MapRegion foodRegion = new RegionFood(this);
 		MapRegion guardhouseRegion = new RegionGuardhouse(this);
 		MapRegion wireSouthRegion = new RegionExtrude(this, RegionExtrude.WEST, 50, Assets.modelBarbedWire);
@@ -298,6 +304,12 @@ public class Map implements EventListener
 		mrr = new MapRegionRecord();
 		mrr.region = towerRegion;
 		mrr.x = 6;
+		mrr.y = 34;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = towerRegion;
+		mrr.x = 6;
 		mrr.y = 63;
 		regionRecords.add(mrr);
 		
@@ -383,13 +395,13 @@ public class Map implements EventListener
 
 		hiddingPlaces = new ArrayList<MapCell>(); 
 		
-		/* Cycle through regions and copy collision map over to floor map */
+		/* Cycle through regions and copy collision map and hiding places over to floor map */
 		for (int r = 0; r < regionRecords.size(); r++)
+		{
 			regionRecords.get(r).AddCollisionData();
-
-		/* Cycle through regions and copy all hiding places over to floor map */
-		for (int r = 0; r < regionRecords.size(); r++)
-      regionRecords.get(r).AddHiddingPlaces();
+			regionRecords.get(r).AddHiddingPlaces();
+			
+		}
 
 		/* TODO For now just put an item at each hidden location */
 		for (int i = 0; i < hiddingPlaces.size(); i++)
@@ -399,18 +411,18 @@ public class Map implements EventListener
 		  hiddingPlace.hiddenItem = item;
 		}
 				
-    /* Set collision zone for edges of map */
-		for (int w = 0; w < width; w++)
-    {
-		  floorMap[w][0].collision |= MapCell.SOUTH; 
-		  floorMap[w][height - 1].collision |= MapCell.NORTH;
-    }
-		
-    for (int h = 0; h < height; h++)
-    {
-      floorMap[0][h].collision |= MapCell.WEST;
-      floorMap[width - 1][h].collision |= MapCell.EAST;
-    }				
+		/* Set collision zone for edges of map */
+			for (int w = 0; w < width; w++)
+		{
+			  floorMap[w][0].collision |= MapCell.SOUTH; 
+			  floorMap[w][height - 1].collision |= MapCell.NORTH;
+		}
+			
+		for (int h = 0; h < height; h++)
+		{
+		  floorMap[0][h].collision |= MapCell.WEST;
+		  floorMap[width - 1][h].collision |= MapCell.EAST;
+		}				
 
 		floorTiles = new ModelInstance[width][height];
 		
@@ -424,6 +436,11 @@ public class Map implements EventListener
 	public void SetCamera(Camera p_camera)
 	{
 		camera = p_camera;
+	}
+	
+	public void SetPlayer(Player p_player)
+	{
+		player = p_player;
 	}
 	
 	public void MakeModels()
@@ -518,6 +535,18 @@ public class Map implements EventListener
 	{
 		currentActivity = p_activity;
 		currentActivityLead = p_lead;
+		
+		if (!p_lead)
+		{
+			currentRegionActivity = null;
+			for (int i = 0; i < activityRegions.size(); i++)
+			{
+				if (activityRegions.get(i).type == currentActivity.regionType)
+				{
+					currentRegionActivity = activityRegions.get(i);
+				}
+			}
+		}
 	}
 	
 	@Override

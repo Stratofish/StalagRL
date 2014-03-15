@@ -4,8 +4,6 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.etrium.stalagrl.Assets;
 import com.etrium.stalagrl.ItemRenderer;
 import com.etrium.stalagrl.inventory.ItemType;
-import com.etrium.stalagrl.system.Log;
-import com.etrium.stalagrl.inventory.*;
 
 public class Item
 {

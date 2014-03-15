@@ -5,6 +5,7 @@ import java.util.List;
 import com.badlogic.gdx.math.Vector2;
 import com.etrium.stalagrl.Map;
 import com.etrium.stalagrl.system.Dijkstra;
+import com.etrium.stalagrl.system.Log;
 
 public class GuardRole
 {
@@ -96,62 +97,82 @@ public class GuardRole
 		}
 	}
 	
-	public void DoControl()
+	public void DoControl(boolean patrolling)
 	{
 		x = character.x;
 		y = character.y;
 		
-		if (route == null)
+		if (patrolling)
 		{
-			if (currentTarget == null)
-			{ 
-				if (patrols[curPatrol].type == PatrolType.PATROL_PATH)
-				{
-					PatrolPath path = paths[nextPath];
-					currentTarget = path.points[nextPathNode];
-					nextPathNode++;
-
-					if (nextPathNode >= path.nodeCount)
+			if (route == null)
+			{
+				if (currentTarget == null)
+				{ 
+					if (patrols[curPatrol].type == PatrolType.PATROL_PATH)
 					{
-						nextPathNode = 0;
+						PatrolPath path = paths[nextPath];
+						currentTarget = path.points[nextPathNode];
+						nextPathNode++;
+	
+						if (nextPathNode >= path.nodeCount)
+						{
+							nextPathNode = 0;
+						}
 					}
+					
+					Dijkstra dj = new Dijkstra(map.floorMap, map.width, map.height);
+					int x2 = (int)currentTarget.x;
+					int y2 = (int)currentTarget.y;
+					
+					route = dj.shortestPath(character.x, character.y, x2, y2);
+					if (route.size() != 0)
+						route.remove(0);
+					else
+					{
+						System.out.println(x + ", " + y + " to " + x2 + ", " + y2);
+					}
+					
+					currentTarget = null;
 				}
-				
-				Dijkstra dj = new Dijkstra(map.floorMap, map.width, map.height);
-				int x2 = (int)currentTarget.x;
-				int y2 = (int)currentTarget.y;
-				
-				route = dj.shortestPath(character.x, character.y, x2, y2);
-				if (route.size() != 0)
-					route.remove(0);
-				else
-				{
-					System.out.println(x + ", " + y + " to " + x2 + ", " + y2);
-				}
-				
-				currentTarget = null;
+			}
+		} else
+		{
+			Dijkstra dj = new Dijkstra(map.floorMap, map.width, map.height);
+			int x2 = map.player.x;
+			int y2 = map.player.y;
+			
+			route = dj.shortestPath(x, y, x2, y2);
+			if (route.size() != 0)
+			{
+				route.remove(0);
+				route.remove(0);
 			}
 		}
 		
-		if (route.size() == 0)
+		if (route.size() > 0)
 		{
+			int newX = (int)route.get(0).x;
+			int newY = (int)route.get(0).y;
+	
+			float newRot = 0.0f;
+			if (newY > y) newRot = 180.0f;
+			if (newY < y) newRot = 0.0f;
+			if (newX > x) newRot = 90.0f;
+			if (newX < x) newRot = 270.0f;
 			
-		}
-		
-		int newX = (int)route.get(0).x;
-		int newY = (int)route.get(0).y;
-
-		float newRot = 0.0f;
-		if (newY > y) newRot = 180.0f;
-		if (newY < y) newRot = 0.0f;
-		if (newX > x) newRot = 90.0f;
-		if (newX < x) newRot = 270.0f;
-		
-		character.SetPosition(newX, newY, map.floorMap[newX][newY].floorLevel);
-		character.instance.transform.rotate(0.0f,  0.0f,  1.0f, newRot);
-		
-		route.remove(0);
-		if (route.size() == 0)
+			character.SetPosition(newX, newY, map.floorMap[newX][newY].floorLevel);
+			character.instance.transform.rotate(0.0f,  0.0f,  1.0f, newRot);
+			
+			route.remove(0);
+			if (route.size() == 0)
+				route = null;
+		} else
+		{
+			// Caught the player!
+			Log.action("You were caught, escort to solitary code here");
+			((Guard)character).patrolling = true;
 			route = null;
+			currentTarget = null;
+		}
 	}
 }
