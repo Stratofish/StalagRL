@@ -17,10 +17,10 @@ public class Guard extends Character
 	
 	protected GuardRole role; 
 	
-	public Guard(int p_x, int p_y)
+	public Guard()
 	{
-		x = p_x;
-		y = p_y;
+		x = 0;
+		y = 0;
 		z = 0.0f;
 		
 		collidable = false;

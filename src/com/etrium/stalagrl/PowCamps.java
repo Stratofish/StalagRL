@@ -70,25 +70,25 @@ public class PowCamps implements EventListener
 		guiTime = new GUITime(guiSkin, guiStage);
 		guiActivity = new GUIActivity(guiSkin, guiStage);
 	    
-    Log.CreateLog( guiStage, guiSkin);
-
-    evtMgr.RegisterListener(this, EventType.evtLogActivity);
-    evtMgr.RegisterListener(this, EventType.evtCharDead);
-    evtMgr.RegisterListener(this, EventType.evtUpLevel);
-    evtMgr.RegisterListener(this, EventType.evtDownLevel);
-    evtMgr.RegisterListener(this, EventType.evtControlDown);
-    evtMgr.RegisterListener(this, EventType.evtControlUp);
-    evtMgr.RegisterListener(this, EventType.evtPlayerUIChanged);
-    evtMgr.RegisterListener(this, EventType.evtQuitConfirm);
-    evtMgr.RegisterListener(this, EventType.evtResize);
-    evtMgr.RegisterListener(this, EventType.evtActivityLeadStart);
-    evtMgr.RegisterListener(this, EventType.evtActivityStart);
-    
-    modelBatch = new ModelBatch(new DefaultShaderProvider());
-    
-    float ar = ((float)Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth()) * 1.5f;
-    
-    camera = new OrthographicCamera(20, 18*ar);
+		Log.CreateLog( guiStage, guiSkin);
+		
+		evtMgr.RegisterListener(this, EventType.evtLogActivity);
+		evtMgr.RegisterListener(this, EventType.evtCharDead);
+		evtMgr.RegisterListener(this, EventType.evtUpLevel);
+		evtMgr.RegisterListener(this, EventType.evtDownLevel);
+		evtMgr.RegisterListener(this, EventType.evtControlDown);
+		evtMgr.RegisterListener(this, EventType.evtControlUp);
+		evtMgr.RegisterListener(this, EventType.evtPlayerUIChanged);
+		evtMgr.RegisterListener(this, EventType.evtQuitConfirm);
+		evtMgr.RegisterListener(this, EventType.evtResize);
+		evtMgr.RegisterListener(this, EventType.evtActivityLeadStart);
+		evtMgr.RegisterListener(this, EventType.evtActivityStart);
+		
+		modelBatch = new ModelBatch(new DefaultShaderProvider());
+		
+		float ar = ((float)Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth()) * 1.5f;
+		
+		camera = new OrthographicCamera(20, 18*ar);
 		camera.position.set(-4.0f, -4.0f, 6.0f);
 		camera.lookAt(0.0f, 0.0f, 0.0f);
 		camera.up.x = 0.0f;
@@ -101,23 +101,21 @@ public class PowCamps implements EventListener
 		map = new Map(100, 100);
 		map.SetCamera(camera);
 		
-		player = new Player(20, 25);
+		player = new Player(50, 35);
 		player.SetCamera(camera);
 		player.SetMap(map);
 		
 		for (int i = 0; i < POW_COUNT; i++)
 		{
-			int x = (int) (5 + (Math.random() * 50));
-			int y = (int) (5 + (Math.random() * 50));
+			int x = (int) (35 + (Math.random() * 50));
+			int y = (int) (15 + (Math.random() * 50));
 			pows[i] = new Character(x, y);
 			pows[i].SetMap(map);
 		}
 		
 		for (int i = 0; i < GUARD_COUNT; i++)
 		{
-			int x = (int) (1 + (Math.random() * 3));
-			int y = (int) (1 + (Math.random() * 50));
-			guards[i] = new Guard(x, y);
+			guards[i] = new Guard();
 			guards[i].SetMap(map);
 		}
 

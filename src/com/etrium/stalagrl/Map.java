@@ -181,155 +181,190 @@ public class Map implements EventListener
 		MapRegion floorRegion = new RegionFloor(this, FLOOR_STONES, 5, 10);
 		MapRegion freetimeRegion = new RegionDummy(this, 50, 50);
 		MapRegion sleepRegion = new RegionDummy(this, 21, 11);
+		MapRegion excerciseRegion = new RegionDummy(this, 19, 72);
 		MapRegion foodRegion = new RegionFood(this);
 		MapRegion guardhouseRegion = new RegionGuardhouse(this);
 		MapRegion wireSouthRegion = new RegionExtrude(this, RegionExtrude.WEST, 50, Assets.modelBarbedWire);
 		MapRegion wireSouthOuterRegion = new RegionExtrude(this, RegionExtrude.WEST, 60, Assets.modelBarbedWire);
-		MapRegion wireNorthOuterRegion = new RegionExtrude(this, RegionExtrude.EAST, 5, Assets.modelBarbedWire);
-		MapRegion wireWestRegion = new RegionExtrude(this, RegionExtrude.NORTH, 50, Assets.modelBarbedWire);
-		MapRegion wireWestOuterRegion = new RegionExtrude(this, RegionExtrude.NORTH, 73, Assets.modelBarbedWire);
+		MapRegion wireWestRegion1 = new RegionExtrude(this, RegionExtrude.NORTH, 30, Assets.modelBarbedWire);
+		MapRegion wireWestRegion2 = new RegionExtrude(this, RegionExtrude.NORTH, 15, Assets.modelBarbedWire);
+		MapRegion wireWestOuterRegion1 = new RegionExtrude(this, RegionExtrude.NORTH, 35, Assets.modelBarbedWire);
+		MapRegion wireWestOuterRegion2 = new RegionExtrude(this, RegionExtrude.NORTH, 33, Assets.modelBarbedWire);
 		MapRegion wireEastRegion = new RegionExtrude(this, RegionExtrude.SOUTH, 50, Assets.modelBarbedWire);
 		MapRegion wireEastOuterRegion = new RegionExtrude(this, RegionExtrude.SOUTH, 73, Assets.modelBarbedWire);
+		MapRegion wireSouthExcerciseRegion = new RegionExtrude(this, RegionExtrude.WEST, 20, Assets.modelBarbedWire);
+		MapRegion wireNorthExcerciseRegion = new RegionExtrude(this, RegionExtrude.EAST, 20, Assets.modelBarbedWire);
+		MapRegion wireWestExcerciseRegion = new RegionExtrude(this, RegionExtrude.NORTH, 73, Assets.modelBarbedWire);
 	
 		// Setup region instances
 		activityRegions = new ArrayList<RegionActivity>();
 		
 		MapRegionRecord mrr = new MapRegionRecord();
 		mrr.region = wireSouthRegion;
-		mrr.x = 54;
-		mrr.y = 5;
+		mrr.x = 84;
+		mrr.y = 15;
 		regionRecords.add(mrr);
 		
 		mrr = new MapRegionRecord();
 		mrr.region = wireSouthOuterRegion;
-		mrr.x = 59;
-		mrr.y = 0;
+		mrr.x = 89;
+		mrr.y = 10;
 		regionRecords.add(mrr);
 		
 		mrr = new MapRegionRecord();
-		mrr.region = wireWestRegion;
-		mrr.x = 5;
-		mrr.y = 5;
+		mrr.region = wireWestRegion1;
+		mrr.x = 35;
+		mrr.y = 15;
 		regionRecords.add(mrr);
 		
 		mrr = new MapRegionRecord();
-		mrr.region = wireWestOuterRegion;
-		mrr.x = 0;
-		mrr.y = 0;
+		mrr.region = wireWestRegion2;
+		mrr.x = 35;
+		mrr.y = 50;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = wireWestOuterRegion1;
+		mrr.x = 30;
+		mrr.y = 10;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = wireWestOuterRegion2;
+		mrr.x = 30;
+		mrr.y = 50;
 		regionRecords.add(mrr);
 		
 		mrr = new MapRegionRecord();
 		mrr.region = wireEastRegion;
-		mrr.x = 54;
-		mrr.y = 54;
+		mrr.x = 84;
+		mrr.y = 64;
 		regionRecords.add(mrr);
 		
 		mrr = new MapRegionRecord();
 		mrr.region = wireEastOuterRegion;
-		mrr.x = 59;
-		mrr.y = 73;
+		mrr.x = 89;
+		mrr.y = 83;
 		regionRecords.add(mrr);
 		
 		mrr = new MapRegionRecord();
-		mrr.region = wireNorthOuterRegion;
-		mrr.x = 0;
-		mrr.y = 73;
+		mrr.region = wireWestExcerciseRegion;
+		mrr.x = 10;
+		mrr.y = 10;
 		regionRecords.add(mrr);
 		
 		mrr = new MapRegionRecord();
-		mrr.region = wireNorthOuterRegion;
-		mrr.x = 55;
-		mrr.y = 73;
+		mrr.region = wireNorthExcerciseRegion;
+		mrr.x = 10;
+		mrr.y = 82;
 		regionRecords.add(mrr);
 		
 		mrr = new MapRegionRecord();
-		mrr.region = towerRegion;
-		mrr.x = 7;
-		mrr.y = 7;
-		regionRecords.add(mrr);
-		
-		mrr = new MapRegionRecord();
-		mrr.region = towerRegion;
-		mrr.x = 7;
-		mrr.y = 50;
+		mrr.region = wireSouthExcerciseRegion;
+		mrr.x = 29;
+		mrr.y = 10;
 		regionRecords.add(mrr);
 		
 		mrr = new MapRegionRecord();
 		mrr.region = towerRegion;
-		mrr.x = 50;
-		mrr.y = 7;
+		mrr.x = 29;
+		mrr.y = 6;
 		regionRecords.add(mrr);
 		
 		mrr = new MapRegionRecord();
 		mrr.region = towerRegion;
-		mrr.x = 50;
-		mrr.y = 50;
+		mrr.x = 37;
+		mrr.y = 60;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = towerRegion;
+		mrr.x = 91;
+		mrr.y = 6;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = towerRegion;
+		mrr.x = 91;
+		mrr.y = 60;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = towerRegion;
+		mrr.x = 6;
+		mrr.y = 6;
+		regionRecords.add(mrr);
+		
+		mrr = new MapRegionRecord();
+		mrr.region = towerRegion;
+		mrr.x = 6;
+		mrr.y = 63;
 		regionRecords.add(mrr);
 		
 		mrr = new MapRegionRecord();
 		mrr.region = hutRegion;
-		mrr.x = 15;
-		mrr.y = 30;
+		mrr.x = 45;
+		mrr.y = 40;
 		regionRecords.add(mrr);
 		
 		mrr = new MapRegionRecord();
 		mrr.region = hutRegion;
-		mrr.x = 27;
-		mrr.y = 30;
+		mrr.x = 57;
+		mrr.y = 40;
 		regionRecords.add(mrr);
 		
 		mrr = new MapRegionRecord();
 		mrr.region = hutRegion;
-		mrr.x = 15;
-		mrr.y = 37;
+		mrr.x = 45;
+		mrr.y = 47;
 		regionRecords.add(mrr);
 		
 		mrr = new MapRegionRecord();
 		mrr.region = hutRegion;
-		mrr.x = 27;
-		mrr.y = 37;
+		mrr.x = 57;
+		mrr.y = 47;
 		regionRecords.add(mrr);
 		
 		mrr = new MapRegionRecord();
 		mrr.region = floorRegion;
-		mrr.x = 42;
-		mrr.y = 31;
+		mrr.x = 72;
+		mrr.y = 41;
 		regionRecords.add(mrr);
 		RegionActivity ar = new RegionActivity(mrr, MapRegionType.ROLLCALL);
 		activityRegions.add(ar);
 			
 		mrr = new MapRegionRecord();
 		mrr.region = foodRegion;
-		mrr.x = 35;
-		mrr.y = 56;
+		mrr.x = 65;
+		mrr.y = 66;
 		ar = new RegionActivity(mrr, MapRegionType.FOOD);
 		regionRecords.add(mrr);
 		activityRegions.add(ar);
 		
 		mrr = new MapRegionRecord();
 		mrr.region = guardhouseRegion;
-		mrr.x = 5;
-		mrr.y = 55;
+		mrr.x = 35;
+		mrr.y = 65;
 		regionRecords.add(mrr);
 		
 		mrr = new MapRegionRecord(true);
-		mrr.region = foodRegion;
-		mrr.x = 40;
-		mrr.y = 20;
+		mrr.region = excerciseRegion;
+		mrr.x = 10;
+		mrr.y = 10;
 		ar = new RegionActivity(mrr, MapRegionType.EXCERCISE);
 		activityRegions.add(ar);
 		
 		mrr = new MapRegionRecord(true);
 		mrr.region = sleepRegion;
-		mrr.x = 15;
-		mrr.y = 30;
+		mrr.x = 45;
+		mrr.y = 40;
 		ar = new RegionActivity(mrr, MapRegionType.SLEEP);
 		activityRegions.add(ar);
 		
 		mrr = new MapRegionRecord(true);
 		mrr.region = freetimeRegion;
-		mrr.x = 5;
-		mrr.y = 5;
+		mrr.x = 35;
+		mrr.y = 15;
 		ar = new RegionActivity(mrr, MapRegionType.FREE_TIME);
 		activityRegions.add(ar);
 		
